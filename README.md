@@ -50,13 +50,14 @@ job.setPartitionerClass(MyPartitioner.class)
 각 단어가 어느 문서 어느 위치에 있는지 정리
 
 - Map : 문서를 읽으면서 단어를 Key로 위치를 Value로 하는 쌍 생성
-| 단어 | 위치 |
- ---- | ----
-| Harry | Doc1:6 |
-| Potter | Doc2:1|
+단어 | 위치
+ :-: | :-:
+Harry | Doc1:6 
+Potter | Doc2:1
 
 - Shuffle : 같은 Key를 가진 쌍들 한데 모음
-| Harry | Doc1:6, Doc4:15 |
+:-: | :-:
+Harry | Doc1:6, Doc4:15
 
 - Reducer : 모은 쌍을 output format으로 변환해줌
 ```
