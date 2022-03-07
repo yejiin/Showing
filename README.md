@@ -1,14 +1,14 @@
 # 목차
 
 - [병렬 분산 알고리즘](#병렬-분산-알고리즘)
-  - [병렬처리 컴퓨팅 이란?](#병렬처리-컴퓨팅-이란?)
-  - [분산처리 컴퓨팅 이란?](#분산처리-컴퓨팅-이란?)
+  - [병렬처리 컴퓨팅 이란?](#병렬처리-컴퓨팅-이란)
+  - [분산처리 컴퓨팅 이란?](#분산처리-컴퓨팅-이란)
 - [서버의 성능을 높이는 방법](#서버의-성능을-높이는-방법)
   - [Scale-out](#scale-out)
   - [Scale-up](#scale-up)
 - [MapReduce Framework](#mapreduce-framework)
-  - [사용 이유?](#사용-이유?)
-  - [MapReduce Framework 란?](#mapreduce-framework-란?)
+  - [사용 이유?](#사용-이유)
+  - [MapReduce Framework 란?](#mapreduce-framework-란)
   - [구현](#구현)
   - [Programming Model](#programming-model)
   - [특징](#특징)
