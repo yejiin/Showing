@@ -1,6 +1,32 @@
-# Hadoop
+# 목차
 
-생성일: 2022년 2월 22일 오후 11:54
+- [병렬 분산 알고리즘](#병렬-분산-알고리즘)
+  - [병렬처리 컴퓨팅 이란?](#병렬처리-컴퓨팅-이란?)
+  - [분산처리 컴퓨팅 이란?](#분산처리-컴퓨팅-이란?)
+- [서버의 성능을 높이는 방법](#서버의-성능을-높이는-방법)
+  - [Scale-out](#scale-out)
+  - [Scale-up](#scale-up)
+- [MapReduce Framework](#mapreduce-framework)
+  - [사용 이유?](#사용-이유?)
+  - [MapReduce Framework 란?](#mapreduce-framework-란?)
+  - [구현](#구현)
+  - [Programming Model](#programming-model)
+  - [특징](#특징)
+  - [MapReduce Phase](#mapreduce-phase)
+    - [Map phase](#map-phase)
+    - [Shuffling phase](#shuffling-phase)
+    - [Reduce phase](#reduce-phase)
+- [Hadoop](#hadoop)
+  - [주요 구성 요소](#주요-구성-요소)
+    - [MapReduce](#mapreduce)
+    - [HDFS (Hadoop Distributed File System)](#hdfs-hadoop-distributed-file-system)
+  - [Master - Slaves](#master---slaves)
+  - [MapReduce의 함수](#mapreduce의-함수)
+    - [Map 함수](#map-함수)
+    - [Reduce 함수](#reduce-함수)
+    - [Combine 함수](#combine-함수)
+- [참고](#참고)
+  - [분산 및 병렬처리](#분산-및-병렬처리)
 
 # 병렬 분산 알고리즘
 
