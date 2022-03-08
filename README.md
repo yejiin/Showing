@@ -88,3 +88,12 @@
     - 각 파일은 여러 개의 순차적인 블록으로 저장
     - 하나의 파일의 각각의 블록은 `fault tolerance`를 위해서 여러 개로 복사되어 여러 머신에 저장됨
 - 한 개의 **Name node** (master), 여러 개의 **Data node** (slaves)
+
+<br>
+
+## 실습
+### Word Counting 프로그램
+Wordcount.java
+
+### 각 단어의 첫 글자만 카운트 하는 프로그램
+Wordcount1char.java
