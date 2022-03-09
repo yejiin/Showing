@@ -20,7 +20,6 @@ HDFS에서 특정 dir를 데이터 노드가 블록을 저장할 장소로 정�
 
 ## SQOOP
 RDB와 Hadoop 사이 데이터 이동을 맡는 중간 어플리케이션
-두 가지 함수가 있음
 
 - import : RDB에서 HDFS에 데이터 보냄
 - export : HDFS에서 RDB에 데이터 보냄
