@@ -1,0 +1,12 @@
+version: "3"
+services:
+  spring:
+    container_name: spring-compose
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    restart: always
+    volumes:
+      - /home/ubuntu/jenkins/workspace/test/backend/build/libs:/spring-deploy
