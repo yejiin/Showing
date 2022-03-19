@@ -34,7 +34,7 @@ def startCrawling(year, category):
 #### 공연 테이블 생성 함수 ####
 def makePerformance(category):
   
-  df = pd.DataFrame(perfomance_set, columns=['performance_name'])
+  df = pd.DataFrame(performance_set, columns=['performance_name'])
   df.insert(0,'id',None)
   df.insert(1,'last_season_id',None)
   df.insert(len(df.columns),'performance_image',None)
@@ -59,6 +59,8 @@ def makeSeason():
   df2 = pd.DataFrame(season_list, columns = season_column)
   df2.index = df2.index +1
   df2.to_csv(f'season_temp.csv',mode='w',encoding='utf-8-sig',header=True,index=False)
+  # sql 저장
+  df2.to_sql(name='season',con=db_connection, if_exists='append',chunksize=1000,index=False,method='multi')
 
 
 #### 공연 상세 정보 추출 함수 ####
@@ -69,9 +71,12 @@ def showDetail(showId, category):
   html = driver.page_source
   soup = BeautifulSoup(html,'html.parser')
 
+  # performance db csv 파일 읽기
+  csv = pd.read_csv('mysql_output_performance.csv')
+
   # 공연 이름, 공연 종류 + 인터파크 id, playDB id, 시즌 사진, 공연 시작일자, 공연 종료일자, 작품 설명, 공연 장소, 관람 시간, 관람 등급, 세부 장르, 러닝 여부
-  perfomance_name = None #
-  perfomance_type = category #
+  performance_name = None #
+  performance_type = category #
 
   goods_code = None #
   playdb_id = showId #
@@ -81,7 +86,7 @@ def showDetail(showId, category):
   description = "" #
   location = None # 
   running_time = None #
-  perfomance_age = None #
+  performance_age = None #
   detail_type = None #
   proceed_flag = None #
   
@@ -92,7 +97,7 @@ def showDetail(showId, category):
   actors = []
   
   # 제목
-  perfomance_name = driver.find_element_by_xpath('//*[@id="wrap"]/div[3]/div[1]/div[1]/table/tbody/tr[1]/td/span[1]').text
+  performance_name = driver.find_element_by_xpath('//*[@id="wrap"]/div[3]/div[1]/div[1]/table/tbody/tr[1]/td/span[1]').text
   # 이미지
   season_image = driver.find_element_by_css_selector('#wrap > div.pddetail > h2 > img').get_attribute("src")
   # 세부 정보 리스트
@@ -135,14 +140,14 @@ def showDetail(showId, category):
     elif column == "장소":
       location = temp[1].find_element_by_tag_name("a").text
     elif column == "관람등급" :
-      perfomance_age = temp[1].text
+      performance_age = temp[1].text
     elif column == "관람시간" :
       running_time = temp[1].text
 
   # 인터파크 ID 추출
-  goods_code = soup.select_one(".detail_contentsbox4 > .title > a")
+  goods_code = soup.select_one(".detaillist > p > a")
   if goods_code != None :
-    goods_code = goods_code['href'].split("?")[1][10:18]
+    goods_code = goods_code['href'][-8:]
 
   # 배우 정보 추출
   boxes = soup.select(".detail_contentsbox > table > tbody > tr > td > table > tbody > tr > td > a")
@@ -164,8 +169,12 @@ def showDetail(showId, category):
   # 작품 설명 추출
   if contents is not None:
     description = contents[0].text
+
+  # 나머지 정보 csv파일에서 추출
+  # 공연 타입, 이름에 해당하는 performance_id 검색
+  performance_id = csv.loc[(csv['performance_name']== performance_name) & (csv['performance_type']== int(performance_type)),'id'].iat[0]
   
-  season_list.append([perfomance_name, perfomance_type, goods_code, playdb_id, season_image, start_date, end_date, description, location, running_time, perfomance_age, detail_type, proceed_flag])
+  season_list.append([None,performance_id, goods_code, playdb_id, season_image, start_date, end_date, description, location, running_time, performance_age, detail_type, proceed_flag,None])
 
   # 배우 csv 파일 생성
   # df = pd.DataFrame(actors, columns=['id','image','name'])
@@ -197,7 +206,7 @@ def showList(page,category,year):
         continue
 
       show_list.append(id.split('\'')[1])
-      perfomance_set.add(title)
+      performance_set.add(title)
   
 #---------------------------------Main---------------------------------------
 
@@ -207,7 +216,7 @@ driver = webdriver.Chrome('./chromedriver')
 list_url = "http://www.playdb.co.kr/playdb/playdblist.asp?Page={}&sReqMainCategory={}&sReqSubCategory=&sReqDistrict=&sReqTab=2&sPlayType=&sStartYear={}&sSelectType=1"
 show_url = "http://www.playdb.co.kr/playdb/playdbDetail.asp?sReqPlayno={}"
 
-season_column = ["perfomance_name", "perfomance_type", "interpark_id", "playdb_id", "season_image", "start_date", "end_date", "description", "location", "runningtime", "perfomance_age", "detail_type", "proceed_flag"]
+season_column = ["id","performance_id", "interpark_id", "playdb_id", "season_image", "start_date", "end_date", "description", "location", "runningtime", "performance_age", "detail_type", "proceed_flag","create_date"]
 
 db_connection_str = "mysql+pymysql://root:"+"ssafy"+"@127.0.0.1:3306/mydb?charset=utf8"
 db_connection = create_engine(db_connection_str)
@@ -216,7 +225,7 @@ conn = db_connection.connect()
 # 공연 id 목록 list
 show_list = []
 # 공연 이름 set
-perfomance_set = set()
+performance_set = set()
 # 공연 정보 목록 list
 season_list = []
 # 배우 정보 목록
@@ -228,10 +237,10 @@ casting_list = []
 now = datetime.now()
 
 # startCrawling('2022', '000001')
-# showDetail(146154,'000001')
-# makeSeason()
-showList('1','000001','2022')
-makePerformance('000001')
+showDetail(171946,'000001')
+makeSeason()
+# showList('1','000001','2022')
+# makePerformance('000001')
 
 # 다음 웹페이지가 넘어올때까지 1초 기다림
 driver.implicitly_wait(1)
