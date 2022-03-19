@@ -1,6 +1,8 @@
 import csv
 import selenium
+import pymysql
 import pandas as pd
+from sqlalchemy import create_engine
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
@@ -20,31 +22,43 @@ def startCrawling(year, category):
   # 페이지 별 공연 ID 크롤링
   for i in range(1,int(pageNum)+1):
     showList(i,category,year)
+
+  makePerformance(category)
   
-  # for i in show_list:
-  #   showDetail(i, category)
+  for i in show_list:
+    showDetail(i, category)
+
+  makeSeason()
 
 
 #### 공연 테이블 생성 함수 ####
 def makePerformance(category):
   
   df = pd.DataFrame(perfomance_set, columns=['performance_name'])
-  df.insert(0,'id',"")
-  df.insert(1,'last_season_id',"")
-  df.insert(len(df.columns),'performance_image',"")
+  df.insert(0,'id',None)
+  df.insert(1,'last_season_id',None)
+  df.insert(len(df.columns),'performance_image',None)
   df.insert(len(df.columns),'performance_type',category)
-  df.insert(len(df.columns),'create_date',"")
-  df.insert(len(df.columns),'update_date',"")
+  df.insert(len(df.columns),'create_date',None)
+  df.insert(len(df.columns),'update_date',None) 
 
   df.index = df.index +1
-  df.to_csv(f'temp.csv',mode='w',encoding='utf-8-sig',header=True,index=True)
+  # csv 파일 생성
+  df.to_csv(f'performance.csv',mode='w',encoding='utf-8-sig',header=True,index=False)
+  # sql 저장
+  df.to_sql(name='performance',con=db_connection, if_exists='append',chunksize=1000,index=False,method='multi')
 
+  # mysql output 불러오기
+  query = 'SELECT * FROM performance'
+
+  df = pd.read_sql_query(query,conn)
+  df.to_csv(r'mysql_output_performance.csv',index=False)
 
 #### 시즌 테이블 생성 함수 ####
 def makeSeason():
   df2 = pd.DataFrame(season_list, columns = season_column)
   df2.index = df2.index +1
-  df2.to_csv(f'season_temp.csv',mode='w',encoding='utf-8-sig',header=True,index=True)
+  df2.to_csv(f'season_temp.csv',mode='w',encoding='utf-8-sig',header=True,index=False)
 
 
 #### 공연 상세 정보 추출 함수 ####
@@ -195,6 +209,10 @@ show_url = "http://www.playdb.co.kr/playdb/playdbDetail.asp?sReqPlayno={}"
 
 season_column = ["perfomance_name", "perfomance_type", "interpark_id", "playdb_id", "season_image", "start_date", "end_date", "description", "location", "runningtime", "perfomance_age", "detail_type", "proceed_flag"]
 
+db_connection_str = "mysql+pymysql://root:"+"ssafy"+"@127.0.0.1:3306/mydb?charset=utf8"
+db_connection = create_engine(db_connection_str)
+conn = db_connection.connect()
+
 # 공연 id 목록 list
 show_list = []
 # 공연 이름 set
@@ -208,9 +226,6 @@ casting_list = []
 
 # 현재 시간
 now = datetime.now()
-nowyear = int(now.year)
-nowmonth = int(now.month)
-nowday = int(now.day)
 
 # startCrawling('2022', '000001')
 # showDetail(146154,'000001')
