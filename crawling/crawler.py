@@ -201,6 +201,10 @@ show_list = []
 perfomance_set = set()
 # 공연 정보 목록 list
 season_list = []
+# 배우 정보 목록
+actor_list = {}
+# 캐스팅 정보 목록
+casting_list = []
 
 # 현재 시간
 now = datetime.now()
@@ -211,7 +215,8 @@ nowday = int(now.day)
 # startCrawling('2022', '000001')
 # showDetail(146154,'000001')
 # makeSeason()
-#showList('1','000001','2022')
+showList('1','000001','2022')
+makePerformance('000001')
 
 # 다음 웹페이지가 넘어올때까지 1초 기다림
 driver.implicitly_wait(1)
