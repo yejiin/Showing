@@ -8,6 +8,6 @@ services:
     container_name: spring-compose
     ports:
       - 8081:8081
+    environment:
+      - TZ=Asia/Seoul
     restart: always
-    volumes:
-      - /home/ubuntu/jenkins/workspace/test/backend/build/libs:/spring-deploy
