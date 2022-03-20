@@ -10,4 +10,6 @@ services:
       - 8081:8081
     environment:
       - TZ=Asia/Seoul
+    links:
+      - mysql-compose
     restart: always
