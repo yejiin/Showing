@@ -3,6 +3,8 @@ import selenium
 import pymysql
 import pandas as pd
 from sqlalchemy import create_engine
+from sqlalchemy.dialects.mysql import insert
+from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
@@ -22,13 +24,18 @@ def startCrawling(year, category):
   # 페이지 별 공연 ID 크롤링
   for i in range(1,int(pageNum)+1):
     showList(i,category,year)
+  print("--------"+year+"년 "+category+" 공연 목록 크롤링 완료 --------")
 
+  # 먼저 호출
   makePerformance(category)
   
   for i in show_list:
     showDetail(i, category)
+  print("--------"+year+"년 "+category+" 공연 상세 크롤링 완료 --------")
 
   makeSeason()
+  makeActor()
+  makeCasting()
 
 
 #### 공연 테이블 생성 함수 ####
@@ -39,8 +46,8 @@ def makePerformance(category):
   df.insert(1,'last_season_id',None)
   df.insert(len(df.columns),'performance_image',None)
   df.insert(len(df.columns),'performance_type',category)
-  df.insert(len(df.columns),'create_date',None)
-  df.insert(len(df.columns),'update_date',None) 
+  df.insert(len(df.columns),'create_date',now)
+  df.insert(len(df.columns),'update_date',now) 
 
   df.index = df.index +1
   # csv 파일 생성
@@ -56,18 +63,40 @@ def makePerformance(category):
 
 #### 시즌 테이블 생성 함수 ####
 def makeSeason():
-  df2 = pd.DataFrame(season_list, columns = season_column)
-  df2.index = df2.index +1
-  df2.to_csv(f'season_temp.csv',mode='w',encoding='utf-8-sig',header=True,index=False)
+  df = pd.DataFrame(season_list, columns = season_column)
+  df.index = df.index +1
+  df.to_csv(f'season.csv',mode='w',encoding='utf-8-sig',header=True,index=False)
   # sql 저장
-  df2.to_sql(name='season',con=db_connection, if_exists='append',chunksize=1000,index=False,method='multi')
+  
+  def insert_on_duplicate(table,conn,keys,data_iter):
+    insert_stmt = insert(table.table).values(list(data_iter))
+    on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(insert_stmt.inserted)
+    conn.execute(on_duplicate_key_stmt)
+
+  df.to_sql(name='season',con=db_connection, if_exists='append',chunksize=1000,index=False,method=insert_on_duplicate)
+
+
+#### 배우 테이블 생성 함수 ####
+def makeActor():
+  input_data = list(actor_list.values())
+  df = pd.DataFrame(input_data, columns = actor_column)
+  df.index = df.index +1
+  df.to_csv(f'actor.csv',mode='w',encoding='utf-8-sig',header=True,index=False)
+  df.to_sql(name='actor',con=db_connection, if_exists='append',chunksize=1000, index=False,method='multi')
+
+#### 캐스팅 테이블 생성 함수 ####
+def makeCasting():
+  df = pd.DataFrame(casting_list, columns = casting_column)
+  df.index = df.index +1
+  df.to_csv(f'casting.csv',mode='w',encoding='utf-8-sig',header=True,index=False)
+  df.to_sql(name='casting',con=db_connection, if_exists='append',chunksize=1000,index=False,method='multi')
 
 
 #### 공연 상세 정보 추출 함수 ####
-def showDetail(showId, category):
+def showDetail(season_id, category):
   # 공연 페이지로 이동
-  driver.get(show_url.format(showId))
-  driver.implicitly_wait(5)
+  driver.get(show_url.format(season_id))
+  driver.implicitly_wait(1)
   html = driver.page_source
   soup = BeautifulSoup(html,'html.parser')
 
@@ -79,7 +108,7 @@ def showDetail(showId, category):
   performance_type = category #
 
   goods_code = None #
-  playdb_id = showId #
+  playdb_id = season_id #
   season_image = None #
   start_date = None #
   end_date = None #
@@ -91,10 +120,7 @@ def showDetail(showId, category):
   proceed_flag = None #
   
   # 출연진
-  actor_images = []
-  actor_names = []
-  actor_ids = []
-  actors = []
+  actor_role = None
   
   # 제목
   performance_name = driver.find_element_by_xpath('//*[@id="wrap"]/div[3]/div[1]/div[1]/table/tbody/tr[1]/td/span[1]').text
@@ -110,10 +136,10 @@ def showDetail(showId, category):
     # 어린이/가족 제외
     if column == "세부장르" :
       detail_genre = temp[1].find_elements_by_tag_name("a")[1].text
-      if "어린이/가족" == detail_genre :
-        return
-      else :
-        detail_type = detail_genre
+      # if "어린이/가족" == detail_genre :
+      #   return
+      # else :
+      detail_type = detail_genre
     elif column == "출연" : 
       continue
     elif column == "일시" : 
@@ -145,48 +171,59 @@ def showDetail(showId, category):
       running_time = temp[1].text
 
   # 인터파크 ID 추출
-  goods_code = soup.select_one(".detaillist > p > a")
+  # goods_code = soup.select_one(".detaillist > p > a")
+  # if goods_code != None :
+  #   goods_code = goods_code['href'][-8:]
+  goods_code = soup.select_one(".detail_contentsbox4 > .title > a")
   if goods_code != None :
-    goods_code = goods_code['href'][-8:]
+    goods_code = goods_code['href'].split("?")[1][10:18]
 
   # 배우 정보 추출
-  boxes = soup.select(".detail_contentsbox > table > tbody > tr > td > table > tbody > tr > td > a")
+  boxes = soup.select(".detail_contentsbox > table > tbody > tr > td > table > tbody > tr")
+  
+  for item in boxes:
+    actor_role = item.select_one("td").text
+    actor_image = None
+    actor_id = None
+    actor_name = None
 
-  for index, item in enumerate(boxes) :
-    if index % 2 == 0 :
-      actor_images.append(item.select_one('img')['src'])
-    else :
-      actor_ids.append(item['href'].split('=')[1])
-      actor_names.append(item.get_text())
+    actorsBox = item.select("td > a")
+    for index, i in enumerate(actorsBox):
+      if index % 2 == 0 :
+        actor_image = i.select_one('img')['src']
+      else :
+        actor_id = i['href'].split('=')[1]
+        actor_name = i.get_text()
 
-  actors = list(zip(actor_ids,actor_images,actor_names))
-
+      # 배우 정보 추가
+      if index % 2 == 1 :
+        if id not in actor_list:
+          actor_list[actor_id] = [None, actor_name, int(actor_id), actor_image, now] # actor_id 안에 넣어서 밸류값으로 db에 넣으면 괜춘??
+          # 캐스팅 정보 추가
+        casting_list.append([None,season_id,actor_id,actor_role,now])
+      
   driver.find_element_by_xpath('//*[@id="Tab2"]').click()
   driver.switch_to.frame("iFrmContent")
 
-  contents = driver.find_elements_by_class_name('news')
-  
-  # 작품 설명 추출
-  if contents is not None:
-    description = contents[0].text
+  try:
+    description = driver.find_element_by_class_name('news').text
+  except NoSuchElementException as e:
+    description = None
 
   # 나머지 정보 csv파일에서 추출
   # 공연 타입, 이름에 해당하는 performance_id 검색
   performance_id = csv.loc[(csv['performance_name']== performance_name) & (csv['performance_type']== int(performance_type)),'id'].iat[0]
   
-  season_list.append([None,performance_id, goods_code, playdb_id, season_image, start_date, end_date, description, location, running_time, performance_age, detail_type, proceed_flag,None])
+  season_list.append([None,performance_id, goods_code, playdb_id, season_image, start_date, end_date, description, location, running_time, performance_age, detail_type, proceed_flag,now])
 
-  # 배우 csv 파일 생성
-  # df = pd.DataFrame(actors, columns=['id','image','name'])
-  # df.insert(0,'show_id',showId)
-  # df.index = df.index +1
-  # df.to_csv(f'temp.csv',mode='w',encoding='utf-8-sig',header=True,index=True)
+  print("아이디 : "+season_id," 공연 상세 완료")
   
 
 ##### 연도, 카테고리별 공연 목록 크롤링 함수 #####
 def showList(page,category,year): 
   # 페이지 이동
   driver.get(list_url.format(page,category,year))
+  driver.implicitly_wait(1)
 
   # 공연 이름, playdb ID 추출하기 
   lists = driver.find_elements_by_css_selector('#contents > div.container1 > table > tbody > tr:nth-child(11) > td > table > tbody > tr > td')
@@ -207,7 +244,8 @@ def showList(page,category,year):
 
       show_list.append(id.split('\'')[1])
       performance_set.add(title)
-  
+
+
 #---------------------------------Main---------------------------------------
 
 # 크롬 드라이버 (에러 나면 절대 경로로 바꾸기)
@@ -217,8 +255,10 @@ list_url = "http://www.playdb.co.kr/playdb/playdblist.asp?Page={}&sReqMainCatego
 show_url = "http://www.playdb.co.kr/playdb/playdbDetail.asp?sReqPlayno={}"
 
 season_column = ["id","performance_id", "interpark_id", "playdb_id", "season_image", "start_date", "end_date", "description", "location", "runningtime", "performance_age", "detail_type", "proceed_flag","create_date"]
+casting_column = ["id","season_id","actor_id","role","create_date"]
+actor_column = ["id", "actor_name", "playdb_id", "actor_image", "create_date"]
 
-db_connection_str = "mysql+pymysql://root:"+"ssafy"+"@127.0.0.1:3306/mydb?charset=utf8"
+db_connection_str = "mysql+pymysql://root:"+"ssafy"+"@127.0.0.1:3306/showing?charset=utf8"
 db_connection = create_engine(db_connection_str)
 conn = db_connection.connect()
 
@@ -237,12 +277,17 @@ casting_list = []
 now = datetime.now()
 
 # startCrawling('2022', '000001')
-showDetail(171946,'000001')
-makeSeason()
 # showList('1','000001','2022')
 # makePerformance('000001')
+# showDetail(170910,'000001')
+# makePerformance()
+csv = pd.read_csv('season.csv')
+# makeSeason()
+def insert_on_duplicate(table,conn,keys,data_iter):
+    insert_stmt = insert(table.table).values(list(data_iter))
+    on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(insert_stmt.inserted)
+    conn.execute(on_duplicate_key_stmt)
 
-# 다음 웹페이지가 넘어올때까지 1초 기다림
-driver.implicitly_wait(1)
+csv.to_sql(name='season',con=db_connection, if_exists='append',chunksize=1000,index=False,method=insert_on_duplicate)
 
 driver.quit()
