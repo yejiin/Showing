@@ -1,6 +1,7 @@
 import csv
 import selenium
 import pymysql
+import time
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.mysql import insert
@@ -31,13 +32,13 @@ def startCrawling(year, category):
     # 먼저 호출
     makePerformance(category)
 
-    for i in show_list:
-        showDetail(i, category)
-    print("--------" + year + "년 " + category + " 공연 상세 크롤링 완료 --------")
+    # for i in show_list:
+    #     showDetail(i, category)
+    # print("--------" + year + "년 " + category + " 공연 상세 크롤링 완료 --------")
 
-    makeSeason()
-    makeActor()
-    makeCasting()
+    # makeSeason()
+    # makeActor()
+    # makeCasting()
 
 
 #### 공연 테이블 생성 함수 ####
@@ -54,39 +55,37 @@ def makePerformance(category):
     df.index = df.index + 1
     # csv 파일 생성
     df.to_csv(
-        f"performance.csv", mode="w", encoding="utf-8-sig", header=True, index=False
-    )
-    # sql 저장
-    df.to_sql(
-        name="performance",
-        con=db_connection,
-        if_exists="append",
-        chunksize=1000,
+        f"./data/performance.csv",
+        mode="w",
+        encoding="utf-8-sig",
+        header=True,
         index=False,
-        method="multi",
     )
+    # # sql 저장
+    # df.to_sql(
+    #     name="performance",
+    #     con=db_connection,
+    #     if_exists="append",
+    #     chunksize=1000,
+    #     index=False,
+    #     method="multi",
+    # )
 
-    # mysql output 불러오기
-    query = "SELECT * FROM performance"
+    # # mysql output 불러오기
+    # query = "SELECT * FROM performance"
 
-    df = pd.read_sql_query(query, conn)
-    df.to_csv(r"mysql_output_performance.csv", index=False)
+    # df = pd.read_sql_query(query, conn)
+    # df.to_csv(r"./data/mysql_output_performance.csv", index=False)
 
 
 #### 시즌 테이블 생성 함수 ####
 def makeSeason():
     df = pd.DataFrame(season_list, columns=season_column)
     df.index = df.index + 1
-    df.to_csv(f"season.csv", mode="w", encoding="utf-8-sig", header=True, index=False)
-    # sql 저장s
-
-    def insert_on_duplicate(table, conn, keys, data_iter):
-        insert_stmt = insert(table.table).values(list(data_iter))
-        on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(
-            insert_stmt.inserted
-        )
-        conn.execute(on_duplicate_key_stmt)
-
+    df.to_csv(
+        f"./data/season.csv", mode="w", encoding="utf-8-sig", header=True, index=False
+    )
+    # sql 저장
     df.to_sql(
         name="season",
         con=db_connection,
@@ -102,7 +101,9 @@ def makeActor():
     input_data = list(actor_list.values())
     df = pd.DataFrame(input_data, columns=actor_column)
     df.index = df.index + 1
-    df.to_csv(f"actor.csv", mode="w", encoding="utf-8-sig", header=True, index=False)
+    df.to_csv(
+        f"./data/actor.csv", mode="w", encoding="utf-8-sig", header=True, index=False
+    )
     df.to_sql(
         name="actor",
         con=db_connection,
@@ -117,7 +118,9 @@ def makeActor():
 def makeCasting():
     df = pd.DataFrame(casting_list, columns=casting_column)
     df.index = df.index + 1
-    df.to_csv(f"casting.csv", mode="w", encoding="utf-8-sig", header=True, index=False)
+    df.to_csv(
+        f"./data/casting.csv", mode="w", encoding="utf-8-sig", header=True, index=False
+    )
     df.to_sql(
         name="casting",
         con=db_connection,
@@ -132,7 +135,7 @@ def makeCasting():
 def showDetail(season_id, category):
     # 공연 페이지로 이동
     driver.get(show_url.format(season_id))
-    driver.implicitly_wait(1)
+    driver.implicitly_wait(2)
     html = driver.page_source
     soup = BeautifulSoup(html, "html.parser")
 
@@ -298,7 +301,7 @@ def showDetail(season_id, category):
 def showList(page, category, year):
     # 페이지 이동
     driver.get(list_url.format(page, category, year))
-    driver.implicitly_wait(1)
+    driver.implicitly_wait(0.5)
 
     # 공연 이름, playdb ID 추출하기
     lists = driver.find_elements_by_css_selector(
@@ -321,6 +324,13 @@ def showList(page, category, year):
 
             show_list.append(id.split("'")[1])
             performance_set.add(title)
+
+
+# 중복 ID 업데이트 함수
+def insert_on_duplicate(table, conn, keys, data_iter):
+    insert_stmt = insert(table.table).values(list(data_iter))
+    on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(insert_stmt.inserted)
+    conn.execute(on_duplicate_key_stmt)
 
 
 # ---------------------------------Main---------------------------------------
@@ -369,27 +379,10 @@ casting_list = []
 
 # 현재 시간
 now = datetime.now()
+start_time = time.time()
 
-# startCrawling('2022', '000001')
-# showList('1','000001','2022')
-# makePerformance('000001')
-# showDetail(170910,'000001')
-# makePerformance()
-csv = pd.read_csv("season.csv")
-# makeSeason()
-def insert_on_duplicate(table, conn, keys, data_iter):
-    insert_stmt = insert(table.table).values(list(data_iter))
-    on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(insert_stmt.inserted)
-    conn.execute(on_duplicate_key_stmt)
-
-
-csv.to_sql(
-    name="season",
-    con=db_connection,
-    if_exists="append",
-    chunksize=1000,
-    index=False,
-    method=insert_on_duplicate,
-)
-
+startCrawling("2022", "000001")
+# for i in range(2015,2022):
+# startCrawling(i, "000001")
+print("수행시간 : ", time.time() - start_time)
 driver.quit()
