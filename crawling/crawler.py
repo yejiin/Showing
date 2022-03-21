@@ -14,20 +14,28 @@ from datetime import datetime
 ########## 시작 함수 ##########
 def startCrawling(year, category):
     print("--------" + year + "년 " + category + " 크롤링 시작 --------")
-    # 1페이지로 이동
-    driver.get(list_url.format(1, category, year))
+    sub_categories = []
+    if category == "000001":
+        sub_categories = sub_category_01
+    elif category == "000002":
+        sub_categories = sub_category_02
 
-    # 총 페이지 수 추출
-    pageNum = driver.find_element_by_xpath(
-        "/html/body/div[1]/div[2]/div[2]/table/tbody/tr[11]/td/table/tbody/tr[35]/td"
-    ).text
-    pageNum = pageNum.split("/")[1]
-    pageNum = pageNum[0 : len(pageNum) - 1]
+    for i in sub_categories:
+        # 1페이지로 이동
+        driver.get(list_url.format(1, category, i, year))
 
-    # 페이지 별 공연 ID 크롤링
-    for i in range(1, int(pageNum) + 1):
-        showList(i, category, year)
-    print("--------" + year + "년 " + category + " 공연 목록 크롤링 완료 --------")
+        # 총 페이지 수 추출
+        pageNum = driver.find_element_by_xpath(
+            "/html/body/div[1]/div[2]/div[2]/table/tbody/tr[11]/td/table/tbody/tr[35]/td"
+        ).text
+        pageNum = pageNum.split("/")[1]
+        pageNum = pageNum[0 : len(pageNum) - 1]
+
+        # 페이지 별 공연 ID 크롤링
+        for i in range(1, int(pageNum) + 1):
+            showList(i, category, i, year)
+
+    print("--------" + year + "년 " + " 공연 목록 크롤링 완료 --------")
 
     # 먼저 호출
     makePerformance(year, category)
@@ -44,25 +52,38 @@ def startCrawling(year, category):
 #### 공연 테이블 생성 함수 ####
 def makePerformance(year, category):
 
-    df = pd.DataFrame(performance_set, columns=["performance_name"])
-    df.insert(0, "id", None)
-    df.insert(1, "last_season_id", None)
-    df.insert(len(df.columns), "performance_image", None)
-    df.insert(len(df.columns), "performance_type", category)
-    df.insert(len(df.columns), "create_date", now)
-    df.insert(len(df.columns), "update_date", now)
-
-    df.index = df.index + 1
-    # csv 파일 생성
+    df = pd.DataFrame(show_list)
     df.to_csv(
-        f"./data/performance_{category}_{year}.csv",
+        f"./data/showlist_{category}_{year}.csv",
         mode="w",
         encoding="utf-8-sig",
         header=True,
         index=False,
     )
 
-    performance_set.clear()
+    show_list.clear()
+
+    # df = pd.DataFrame(performance_set, columns=["performance_name"])
+    # df.insert(0, "id", None)
+    # df.insert(1, "last_season_id", None)
+    # df.insert(len(df.columns), "performance_image", None)
+    # df.insert(len(df.columns), "performance_type", category)
+    # df.insert(len(df.columns), "create_date", now)
+    # df.insert(len(df.columns), "update_date", now)
+
+    # df.index = df.index + 1
+    # # csv 파일 생성
+    # df.to_csv(
+    #     f"./data/performance_{category}_{year}.csv",
+    #     mode="w",
+    #     encoding="utf-8-sig",
+    #     header=True,
+    #     index=False,
+    # )
+
+    # performance_set.clear()
+
+    #######################################################################
 
     # # sql 저장
     # df.to_sql(
@@ -301,9 +322,9 @@ def showDetail(season_id, category):
 
 
 ##### 연도, 카테고리별 공연 목록 크롤링 함수 #####
-def showList(page, category, year):
+def showList(page, category, sub_category, year):
     # 페이지 이동
-    driver.get(list_url.format(page, category, year))
+    driver.get(list_url.format(page, category, sub_category, year))
     driver.implicitly_wait(0.5)
 
     # 공연 이름, playdb ID 추출하기
@@ -313,20 +334,20 @@ def showList(page, category, year):
 
     for item in lists:
         # 어린이 카테고리 필터링
-        if "어린이" not in item.text:
+        # if "어린이" not in item.text:
 
-            if not item.find_elements_by_tag_name("a"):
-                continue
-            # 지역 필터링
-            id = item.find_element_by_tag_name("a").get_attribute("onclick")
-            if id is None:
-                continue
-            title = item.find_element_by_tag_name("a").text
-            if "-" in title:
-                continue
+        if not item.find_elements_by_tag_name("a"):
+            continue
+        # 지역 필터링
+        id = item.find_element_by_tag_name("a").get_attribute("onclick")
+        if id is None:
+            continue
+        title = item.find_element_by_tag_name("a").text
+        if "-" in title:
+            continue
 
-            show_list.append(id.split("'")[1])
-            performance_set.add(title)
+        show_list.append(id.split("'")[1])
+        performance_set.add(title)
 
 
 # 중복 ID 업데이트 함수
@@ -344,7 +365,7 @@ options.add_experimental_option("excludeSwitches", ["enable-logging"])
 # 크롬 드라이버 (에러 나면 절대 경로로 바꾸기)
 driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
 # url
-list_url = "http://www.playdb.co.kr/playdb/playdblist.asp?Page={}&sReqMainCategory={}&sReqSubCategory=&sReqDistrict=&sReqTab=2&sPlayType=&sStartYear={}&sSelectType=1"
+list_url = "http://www.playdb.co.kr/playdb/playdblist.asp?Page={}&sReqMainCategory={}&sReqSubCategory={}&sReqDistrict=&sReqTab=2&sPlayType=&sStartYear={}&sSelectType=1"
 show_url = "http://www.playdb.co.kr/playdb/playdbDetail.asp?sReqPlayno={}"
 
 season_column = [
@@ -365,6 +386,8 @@ season_column = [
 ]
 casting_column = ["id", "season_id", "actor_id", "role", "create_date"]
 actor_column = ["id", "actor_name", "playdb_id", "actor_image", "create_date"]
+sub_category_01 = ["001001", "001002", "001003", "001005", "001006"]
+sub_category_02 = ["002001"]
 
 # db_connection_str = (
 #     "mysql+pymysql://root:" + "ssafy" + "@127.0.0.1:3306/showing?charset=utf8"
