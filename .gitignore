@@ -60,3 +60,5 @@ yarn-error.log*
 *.sw?
 
 commit.sh
+crawling/chromedriver.exe
+crawling/chromedriver
