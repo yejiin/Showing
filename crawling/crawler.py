@@ -335,8 +335,11 @@ def insert_on_duplicate(table, conn, keys, data_iter):
 
 # ---------------------------------Main---------------------------------------
 
+options = webdriver.ChromeOptions()
+options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
 # 크롬 드라이버 (에러 나면 절대 경로로 바꾸기)
-driver = webdriver.Chrome("./chromedriver")
+driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
 # url
 list_url = "http://www.playdb.co.kr/playdb/playdblist.asp?Page={}&sReqMainCategory={}&sReqSubCategory=&sReqDistrict=&sReqTab=2&sPlayType=&sStartYear={}&sSelectType=1"
 show_url = "http://www.playdb.co.kr/playdb/playdbDetail.asp?sReqPlayno={}"
@@ -360,11 +363,11 @@ season_column = [
 casting_column = ["id", "season_id", "actor_id", "role", "create_date"]
 actor_column = ["id", "actor_name", "playdb_id", "actor_image", "create_date"]
 
-db_connection_str = (
-    "mysql+pymysql://root:" + "ssafy" + "@127.0.0.1:3306/showing?charset=utf8"
-)
-db_connection = create_engine(db_connection_str)
-conn = db_connection.connect()
+# db_connection_str = (
+#     "mysql+pymysql://root:" + "ssafy" + "@127.0.0.1:3306/showing?charset=utf8"
+# )
+# db_connection = create_engine(db_connection_str)
+# conn = db_connection.connect()
 
 # 공연 id 목록 list
 show_list = []
@@ -381,8 +384,9 @@ casting_list = []
 now = datetime.now()
 start_time = time.time()
 
-startCrawling("2022", "000001")
-# for i in range(2015,2022):
-# startCrawling(i, "000001")
+# startCrawling("2022", "000001")
+for i in range(2015, 2023):
+    startCrawling(str(i), "000001")
+
 print("수행시간 : ", time.time() - start_time)
 driver.quit()
