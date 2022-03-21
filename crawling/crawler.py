@@ -30,7 +30,7 @@ def startCrawling(year, category):
     print("--------" + year + "년 " + category + " 공연 목록 크롤링 완료 --------")
 
     # 먼저 호출
-    makePerformance(category)
+    makePerformance(year, category)
 
     # for i in show_list:
     #     showDetail(i, category)
@@ -42,7 +42,7 @@ def startCrawling(year, category):
 
 
 #### 공연 테이블 생성 함수 ####
-def makePerformance(category):
+def makePerformance(year, category):
 
     df = pd.DataFrame(performance_set, columns=["performance_name"])
     df.insert(0, "id", None)
@@ -55,12 +55,15 @@ def makePerformance(category):
     df.index = df.index + 1
     # csv 파일 생성
     df.to_csv(
-        f"./data/performance.csv",
+        f"./data/performance_{category}_{year}.csv",
         mode="w",
         encoding="utf-8-sig",
         header=True,
         index=False,
     )
+
+    performance_set.clear()
+
     # # sql 저장
     # df.to_sql(
     #     name="performance",
@@ -386,7 +389,7 @@ start_time = time.time()
 
 # startCrawling("2022", "000001")
 for i in range(2015, 2023):
-    startCrawling(str(i), "000001")
+    startCrawling(str(i), "000002")
 
 print("수행시간 : ", time.time() - start_time)
 driver.quit()
