@@ -6,6 +6,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.mysql import insert
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchWindowException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
@@ -20,9 +21,9 @@ def startCrawling(year, category):
     elif category == "000002":
         sub_categories = sub_category_02
 
-    for i in sub_categories:
+    for sub in sub_categories:
         # 1페이지로 이동
-        driver.get(list_url.format(1, category, i, year))
+        driver.get(list_url.format(1, category, sub, year))
 
         # 총 페이지 수 추출
         pageNum = driver.find_element_by_xpath(
@@ -32,8 +33,8 @@ def startCrawling(year, category):
         pageNum = pageNum[0 : len(pageNum) - 1]
 
         # 페이지 별 공연 ID 크롤링
-        for i in range(1, int(pageNum) + 1):
-            showList(i, category, i, year)
+        for j in range(1, int(pageNum) + 1):
+            showList(j, category, sub, year)
 
     print("--------" + year + "년 " + " 공연 목록 크롤링 완료 --------")
 
@@ -47,6 +48,24 @@ def startCrawling(year, category):
     # makeSeason()
     # makeActor()
     # makeCasting()
+
+
+#### showDetail + actor + casting 크롤링 ####
+def startAndSleep(year, category):
+    link = f"./data/showlist_{category}_{year}.csv"
+    df = pd.read_csv(link)
+
+    playdb_id_list = list(df["0"])
+
+    for item in playdb_id_list:
+        try:
+            showDetail(item, category)
+        except Exception as e:
+            continue
+
+    makeSeason(year)
+    makeActor(year)
+    makeCasting(year)
 
 
 #### 공연 테이블 생성 함수 ####
@@ -63,29 +82,29 @@ def makePerformance(year, category):
 
     show_list.clear()
 
-    # df = pd.DataFrame(performance_set, columns=["performance_name"])
-    # df.insert(0, "id", None)
-    # df.insert(1, "last_season_id", None)
-    # df.insert(len(df.columns), "performance_image", None)
-    # df.insert(len(df.columns), "performance_type", category)
-    # df.insert(len(df.columns), "create_date", now)
-    # df.insert(len(df.columns), "update_date", now)
+    df = pd.DataFrame(performance_set, columns=["performance_name"])
+    df.insert(0, "id", None)
+    df.insert(1, "last_season_id", None)
+    df.insert(len(df.columns), "performance_image", None)
+    df.insert(len(df.columns), "performance_type", category)
+    df.insert(len(df.columns), "create_date", now)
+    df.insert(len(df.columns), "update_date", now)
 
-    # df.index = df.index + 1
-    # # csv 파일 생성
-    # df.to_csv(
-    #     f"./data/performance_{category}_{year}.csv",
-    #     mode="w",
-    #     encoding="utf-8-sig",
-    #     header=True,
-    #     index=False,
-    # )
+    df.index = df.index + 1
+    # csv 파일 생성
+    df.to_csv(
+        f"./data/performance_{category}_{year}.csv",
+        mode="w",
+        encoding="utf-8-sig",
+        header=True,
+        index=False,
+    )
 
-    # performance_set.clear()
+    performance_set.clear()
 
     #######################################################################
 
-    # # sql 저장
+    # sql 저장
     # df.to_sql(
     #     name="performance",
     #     con=db_connection,
@@ -95,76 +114,91 @@ def makePerformance(year, category):
     #     method="multi",
     # )
 
-    # # mysql output 불러오기
-    # query = "SELECT * FROM performance"
+    # mysql output 불러오기
+    query = "SELECT * FROM performance"
 
-    # df = pd.read_sql_query(query, conn)
-    # df.to_csv(r"./data/mysql_output_performance.csv", index=False)
+    df = pd.read_sql_query(query, conn)
+    df.to_csv(r"./data/mysql_output_performance.csv", index=False)
 
 
 #### 시즌 테이블 생성 함수 ####
-def makeSeason():
+def makeSeason(year):
     df = pd.DataFrame(season_list, columns=season_column)
     df.index = df.index + 1
     df.to_csv(
-        f"./data/season.csv", mode="w", encoding="utf-8-sig", header=True, index=False
-    )
-    # sql 저장
-    df.to_sql(
-        name="season",
-        con=db_connection,
-        if_exists="append",
-        chunksize=1000,
+        f"./data/season_{year}.csv",
+        mode="w",
+        encoding="utf-8-sig",
+        header=True,
         index=False,
-        method=insert_on_duplicate,
     )
+
+    season_list.clear()
+    # sql 저장
+    # df.to_sql(
+    #     name="season",
+    #     con=db_connection,
+    #     if_exists="append",
+    #     chunksize=1000,
+    #     index=False,
+    #     method=insert_on_duplicate,
+    # )
 
 
 #### 배우 테이블 생성 함수 ####
-def makeActor():
+def makeActor(year):
     input_data = list(actor_list.values())
     df = pd.DataFrame(input_data, columns=actor_column)
     df.index = df.index + 1
     df.to_csv(
-        f"./data/actor.csv", mode="w", encoding="utf-8-sig", header=True, index=False
-    )
-    df.to_sql(
-        name="actor",
-        con=db_connection,
-        if_exists="append",
-        chunksize=1000,
+        f"./data/actor_{year}.csv",
+        mode="w",
+        encoding="utf-8-sig",
+        header=True,
         index=False,
-        method="multi",
     )
+
+    actor_list.clear()
+    # df.to_sql(
+    #     name="actor",
+    #     con=db_connection,
+    #     if_exists="append",
+    #     chunksize=1000,
+    #     index=False,
+    #     method="multi",
+    # )
 
 
 #### 캐스팅 테이블 생성 함수 ####
-def makeCasting():
+def makeCasting(year):
     df = pd.DataFrame(casting_list, columns=casting_column)
     df.index = df.index + 1
     df.to_csv(
-        f"./data/casting.csv", mode="w", encoding="utf-8-sig", header=True, index=False
-    )
-    df.to_sql(
-        name="casting",
-        con=db_connection,
-        if_exists="append",
-        chunksize=1000,
+        f"./data/casting_{year}.csv",
+        mode="w",
+        encoding="utf-8-sig",
+        header=True,
         index=False,
-        method="multi",
     )
+
+    casting_list.clear()
+    # df.to_sql(
+    #     name="casting",
+    #     con=db_connection,
+    #     if_exists="append",
+    #     chunksize=1000,
+    #     index=False,
+    #     method="multi",
+    # )
 
 
 #### 공연 상세 정보 추출 함수 ####
 def showDetail(season_id, category):
     # 공연 페이지로 이동
     driver.get(show_url.format(season_id))
-    driver.implicitly_wait(2)
+    driver.implicitly_wait(20)
     html = driver.page_source
     soup = BeautifulSoup(html, "html.parser")
-
-    # performance db csv 파일 읽기
-    csv = pd.read_csv("mysql_output_performance.csv")
 
     # 공연 이름, 공연 종류 + 인터파크 id, playDB id, 시즌 사진, 공연 시작일자, 공연 종료일자, 작품 설명, 공연 장소, 관람 시간, 관람 등급, 세부 장르, 러닝 여부
     performance_name = None  #
@@ -217,7 +251,11 @@ def showDetail(season_id, category):
             end_date = detail_date[1].strip()
 
             start_date_detail = list(map(int, start_date.split("/")))
-            end_date_detail = list(map(int, end_date.split("/")))
+            end_date_detail = None
+            if end_date == "오픈런":
+                end_date_detail = [now.year, now.month, now.day]
+            else:
+                end_date_detail = list(map(int, end_date.split("/")))
 
             start_date_cmp = datetime(
                 start_date_detail[0], start_date_detail[1], start_date_detail[2]
@@ -244,9 +282,6 @@ def showDetail(season_id, category):
             running_time = temp[1].text
 
     # 인터파크 ID 추출
-    # goods_code = soup.select_one(".detaillist > p > a")
-    # if goods_code != None :
-    #   goods_code = goods_code['href'][-8:]
     goods_code = soup.select_one(".detail_contentsbox4 > .title > a")
     if goods_code != None:
         goods_code = goods_code["href"].split("?")[1][10:18]
@@ -282,23 +317,22 @@ def showDetail(season_id, category):
                     ]  # actor_id 안에 넣어서 밸류값으로 db에 넣으면 괜춘??
                     # 캐스팅 정보 추가
                 casting_list.append([None, season_id, actor_id, actor_role, now])
-
     driver.find_element_by_xpath('//*[@id="Tab2"]').click()
     driver.switch_to.frame("iFrmContent")
 
     try:
         description = driver.find_element_by_class_name("news").text
+    except NoSuchWindowException as wi:
+        description = None
     except NoSuchElementException as e:
         description = None
-
     # 나머지 정보 csv파일에서 추출
     # 공연 타입, 이름에 해당하는 performance_id 검색
-    performance_id = csv.loc[
-        (csv["performance_name"] == performance_name)
-        & (csv["performance_type"] == int(performance_type)),
+    performance_id = performance_csv.loc[
+        (performance_csv["performance_name"] == performance_name)
+        & (performance_csv["performance_type"] == int(performance_type)),
         "id",
     ].iat[0]
-
     season_list.append(
         [
             None,
@@ -318,7 +352,7 @@ def showDetail(season_id, category):
         ]
     )
 
-    print("아이디 : " + season_id, " 공연 상세 완료")
+    print("아이디 : ", season_id, " 공연 상세 완료")
 
 
 ##### 연도, 카테고리별 공연 목록 크롤링 함수 #####
@@ -361,6 +395,10 @@ def insert_on_duplicate(table, conn, keys, data_iter):
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
+options.add_argument("--incognito")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-setuid-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 
 # 크롬 드라이버 (에러 나면 절대 경로로 바꾸기)
 driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
@@ -410,9 +448,14 @@ casting_list = []
 now = datetime.now()
 start_time = time.time()
 
-# startCrawling("2022", "000001")
-for i in range(2015, 2023):
-    startCrawling(str(i), "000002")
+# performance db csv 파일 읽기
+performance_csv = pd.read_csv("./data/mysql_output_performance.csv")
+
+# for i in range(2015, 2023):
+#     startCrawling(str(i), "000002")
+
+for i in range(2022, 2018, -1):
+    startAndSleep(str(i), "000002")
 
 print("수행시간 : ", time.time() - start_time)
 driver.quit()
