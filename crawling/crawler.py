@@ -41,13 +41,13 @@ def startCrawling(year, category):
     # 먼저 호출
     makePerformance(year, category)
 
-    # for i in show_list:
-    #     showDetail(i, category)
-    # print("--------" + year + "년 " + category + " 공연 상세 크롤링 완료 --------")
+    for i in show_list:
+        showDetail(i, category)
+    print("--------" + year + "년 " + category + " 공연 상세 크롤링 완료 --------")
 
-    # makeSeason()
-    # makeActor()
-    # makeCasting()
+    makeSeason()
+    makeActor()
+    makeCasting()
 
 
 #### showDetail + actor + casting 크롤링 ####
@@ -196,7 +196,7 @@ def makeCasting(year):
 def showDetail(season_id, category):
     # 공연 페이지로 이동
     driver.get(show_url.format(season_id))
-    driver.implicitly_wait(20)
+    driver.implicitly_wait(2)
     html = driver.page_source
     soup = BeautifulSoup(html, "html.parser")
 
@@ -367,8 +367,6 @@ def showList(page, category, sub_category, year):
     )
 
     for item in lists:
-        # 어린이 카테고리 필터링
-        # if "어린이" not in item.text:
 
         if not item.find_elements_by_tag_name("a"):
             continue
@@ -427,11 +425,11 @@ actor_column = ["id", "actor_name", "playdb_id", "actor_image", "create_date"]
 sub_category_01 = ["001001", "001002", "001003", "001005", "001006"]
 sub_category_02 = ["002001"]
 
-# db_connection_str = (
-#     "mysql+pymysql://root:" + "ssafy" + "@127.0.0.1:3306/showing?charset=utf8"
-# )
-# db_connection = create_engine(db_connection_str)
-# conn = db_connection.connect()
+db_connection_str = (
+    "mysql+pymysql://root:" + "ssafy" + "@127.0.0.1:3306/showing?charset=utf8"
+)
+db_connection = create_engine(db_connection_str)
+conn = db_connection.connect()
 
 # 공연 id 목록 list
 show_list = []
@@ -454,8 +452,7 @@ performance_csv = pd.read_csv("./data/mysql_output_performance.csv")
 # for i in range(2015, 2023):
 #     startCrawling(str(i), "000002")
 
-for i in range(2022, 2018, -1):
-    startAndSleep(str(i), "000002")
+startAndSleep("2018", "000002")
 
 print("수행시간 : ", time.time() - start_time)
 driver.quit()
