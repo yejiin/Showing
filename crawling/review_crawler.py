@@ -6,7 +6,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from bs4 import BeautifulSoup
 from konlpy.tag import Okt
 import time
 
@@ -16,17 +15,7 @@ def makeReview(playdb_id):
     review_lump = " ".join(review_list)
     file.write(" ".join(okt.nouns(review_lump)))
     file.close()
-
     review_list.clear()
-
-    # df = pd.DataFrame(review_list)
-    # df.to_csv(
-    #     f"./data/review/{playdb_id}_review.txt",
-    #     mode="w",
-    #     encoding="utf-8-sig",
-    #     header=True,
-    #     index=False,
-    # )
 
 
 #### 공연 리뷰 정보 추출 ####
@@ -35,7 +24,6 @@ def showReview(interpark_id):
     driver.implicitly_wait(5)
 
     try:
-        # driver.find_element_by_class_name("buttonLayerClose").click()
         driver.find_element_by_css_selector(
             "#root > div.productsLayer.productsLayerMinorGuide.active > div > div.buttonLayerCloseWrap > button.buttonLayerClose"
         ).click()
@@ -46,15 +34,14 @@ def showReview(interpark_id):
     driver.find_element_by_class_name("productsTabPosts").click()
 
     # 더 보기 누르기
-    while True:
+    num = 0
+    while num <= 100:
         try:
             driver.find_element_by_css_selector(
                 "#epilogueTabContent > button"
             ).send_keys(Keys.ENTER)
             time.sleep(0.4)
-            # driver.find_element_by_class_name("moreBtn").send_keys(Keys.ENTER)
-            # element = driver.find_element_by_class_name("moreBtn")
-            # driver.execute_script("arguments[0].click();", element)
+            num += 1
         except Exception as e:
             print(e)
             break
@@ -88,21 +75,18 @@ show_url = "https://mobileticket.interpark.com/goods/{}"
 okt = Okt()
 # 리뷰 목록 list
 review_list = []
-
-
 # 인터파크, 플레이db csv
-data = pd.read_csv("./data/playonly.csv")
+data = pd.read_csv("./data/season_db.csv")
 for i in data.index:
     if data["interpark_id"][i] == data["interpark_id"][i]:
         start_time = time.time()
-        print(data["interpark_id"][i], data["playdb_id"][i], " 시작 ")
+        print(data["interpark_id"][i], data["playdb_id"][i])
         try:
             showReview(data["interpark_id"][i])
-        except Exception as e:
-            print(e)
-            print(data["interpark_id"][i], data["playdb_id"][i], " 에러 발생 ")
+        except Exception:
             continue
+        print("리뷰 크롤링 완료")
         makeReview(data["playdb_id"][i])
-        print("수행시간 : ", time.time() - start_time)
+        print("분석 완료, 수행시간 : ", time.time() - start_time)
 
-print("완료")
+print("전체 완료")
