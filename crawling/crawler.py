@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-########## 시작 함수 ##########
+########## 공연 목록 크롤링 시작 함수 ##########
 def startCrawling(year, category):
     print("--------" + year + "년 " + category + " 크롤링 시작 --------")
     sub_categories = []
@@ -38,20 +38,12 @@ def startCrawling(year, category):
 
     print("--------" + year + "년 " + " 공연 목록 크롤링 완료 --------")
 
-    # 먼저 호출
+    # year_category 공연 목록 생성
     makePerformance(year, category)
-
-    for i in show_list:
-        showDetail(i, category)
-    print("--------" + year + "년 " + category + " 공연 상세 크롤링 완료 --------")
-
-    makeSeason()
-    makeActor()
-    makeCasting()
 
 
 #### showDetail + actor + casting 크롤링 ####
-def startAndSleep(year, category):
+def detailCrawling(year, category):
     link = f"./data/showlist_{category}_{year}.csv"
     df = pd.read_csv(link)
 
@@ -71,6 +63,7 @@ def startAndSleep(year, category):
 #### 공연 테이블 생성 함수 ####
 def makePerformance(year, category):
 
+    # show_list에 담긴 playdb아이디 csv파일로 저장
     df = pd.DataFrame(show_list)
     df.to_csv(
         f"./data/showlist_{category}_{year}.csv",
@@ -91,7 +84,7 @@ def makePerformance(year, category):
     df.insert(len(df.columns), "update_date", now)
 
     df.index = df.index + 1
-    # csv 파일 생성
+    # db에 저장할 csv 파일 생성
     df.to_csv(
         f"./data/performance_{category}_{year}.csv",
         mode="w",
@@ -103,22 +96,6 @@ def makePerformance(year, category):
     performance_set.clear()
 
     #######################################################################
-
-    # sql 저장
-    # df.to_sql(
-    #     name="performance",
-    #     con=db_connection,
-    #     if_exists="append",
-    #     chunksize=1000,
-    #     index=False,
-    #     method="multi",
-    # )
-
-    # mysql output 불러오기
-    query = "SELECT * FROM performance"
-
-    df = pd.read_sql_query(query, conn)
-    df.to_csv(r"./data/mysql_output_performance.csv", index=False)
 
 
 #### 시즌 테이블 생성 함수 ####
@@ -239,9 +216,6 @@ def showDetail(season_id, category):
         # 어린이/가족 제외
         if column == "세부장르":
             detail_genre = temp[1].find_elements_by_tag_name("a")[1].text
-            # if "어린이/가족" == detail_genre :
-            #   return
-            # else :
             detail_type = detail_genre
         elif column == "출연":
             continue
@@ -446,13 +420,17 @@ casting_list = []
 now = datetime.now()
 start_time = time.time()
 
+# 공연 목록 크롤링 ( 000001 : 뮤지컬, 000002: 연극 )
+for i in range(2015, 2023):
+    startCrawling(str(i), "000001")
+
 # performance db csv 파일 읽기
 performance_csv = pd.read_csv("./data/mysql_output_performance.csv")
 
-# for i in range(2015, 2023):
-#     startCrawling(str(i), "000002")
+# 공연 상세 크롤링
+for i in range(2015, 2023):
+    detailCrawling(str(i), "000001")
 
-startAndSleep("2018", "000002")
 
 print("수행시간 : ", time.time() - start_time)
 driver.quit()
