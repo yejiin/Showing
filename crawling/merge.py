@@ -20,26 +20,34 @@ db_connection_str = (
 db_connection = create_engine(db_connection_str)
 conn = db_connection.connect()
 
-files = os.listdir("./data/casting")
 
-# df_all = pd.read_csv("./data/performances.csv")
-df_all = pd.DataFrame()
+def merge_file(data):
+    files = os.listdir(f"./data/{data}")
 
-for i in range(0, len(files)):
-    file = "./data/casting/" + files[i]
-    df = pd.read_csv(file)
-    df_all = pd.concat([df_all, df])
+    df_all = pd.DataFrame()
 
-# df_all = df_all.drop_duplicates(["playdb_id"], keep="last")
+    # 폴더 안에 파일 모으기
+    for i in range(0, len(files)):
+        file = f"./data/{data}/" + files[i]
+        df = pd.read_csv(file)
+        df_all = pd.concat([df_all, df])
 
-df_all.to_csv(
-    f"./data/castings_musical.csv",
-    mode="w",
-    encoding="utf-8-sig",
-    header=True,
-    index=False,
-)
+    # playdb_id로 중복 값 제거
+    df_all = df_all.drop_duplicates(["playdb_id"], keep="last")
 
+    # df_all.loc[(df_all["end_date"] == "오픈런"), "end_date"] = None
+
+    # csv 파일로 만들기
+    df_all.to_csv(
+        f"./data/{data}s.csv",
+        mode="w",
+        encoding="utf-8-sig",
+        header=True,
+        index=False,
+    )
+
+
+# db 저장
 # df_all.to_sql(
 #     name="performance",
 #     con=db_connection,
@@ -48,8 +56,3 @@ df_all.to_csv(
 #     index=False,
 #     method="multi",
 # )
-
-# query = "SELECT * FROM performance"
-
-# df = pd.read_sql_query(query, conn)
-# df.to_csv(r"./data/mysql_output_performance.csv", index=False)
