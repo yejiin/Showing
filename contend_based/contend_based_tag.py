@@ -57,31 +57,41 @@ def find_recommend(pid) :
     # print(tags_sim_sort_ind)
 
     # 함수 호출
-    find_sim_performance_by_tag(tags_sim_sort_ind, pid)
+    p =find_sim_performance_by_tag(tags_sim_sort_ind, pid)
+    print(p)
 
 
 # 특정 공연과 유사도가 높은 공연 top_n개 리턴
-def find_sim_performance_by_tag(sorted_ind, pid, top_n=16):
+def find_sim_performance_by_tag(sorted_ind, pid, top_n=3):
 
     # 원하는 개수만큼만 뽑기
     similar_indexes = sorted_ind.loc[pid, : str(top_n)]
-    print(similar_indexes.index)
+    print(similar_indexes)
+    similar_indexes = similar_indexes.values.flatten()
 
     # 0번째는 자기 자신이므로 없앰
-    similar_indexes = similar_indexes[1:]
+    similar_indexes_set = set(similar_indexes)
+    similar_indexes = list(similar_indexes_set)
     print(similar_indexes)
 
     # 공연 번호로 변환
     keys = pd.DataFrame(sorted_ind.index)
     similar_indexes_id = keys.iloc[similar_indexes]
-    print(similar_indexes_id)
+    similar_indexes_id = np.setdiff1d(similar_indexes_id, pid)
+    # print(similar_indexes_id)
 
     # DataFrame 으로 바꿔서 리턴
     return pd.DataFrame(similar_indexes_id)
 
 
-# 전체 호출 함수 : pid 는 Integer
-def content_based_recommend(pid):
-    find_recommend(pid)
+# 전체 호출 함수 : pid 는 list
+def content_based_recommend(pid_list):
+    find_recommend(pid_list)
 
-
+# print("printing 193 : ")
+# content_based_recommend([193])
+# print("printing 193, 179 : ")
+# content_based_recommend([193, 179])
+# print("printing 193, 179, 145, 182 : ")
+# content_based_recommend([193, 179, 145, 182])
+# 다 똑같음;;; 소름
