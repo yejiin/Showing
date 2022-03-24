@@ -3,6 +3,7 @@
     <h5 class="main_title">현재 연극 예매율 순위</h5>
     <!-- carousel area -->
     <b-card-group deck class="mb-0">
+      <i class="ni ni-bold-left arrow"></i>
       <b-card
         v-for="(item, index) in currentPageCards"
         :key="index"
@@ -20,6 +21,7 @@
         <br />
         기간
       </b-card>
+      <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
 
     <!-- pagination area -->
@@ -126,5 +128,14 @@ export default {
 .card-body {
   padding-left: 0px;
   padding-right: 0px;
+}
+
+.arrow {
+  margin-top: 10%;
+  color: #9badf6;
+}
+
+.arrow_right {
+  margin-left: 1%;
 }
 </style>
