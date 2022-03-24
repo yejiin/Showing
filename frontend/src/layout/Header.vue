@@ -42,6 +42,6 @@ export default {
   margin-right: 30%;
 }
 .login {
-  margin-right: 10%;
+  margin-right: 15%;
 }
 </style>
