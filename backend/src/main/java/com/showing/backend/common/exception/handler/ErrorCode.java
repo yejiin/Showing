@@ -7,7 +7,8 @@ public enum ErrorCode {
 
     // Common
     INVALID_INPUT_VALUE(400, "C001", "Invalid Input Value"),
-    ENTITY_NOT_FOUND(404, "C002", "Entity Not Found");
+    DUPLICATE_INPUT_VALUE(400, "C002", "Duplicate Input Value"),
+    ENTITY_NOT_FOUND(404, "C003", "Entity Not Found");
 
     private int status;
     private final String code;
