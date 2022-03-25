@@ -1,5 +1,6 @@
 package com.showing.backend.db.entity.performance;
 
+import com.showing.backend.db.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "wordcloud")
-public class WordCloud {
+public class WordCloud extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

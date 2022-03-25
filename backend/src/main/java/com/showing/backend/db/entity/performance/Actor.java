@@ -1,7 +1,7 @@
 package com.showing.backend.db.entity.performance;
 
 
-import com.showing.backend.db.entity.CreatedTimeEntity;
+import com.showing.backend.db.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "actor")
-public class Actor extends CreatedTimeEntity implements Serializable {
+public class Actor extends BaseTimeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

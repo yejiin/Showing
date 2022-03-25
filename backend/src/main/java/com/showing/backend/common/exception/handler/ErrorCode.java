@@ -11,7 +11,9 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "C003", "User Not Found"),
     // Show
     SEASON_NOT_FOUND(404, "S001", "Season Not Found"),
-    CASTING_NOT_FOUND(404, "S002", "Casting Not Found");
+    CASTING_NOT_FOUND(404, "S002", "Casting Not Found"),
+    // User
+    REFRESH_TOKEN_INVALID(403,"U001","Refresh token is invalid");
 
     private int status;
     private final String code;
