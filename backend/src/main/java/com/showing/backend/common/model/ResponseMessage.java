@@ -14,4 +14,8 @@ public class ResponseMessage {
     public static final String INVALID_TOKEN = "유효하지 않은 리프레쉬 토큰입니다.";
     public static final String LOGIN = "로그인 성공입니다.";
     public static final String LOGOUT = "로그아웃 성공입니다.";
+
+    // Review
+    public static final String ADD_REVIEW = "리뷰 추가 성공";
+    
 }
