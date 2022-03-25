@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable="lg" type="white" variant="white" class="fixed-top custnavi" v-cloak>
     <b-navbar-brand class="logo_position">
-      <h3 class="logo" @click="goToMain()">A301</h3>
+      <h3 class="logo" @click="goToMain()">Showing</h3>
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
