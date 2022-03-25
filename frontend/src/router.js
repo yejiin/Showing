@@ -4,8 +4,10 @@ import Router from "vue-router";
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
 import Header from "./layout/Header";
-// import Components from "./views/Components.vue";
-import Main from "./views/Main.vue";
+
+import MainPage from "./views/MainPage.vue";
+import ShowDetail from "./views/ShowDetail.vue";
+
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
@@ -14,15 +16,24 @@ import Profile from "./views/Profile.vue";
 Vue.use(Router);
 
 export default new Router({
+  mode: "history",
   linkExactActiveClass: "active",
   routes: [
     {
       path: "/",
-      name: "components",
+      name: "MainPage",
       components: {
         header: Header,
-        default: Main,
-        // default: Components,
+        default: MainPage,
+        footer: AppFooter,
+      },
+    },
+    {
+      path: "/show",
+      name: "ShowDetail",
+      components: {
+        header: Header,
+        default: ShowDetail,
         footer: AppFooter,
       },
     },
