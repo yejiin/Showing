@@ -17,4 +17,5 @@ public class InvalidException extends BusinessException {
     public ErrorCode getErrorCode() {
         return errorCode;
     }
+
 }

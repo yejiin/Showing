@@ -12,6 +12,7 @@ public enum ErrorCode {
     // Show
     SEASON_NOT_FOUND(404, "S001", "Season Not Found"),
     CASTING_NOT_FOUND(404, "S002", "Casting Not Found"),
+    PERFORMANCE_NOT_FOUND(404,"S003", "Performance Not Found"),
     // User
     REFRESH_TOKEN_INVALID(403,"U001","Refresh token is invalid"),
     NOT_ALLOWED_APPROACH(403,"U002","Not Allowed Approach"),
