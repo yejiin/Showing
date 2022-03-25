@@ -14,7 +14,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,6 @@ public class RatingController {
     @ApiResponses({@ApiResponse(code = 201, message = ADD_RATING),
             @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
             @ApiResponse(code = 403, message = FORBIDDEN, response = ErrorResponse.class),
-            @ApiResponse(code = 404, message = INVALID_INPUT , response = ErrorResponse.class),
             @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)})
     @PostMapping(value="/")
     public ResponseEntity<BaseResponseBody>  addRating(@RequestBody AddRatingReq req) {
@@ -46,4 +44,8 @@ public class RatingController {
         ratingService.addRating(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED, ADD_RATING));
     }
+
+
+
+
 }
