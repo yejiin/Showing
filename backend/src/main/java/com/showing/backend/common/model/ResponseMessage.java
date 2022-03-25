@@ -9,6 +9,7 @@ public class ResponseMessage {
     public static final String SERVER_ERROR =  "서버 에러입니다.";
     public static final String UNAUTHORIZED = "인증 되지 않은 유저입니다.";
     public static final String FORBIDDEN = "허용하지 않는 접근입니다.";
+    public static final String NOT_FOUND = "Not Found 오류입니다.";
 
     // Auth
     public static final String GET_KAKAO_ACCESS_TOKEN = "카카오 토큰 생성 성공입니다.";

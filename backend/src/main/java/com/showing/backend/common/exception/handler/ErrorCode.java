@@ -18,7 +18,8 @@ public enum ErrorCode {
     NOT_ALLOWED_APPROACH(403,"U002","Not Allowed Approach"),
     // Rating
     RATING_INVALID_VALUE(400,"R001","Invalid Rating Value"),
-    RATING_DUPLICATE_VALUE(400,"R002","Already Rated Performance");
+    RATING_DUPLICATE_VALUE(400,"R002","Already Rated Performance"),
+    RATING_NOT_FOUND(404,"R003","Rating Not Found");
 
     private int status;
     private final String code;
