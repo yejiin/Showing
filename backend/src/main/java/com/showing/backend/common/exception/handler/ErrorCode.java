@@ -8,7 +8,9 @@ public enum ErrorCode {
     // Common
     INVALID_INPUT_VALUE(400, "C001", "Invalid Input Value"),
     DUPLICATE_INPUT_VALUE(400, "C002", "Duplicate Input Value"),
-    ENTITY_NOT_FOUND(404, "C003", "Entity Not Found");
+    ENTITY_NOT_FOUND(404, "C003", "Entity Not Found"),
+    // User
+    REFRESH_TOKEN_INVALID(403,"U001","Refresh token is invalid");
 
     private int status;
     private final String code;
