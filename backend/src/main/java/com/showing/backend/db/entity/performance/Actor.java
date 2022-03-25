@@ -22,7 +22,7 @@ public class Actor extends BaseTimeEntity implements Serializable {
     private String actorName;
 
     @Column(unique = true)
-    private int playdbId;
+    private Long playdbId;
 
     @Column
     private String actorImage;

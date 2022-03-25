@@ -27,7 +27,7 @@ public class Season extends BaseTimeEntity implements Serializable {
     private String interparkId;
 
     @Column(unique = true)
-    private int playdbId;
+    private Long playdbId;
 
     @Column
     private String seasonImage;
