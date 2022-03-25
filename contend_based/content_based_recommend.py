@@ -11,14 +11,15 @@ warnings.filterwarnings('ignore')
 
 # 유사도 높은 공연 저장한 파일 읽고 특정 공연으로 검색
 def find_recommend(pid) :
-    # tags_sim_sort_ind 갖고옴 : index 는 공연 id
-    # tags_sim_sort_ind = pd.read_csv('C:/Users/SSAFY/Downloads/UI/output.csv', index_col=0) # 행렬 저장된 경로
+    # sim_sort_ind 갖고옴 : actor, tag 둘 다 index 는 공연 id
+    tags_sim_sort_ind = pd.read_csv('C:/Users/SSAFY/Downloads/UI/output.csv', index_col=0) # 행렬 저장된 경로
     actors_sim_sort_ind = pd.read_csv('C:/Users/SSAFY/Downloads/UI/output_actor.csv', index_col=0)
     # print(tags_sim_sort_ind)
 
     # 함수 호출
-    # p =find_sim_performance_by_tag(tags_sim_sort_ind, pid)
+    p =find_sim_performance_by_tag(tags_sim_sort_ind, pid)
     pa = find_sim_performance_by_tag(actors_sim_sort_ind, pid)
+    print(p)
     print(pa)
 
 
@@ -30,7 +31,7 @@ def find_sim_performance_by_tag(sorted_ind, pid, top_n=3):
     print(similar_indexes)
     similar_indexes = similar_indexes.values.flatten()
 
-    # 0번째는 자기 자신이므로 없앰
+    # 중복으로 뽑힌 거 삭제
     similar_indexes_set = set(similar_indexes)
     similar_indexes = list(similar_indexes_set)
     print(similar_indexes)
@@ -50,4 +51,5 @@ def content_based_recommend(pid_list):
     find_recommend(pid_list)
 
 
-content_based_recommend([2,6])
+# test
+# content_based_recommend([2,6,310])

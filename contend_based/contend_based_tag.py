@@ -17,7 +17,7 @@ def content_based_tag_to_csv():
 
     print(json_data)
 
-    keys = list(json_data.keys()) # ['193', '179', '145', '197', '148', '163', '190', '171', '154', '149', '155', '192', '174', '146', '144', '182', '156', '150', '172', '142', '151', '187', '186', '175', '167', '176', '177', '166', '181', '180', '165', '153', '188', '160', '195', '173']
+    keys = list(json_data.keys())
     print(list(json_data.keys()))
 
     # 0을 뺀 새로운 dictionary 만들기
@@ -50,6 +50,7 @@ def content_based_tag_to_csv():
     pass
 
 
+# test
 # print("printing 193 : ")
 # content_based_recommend([193])
 # print("printing 193, 179 : ")
