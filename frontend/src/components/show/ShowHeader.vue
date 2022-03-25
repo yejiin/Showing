@@ -3,14 +3,11 @@
     <div>
       <img src="https://picsum.photos/300/400/?image=25" />
     </div>
-    <div
-      style="margin-left: 5%; border-top: 1px solid; border-bottom: 1px solid; border-color: rgb(229, 229, 229)"
-      class="col"
-    >
+    <div class="col show_header">
       <br />
       <b-badge pill variant="primary">공연중</b-badge>
       <br /><br /><br />
-      <h2 class="main_title row">영화 제목</h2>
+      <h2 class="main_title">영화 제목</h2>
       <br />
       <h6>평균 <b-icon icon="star-fill" scale="0.8"></b-icon>평점</h6>
       <hr />
@@ -25,7 +22,6 @@
         :read-only="false"
         padding="1"
       ></star-rating>
-      <!-- <hr /> -->
     </div>
   </div>
 </template>
@@ -46,4 +42,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.show_header {
+  margin-left: 5%;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: rgb(229, 229, 229);
+}
+</style>
