@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable="lg" type="white" variant="white" class="fixed-top custnavi" v-cloak>
     <b-navbar-brand class="logo_position">
-      <h3 class="logo">A301</h3>
+      <h3 class="logo" @click="goToMain()">A301</h3>
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
@@ -21,6 +21,11 @@ export default {
     Search,
     Login,
   },
+  methods: {
+    goToMain() {
+      this.$router.push({ name: "MainPage" });
+    },
+  },
 };
 </script>
 
@@ -30,6 +35,7 @@ export default {
 }
 .logo {
   color: #5461e6;
+  cursor: pointer;
 }
 .logo_position {
   margin-left: 5% !important;
