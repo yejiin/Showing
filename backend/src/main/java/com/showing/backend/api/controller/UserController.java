@@ -85,7 +85,6 @@ public class UserController {
     @ApiOperation(value = "네이버 로그인", notes = "네이버 액세스 토큰으로 유저 정보를 받아 jwt 토큰을 발급하고 전송하는 api입니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = LOGIN, response = LoginRes.class),
-            @ApiResponse(code = 400, message = "Email is Duplicated", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @GetMapping(value = "/naver/login")
@@ -121,7 +120,9 @@ public class UserController {
     @ApiOperation(value = "토큰 재발급 요청", notes = "만료된 accessToken을 refreshToken을 통해 재발급하는 api입니다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = REFRESH_TOKEN, response = TokenRes.class),
-            @ApiResponse(code = 403, message = INVALID_TOKEN, response = ErrorResponse.class)
+            @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 403, message = INVALID_TOKEN, response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PostMapping(value = "/refresh/{id}")
     public ResponseEntity<BaseResponseBody> refreshToken(@PathVariable Long id, @RequestParam String refreshToken){
