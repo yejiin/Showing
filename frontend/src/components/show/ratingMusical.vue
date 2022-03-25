@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "ratingMusical",
+  name: "RatingMusical",
   data() {
     return {
       cards: [
