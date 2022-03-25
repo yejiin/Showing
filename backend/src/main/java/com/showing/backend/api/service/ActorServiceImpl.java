@@ -1,0 +1,21 @@
+package com.showing.backend.api.service;
+
+import com.showing.backend.api.response.ActorRes;
+import com.showing.backend.common.exception.CastingNotFoundException;
+import com.showing.backend.db.repository.performance.CastingRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@Service
+public class ActorServiceImpl implements ActorService{
+
+    private final CastingRepository castingRepository;
+
+    @Override
+    public List<ActorRes> getSeasonCastingList(Long seasonPlaydbId) {
+        return castingRepository.getCastingBySeason(seasonPlaydbId).orElseThrow(() -> new CastingNotFoundException());
+    }
+}
