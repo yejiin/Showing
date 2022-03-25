@@ -8,7 +8,10 @@ public enum ErrorCode {
     // Common
     INVALID_INPUT_VALUE(400, "C001", "Invalid Input Value"),
     DUPLICATE_INPUT_VALUE(400, "C002", "Duplicate Input Value"),
-    ENTITY_NOT_FOUND(404, "C003", "Entity Not Found");
+    USER_NOT_FOUND(404, "C003", "User Not Found"),
+    // Show
+    SEASON_NOT_FOUND(404, "S001", "Season Not Found"),
+    CASTING_NOT_FOUND(404, "S002", "Casting Not Found");
 
     private int status;
     private final String code;
