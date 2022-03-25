@@ -59,4 +59,16 @@ public class RatingController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, UPDATE_RATING));
     }
 
+    @ApiOperation(value = "별점 삭제", notes = "공연 별점을 삭제합니다.")
+    @ApiResponses({@ApiResponse(code = 200, message = DELETE_RATING),
+            @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
+            @ApiResponse(code = 403, message = FORBIDDEN, response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = NOT_FOUND, response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)})
+    @DeleteMapping(value = "/{starId}")
+    public ResponseEntity<BaseResponseBody> updateRating(@PathVariable Long starId) {
+        ratingService.deleteRating(starId);
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, DELETE_RATING));
+    }
+
 }

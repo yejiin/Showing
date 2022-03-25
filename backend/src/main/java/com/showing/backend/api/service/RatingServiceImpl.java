@@ -54,7 +54,7 @@ public class RatingServiceImpl implements RatingService {
      */
     @Override
     public void updateRating(UpdateRatingReq req) {
-        User user = userRepository.findById(req.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(req.getUserId()).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
         StarPoint starPoint = starPointRepository.findById(req.getStarId()).orElseThrow(()->new NotFoundException(ErrorCode.RATING_NOT_FOUND));
 
         int rating = req.getRating();
@@ -63,5 +63,15 @@ public class RatingServiceImpl implements RatingService {
         starPoint.setRating(req.getRating());
         starPointRepository.save(starPoint);
 
+    }
+
+    /*
+    별점 삭제
+     */
+    @Override
+    public void deleteRating(Long starId) {
+        StarPoint starPoint = starPointRepository.findById(starId).orElseThrow(()->new NotFoundException(ErrorCode.RATING_NOT_FOUND));
+
+        starPointRepository.delete(starPoint);
     }
 }
