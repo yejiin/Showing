@@ -5,18 +5,22 @@
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
-      <base-input class="searchInput" placeholder="공연과 배우를 검색해보세요" addon-left-icon="ni ni-zoom-split-in">
-      </base-input>
-      <a target="_blank" class="btn btn-neutral btn-icon login">
-        <span class="nav-link-inner--text">로그인</span>
-      </a>
+      <search></search>
+      <login></login>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
+import Search from "@/components/search/Search.vue";
+import Login from "@/components/user/Login.vue";
+
 export default {
   name: "Header",
+  components: {
+    Search,
+    Login,
+  },
 };
 </script>
 
