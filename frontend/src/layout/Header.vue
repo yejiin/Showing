@@ -38,14 +38,4 @@ export default {
 .custnavi {
   border-bottom: solid 0.5px #e5e8eb;
 }
-.searchInput {
-  margin-bottom: 0px !important;
-  margin-right: 5%;
-}
-.nav-link-inner--text {
-  margin-right: 30%;
-}
-.login {
-  margin-right: 15%;
-}
 </style>
