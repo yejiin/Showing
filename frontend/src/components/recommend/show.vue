@@ -3,6 +3,7 @@
     <h5 class="main_title">00님을 위한 추천 공연</h5>
     <!-- carousel area -->
     <b-card-group deck class="mb-0">
+      <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
       <i class="ni ni-bold-left arrow"></i>
       <b-card
         v-for="(item, index) in currentPageCards"
@@ -24,6 +25,7 @@
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
     <!-- pagination area -->
+    <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
     <div class="pagination" v-if="cards.length > cardsPerPage">
       <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
     </div>
