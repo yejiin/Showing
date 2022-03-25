@@ -1,8 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
+
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
-import Components from "./views/Components.vue";
+import Header from "./layout/Header";
+// import Components from "./views/Components.vue";
+import Main from "./views/Main.vue";
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
@@ -17,10 +20,11 @@ export default new Router({
       path: "/",
       name: "components",
       components: {
-        header: AppHeader,
-        default: Components,
-        footer: AppFooter
-      }
+        header: Header,
+        default: Main,
+        // default: Components,
+        footer: AppFooter,
+      },
     },
     {
       path: "/landing",
@@ -28,8 +32,8 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Landing,
-        footer: AppFooter
-      }
+        footer: AppFooter,
+      },
     },
     {
       path: "/login",
@@ -37,8 +41,8 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Login,
-        footer: AppFooter
-      }
+        footer: AppFooter,
+      },
     },
     {
       path: "/register",
@@ -46,8 +50,8 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Register,
-        footer: AppFooter
-      }
+        footer: AppFooter,
+      },
     },
     {
       path: "/profile",
@@ -55,15 +59,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Profile,
-        footer: AppFooter
-      }
-    }
+        footer: AppFooter,
+      },
+    },
   ],
-  scrollBehavior: to => {
+  scrollBehavior: (to) => {
     if (to.hash) {
       return { selector: to.hash };
     } else {
       return { x: 0, y: 0 };
     }
-  }
+  },
 });
