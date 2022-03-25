@@ -5,7 +5,8 @@ import com.showing.backend.api.response.TokenRes;
 import com.showing.backend.api.service.AuthService;
 import com.showing.backend.api.service.UserService;
 import com.showing.backend.common.auth.JwtTokenProvider;
-import com.showing.backend.common.exception.RefreshInvalidException;
+import com.showing.backend.common.exception.InvalidException;
+import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.common.exception.handler.ErrorResponse;
 import com.showing.backend.common.model.BaseResponseBody;
 import com.showing.backend.common.model.KakaoProfile;
@@ -36,7 +37,7 @@ public class UserController {
     @ApiOperation(value = "카카오 토큰 요청", notes = "카카오 인가 코드로 액세스 토큰을 요청하는 api입니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = GET_KAKAO_ACCESS_TOKEN),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
     @GetMapping(value="/kakao/token")
     public ResponseEntity<BaseResponseBody> requestKakaoToken(@RequestParam String code){
@@ -46,7 +47,7 @@ public class UserController {
     @ApiOperation(value = "카카오 로그인", notes = "카카오 액세스 토큰으로 유저 정보를 받아 jwt 토큰을 발급하고 전송하는 api입니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = LOGIN, response = LoginRes.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
     @GetMapping(value = "/kakao/login")
     public ResponseEntity<BaseResponseBody> login(@RequestParam String accessToken){
@@ -75,7 +76,7 @@ public class UserController {
     @ApiOperation(value = "네이버 토큰 요청", notes = "네이버 인가 코드로 액세스 토큰을 요청하는 api입니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = GET_NAVER_ACCESS_TOKEN),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
     @GetMapping(value="/naver/token")
     public ResponseEntity<BaseResponseBody> requestNaverToken(@RequestParam String code, @RequestParam String state){
@@ -85,7 +86,7 @@ public class UserController {
     @ApiOperation(value = "네이버 로그인", notes = "네이버 액세스 토큰으로 유저 정보를 받아 jwt 토큰을 발급하고 전송하는 api입니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = LOGIN, response = LoginRes.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
     @GetMapping(value = "/naver/login")
     public ResponseEntity<BaseResponseBody> naverLogin(@RequestParam String accessToken){
@@ -108,8 +109,8 @@ public class UserController {
     @ApiOperation(value = "로그아웃",notes = "토큰을 만료 시킨 후 로그아웃한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = LOGOUT),
-            @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+            @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
     @GetMapping(value = "/logout/{id}")
     public ResponseEntity<BaseResponseBody> logout(@PathVariable Long id) {
@@ -120,14 +121,14 @@ public class UserController {
     @ApiOperation(value = "토큰 재발급 요청", notes = "만료된 accessToken을 refreshToken을 통해 재발급하는 api입니다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = REFRESH_TOKEN, response = TokenRes.class),
-            @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
             @ApiResponse(code = 403, message = INVALID_TOKEN, response = ErrorResponse.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
     @PostMapping(value = "/refresh/{id}")
     public ResponseEntity<BaseResponseBody> refreshToken(@PathVariable Long id, @RequestParam String refreshToken){
         if(!tokenProvider.validateToken(refreshToken))
-            throw new RefreshInvalidException();
+            throw new InvalidException(ErrorCode.REFRESH_TOKEN_INVALID);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED,REFRESH_TOKEN,userService.refreshAccessToken(id,refreshToken)));
     }
 
