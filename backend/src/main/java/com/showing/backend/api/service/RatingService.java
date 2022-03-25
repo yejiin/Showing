@@ -8,4 +8,6 @@ public interface RatingService {
     void addRating(AddRatingReq req);
 
     void updateRating(UpdateRatingReq req);
+
+    void deleteRating(Long starId);
 }
