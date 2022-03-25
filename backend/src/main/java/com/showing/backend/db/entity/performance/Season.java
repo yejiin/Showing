@@ -1,7 +1,7 @@
 package com.showing.backend.db.entity.performance;
 
 
-import com.showing.backend.db.entity.CreatedTimeEntity;
+import com.showing.backend.db.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "season")
-public class Season extends CreatedTimeEntity implements Serializable {
+public class Season extends BaseTimeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

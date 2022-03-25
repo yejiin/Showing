@@ -1,5 +1,6 @@
 package com.showing.backend.db.entity.recommend;
 
+import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.Tag;
 import com.showing.backend.db.entity.User;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "favorite_tag")
-public class FavoriteTag {
+public class FavoriteTag extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
