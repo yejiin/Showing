@@ -17,5 +17,7 @@ public class ResponseMessage {
 
     // Review
     public static final String ADD_REVIEW = "리뷰 추가 성공";
-    
+
+    // Performance
+    public static final String GET_SEASON = "시즌 정보 조회 성공";
 }
