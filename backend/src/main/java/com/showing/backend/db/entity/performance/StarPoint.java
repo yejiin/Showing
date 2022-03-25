@@ -1,8 +1,7 @@
 package com.showing.backend.db.entity.performance;
 
-import com.showing.backend.db.entity.CreatedTimeEntity;
+import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
-import com.showing.backend.db.entity.performance.Performance;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "star_point")
-public class StarPoint extends CreatedTimeEntity {
+public class StarPoint extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
