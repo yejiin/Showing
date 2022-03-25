@@ -5,25 +5,39 @@ import csv
 from konlpy.tag import Kkma
 kkma = Kkma()
 
+
 # 파일 읽기
-filename = "seasons_musical.csv";
+filename = "seasons_play.csv";
 f = open(filename, 'r', encoding='utf-8')
 lines = csv.reader(f)
 
-# 공연 설명 저장
-performances = []  # {공연 id, 공연 설명} 저장
+
+# 시즌별 공연 정보 합치기
+performance_id_set = set()
+performance_des_dict = {}
 for line in lines:
-    performance = {'id': line[1], 'desc': line[7]}
-    performances.append(performance)
-    # print(performance)
+    # 공연정보가 없으면 제외
+    if line[7] != "":
+        performance_id = line[1]
 
-# print(len(performances))
+        performance_id_set.add(performance_id)
+        performance_desc = ""
 
-for i in range(1, len(performances)):
+        if performance_id in performance_des_dict:
+            performance_desc = performance_des_dict[performance_id] + " " + line[7]
+        else:
+            performance_desc = line[7]
+    performance_des_dict[performance_id] = performance_desc
+
+performance_id_set.discard('performance_id')
+
+performance_id_set_list = list(performance_id_set)
+performances = []  # {공연 id, 공연 설명} 저장
+for i in performance_id_set_list:
     # 각 공연 설명별 형태소 구분
     description_tags = [] 
 
-    morpheme = kkma.pos(performances[i]['desc'])
+    morpheme = kkma.pos(performance_des_dict[i])
     description_tags.append(morpheme)
     # print(morpheme)
 
@@ -38,9 +52,11 @@ for i in range(1, len(performances)):
     
     # 리스트를 문장으로 변환하여 저장
     tags_sentence = ' '.join(t for t in tags_list)
-    performances[i]['desc'] = tags_sentence
+    performance = {'performance_id': i, 'description': tags_sentence}
+    performances.append(performance)
+    print(i)
+
 
 dataframe = pd.DataFrame(performances)
-dataframe.to_csv('tag_list.csv', header=False, index=False, encoding='utf-8-sig')
-
+dataframe.to_csv('seasons_play_tag.csv', header=True, index=False, encoding='utf-8-sig')
 f.close()
