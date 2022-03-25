@@ -23,4 +23,10 @@ export default {
 .main_title {
   font-weight: bold;
 }
+
+.header {
+  padding-top: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
 </style>
