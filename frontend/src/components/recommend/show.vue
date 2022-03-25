@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: "show",
+  name: "Show",
   data() {
     return {
       cards: [

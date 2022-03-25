@@ -9,15 +9,15 @@
   </div>
 </template>
 <script>
-import Show from "@/components/recommend/show";
-import Actor from "@/components/recommend/actor";
-import RankingMusical from "@/components/show/rankingMusical";
-import RankingTheater from "@/components/show/rankingTheater";
-import RatingMusical from "@/components/show/ratingMusical";
-import RatingTheater from "@/components/show/ratingTheater";
+import Show from "@/components/recommend/Show";
+import Actor from "@/components/recommend/Actor";
+import RankingMusical from "@/components/show/RankingMusical";
+import RankingTheater from "@/components/show/RankingTheater";
+import RatingMusical from "@/components/show/RatingMusical";
+import RatingTheater from "@/components/show/RatingTheater";
 
 export default {
-  name: "components",
+  name: "Main",
   components: {
     Show,
     Actor,
