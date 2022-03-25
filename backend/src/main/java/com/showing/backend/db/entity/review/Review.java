@@ -3,15 +3,15 @@ package com.showing.backend.db.entity.review;
 import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.performance.Season;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "review")
 public class Review extends BaseTimeEntity {
 
@@ -32,5 +32,13 @@ public class Review extends BaseTimeEntity {
 
     @Column
     private String reviewContent;
+
+    @Builder
+    public Review(User user, Season season, LocalDateTime performanceDate, String reviewContent) {
+        this.user = user;
+        this.season = season;
+        this.performanceDate = performanceDate;
+        this.reviewContent = reviewContent;
+    }
 
 }
