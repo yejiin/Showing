@@ -1,6 +1,6 @@
 package com.showing.backend.db.entity.review;
 
-import com.showing.backend.db.entity.CreatedTimeEntity;
+import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.performance.Season;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "review")
-public class Review extends CreatedTimeEntity {
+public class Review extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

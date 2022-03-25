@@ -1,6 +1,8 @@
-package com.showing.backend.db.entity.review;
+package com.showing.backend.db.entity.recommend;
 
+import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
+import com.showing.backend.db.entity.performance.Performance;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +11,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "review_like")
-public class ReviewLike {
+@Table(name = "recommend")
+public class Recommend extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +22,6 @@ public class ReviewLike {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id")
-    private Review review;
-
-
+    @Column
+    private String peformanceIds;
 }
