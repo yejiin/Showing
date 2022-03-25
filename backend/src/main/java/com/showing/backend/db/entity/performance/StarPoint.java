@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "star_point")

@@ -26,5 +26,6 @@ public class ResponseMessage {
 
     //Rating
     public static final String ADD_RATING = "별점 등록 성공입니다.";
+    public static final String UPDATE_RATING = "별점 수정 성공입니다.";
     
 }

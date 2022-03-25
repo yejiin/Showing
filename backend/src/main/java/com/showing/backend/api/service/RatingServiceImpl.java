@@ -1,6 +1,7 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.AddRatingReq;
+import com.showing.backend.api.request.UpdateRatingReq;
 import com.showing.backend.common.exception.InvalidException;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.UserNotFoundException;
@@ -45,6 +46,21 @@ public class RatingServiceImpl implements RatingService {
                 .performance(performance)
                 .rating(rating)
                 .build();
+        starPointRepository.save(starPoint);
+    }
+
+    /*
+    별점 수정
+     */
+    @Override
+    public void updateRating(UpdateRatingReq req) {
+        User user = userRepository.findById(req.getUserId()).orElseThrow(UserNotFoundException::new);
+        StarPoint starPoint = starPointRepository.findById(req.getStarId()).orElseThrow(()->new NotFoundException(ErrorCode.RATING_NOT_FOUND));
+
+        int rating = req.getRating();
+        if(rating<=0||rating>10) throw new InvalidException(ErrorCode.RATING_INVALID_VALUE);
+
+        starPoint.setRating(req.getRating());
         starPointRepository.save(starPoint);
 
     }
