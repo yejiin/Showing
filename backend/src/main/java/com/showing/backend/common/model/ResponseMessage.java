@@ -23,5 +23,8 @@ public class ResponseMessage {
 
     // Review
     public static final String ADD_REVIEW = "리뷰 추가 성공";
+
+    //Rating
+    public static final String ADD_RATING = "별점 등록 성공입니다.";
     
 }
