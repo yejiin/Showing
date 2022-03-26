@@ -15,7 +15,6 @@ import com.showing.backend.db.repository.performance.SeasonRepository;
 import com.showing.backend.db.repository.review.ReviewActorRepository;
 import com.showing.backend.db.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,25 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewByUserPreviewRes> getReviewListByUserId(Long userId) {
-        return null;
+        List<Review> reviewList = reviewRepository.findByUserId(userId);
+        List<ReviewByUserPreviewRes> reviewPreviewList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+            Performance performance = review.getSeason().getPerformance();
+
+            ReviewByUserPreviewRes reviewPreview = ReviewByUserPreviewRes.builder()
+                                                                         .reviewId(review.getId())
+                                                                         .userId(userId)
+                                                                         .performanceId(performance.getId())
+                                                                         .performanceName(performance.getPerformanceName())
+                                                                         .performanceImage(performance.getPerformanceImage())
+                                                                         .reviewCreateDate(review.getCreateDate().toLocalDate())
+                                                                         .build();
+
+            reviewPreviewList.add(reviewPreview);
+        }
+
+        return reviewPreviewList;
     }
 
     @Override
