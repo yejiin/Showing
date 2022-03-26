@@ -14,6 +14,7 @@ public enum ErrorCode {
     // User
     REFRESH_TOKEN_INVALID(403,"U001","Refresh token is invalid"),
     USER_NOT_FOUND(404, "U002", "User Not Found"),
+    ACCESS_DENIED(404, "U003", "Access Denied"),
     // Review
     REVIEW_NOT_FOUND(404,"R001","Review Not Found");
 
