@@ -1,6 +1,6 @@
 package com.showing.backend.api.controller;
 
-import com.showing.backend.api.request.AddReviewReq;
+import com.showing.backend.api.request.ReviewReq;
 import com.showing.backend.api.service.ReviewService;
 import com.showing.backend.common.auth.JwtUtil;
 import com.showing.backend.common.exception.handler.ErrorResponse;
@@ -57,7 +57,7 @@ public class ReviewController {
             @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
     @PostMapping("/users/{userId}")
-    public ResponseEntity<BaseResponseBody> addReview(@PathVariable Long userId, @RequestBody AddReviewReq req) {
+    public ResponseEntity<BaseResponseBody> addReview(@PathVariable Long userId, @RequestBody ReviewReq req) {
         // userId 유효성 검사
         if (userId.equals(JwtUtil.getCurrentId()
                                  .orElse(-1L))) {

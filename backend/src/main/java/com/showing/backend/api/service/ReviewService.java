@@ -1,6 +1,6 @@
 package com.showing.backend.api.service;
 
-import com.showing.backend.api.request.AddReviewReq;
+import com.showing.backend.api.request.ReviewReq;
 import com.showing.backend.api.response.ReviewByUserPreviewRes;
 import com.showing.backend.api.response.ReviewDetailRes;
 
@@ -12,6 +12,6 @@ public interface ReviewService {
 
     ReviewDetailRes getReviewDetail(Long reviewId);
 
-    void addReview(Long userId, AddReviewReq req);
+    void addReview(Long userId, ReviewReq req);
 
 }

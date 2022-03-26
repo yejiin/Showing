@@ -9,10 +9,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@ApiModel("AddReviewReq")
+@ApiModel("ReviewReq")
 @Getter
 @Setter
-public class AddReviewReq {
+public class ReviewReq {
 
     @ApiModelProperty(name = "공연의 시즌 Id", example = "1")
     private Long seasonId;
