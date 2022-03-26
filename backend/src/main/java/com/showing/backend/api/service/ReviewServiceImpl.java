@@ -1,8 +1,7 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ReviewReq;
-import com.showing.backend.api.response.PreviewReviewByUserRes;
-import com.showing.backend.api.response.ReviewDetailRes;
+import com.showing.backend.api.response.*;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.db.entity.User;
@@ -35,12 +34,12 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<PreviewReviewByUserRes> getPreviewReviewListByUserId(Long userId) {
         List<Review> reviewList = reviewRepository.findByUserIdOrderByUpdateDateDesc(userId);
-        List<PreviewReviewByUserRes> reviewPreviewList = new ArrayList<>();
+        List<PreviewReviewByUserRes> previewReviewList = new ArrayList<>();
 
         for (Review review : reviewList) {
             Performance performance = review.getSeason().getPerformance();
 
-            PreviewReviewByUserRes reviewPreview = PreviewReviewByUserRes.builder()
+            PreviewReviewByUserRes previewReview = PreviewReviewByUserRes.builder()
                                                                          .reviewId(review.getId())
                                                                          .userId(userId)
                                                                          .performanceId(performance.getId())
@@ -49,10 +48,33 @@ public class ReviewServiceImpl implements ReviewService {
                                                                          .reviewCreateDate(review.getCreateDate().toLocalDate())
                                                                          .build();
 
-            reviewPreviewList.add(reviewPreview);
+            previewReviewList.add(previewReview);
         }
 
-        return reviewPreviewList;
+        return previewReviewList;
+    }
+
+    @Override
+    public List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId) {
+        // performanceId 에 해당하는 모든 시즌
+        List<Season> seasonList = seasonRepository.findAllByPerformanceId(performanceId);
+        // seasonList 시즌들의 모든 리뷰
+        List<Review> reviewList = reviewRepository.findBySeasonInOrderByUpdateDateDesc(seasonList);
+        List<PreviewReviewByPerformanceRes> previewReviewList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+            PreviewReviewByPerformanceRes previewReview
+                    = PreviewReviewByPerformanceRes.builder()
+                                                   .reviewId(review.getId())
+                                                   .userId(review.getUser().getId())
+                                                   .userName(review.getUser().getNickname())
+                                                   .content(review.getReviewContent())
+                                                   .build();
+
+            previewReviewList.add(previewReview);
+        }
+
+        return previewReviewList;
     }
 
     @Override
