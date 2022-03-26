@@ -4,15 +4,20 @@ import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.performance.Season;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "review")
-public class Review extends BaseTimeEntity {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +37,10 @@ public class Review extends BaseTimeEntity {
     @Column
     private String reviewContent;
 
-    @Builder
-    public Review(User user, Season season, LocalDateTime performanceDate, String reviewContent) {
-        this.user = user;
-        this.season = season;
-        this.performanceDate = performanceDate;
-        this.reviewContent = reviewContent;
-    }
+    @CreatedDate
+    private LocalDateTime createDate;
+
+    @LastModifiedDate
+    private LocalDateTime updateDate;
 
 }
