@@ -151,5 +151,13 @@ public class ReviewServiceImpl implements ReviewService {
         reviewActorRepository.saveAll(reviewActorList);
     }
 
+    @Override
+    public void deleteReview(Long reviewId) {
+        // 리뷰 내 캐스팅 배우 정보 삭제
+        reviewActorRepository.deleteAllByReviewId(reviewId);
+        // 리뷰 삭제
+        reviewRepository.deleteById(reviewId);
+    }
+
 }
 

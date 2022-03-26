@@ -86,4 +86,19 @@ public class ReviewController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED, MODIFY_REVIEW));
     }
 
+    @ApiOperation(value = "리뷰 삭제", notes = "리뷰를 삭제합니다.")
+    @ApiResponses({@ApiResponse(code = 200, message = DELETE_REVIEW),
+            @ApiResponse(code = 400, message = "Invalid Input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<BaseResponseBody> deleteReview(@PathVariable Long reviewId) {
+        // userId 유효성 검사
+        JwtUtil.getCurrentId().orElseThrow(() -> new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage()));
+
+        reviewService.deleteReview(reviewId);
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, DELETE_REVIEW));
+    }
+
 }

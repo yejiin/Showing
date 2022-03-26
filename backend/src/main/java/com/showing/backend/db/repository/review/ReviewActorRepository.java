@@ -14,4 +14,9 @@ public interface ReviewActorRepository extends JpaRepository<ReviewActor, Long> 
      */
     List<ReviewActor> findReviewActorsByReviewId(Long reviewId);
 
+    /**
+     * review_actor table 에서 reviewId 인 리뷰 내 캐스팅 정보를 모두 삭제한다.
+     */
+    void deleteAllByReviewId(Long reviewId);
+
 }
