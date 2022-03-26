@@ -17,4 +17,6 @@ public interface ReviewService {
 
     void modifyReview(Long reviewId, ReviewReq req);
 
+    void deleteReview(Long reviewId);
+
 }
