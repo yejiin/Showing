@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class ReviewByUserPreviewRes {
+public class PreviewReviewByUserRes {
 
     @ApiModelProperty(name = "리뷰 Id", example = "1")
     Long reviewId;
