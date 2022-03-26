@@ -12,6 +12,6 @@ public interface ReviewService {
 
     ReviewDetailRes getReviewDetail(Long reviewId);
 
-    void addReview(Long userId, ReviewReq req);
+    void addReview(ReviewReq req);
 
 }

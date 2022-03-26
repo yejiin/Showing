@@ -14,6 +14,9 @@ import java.util.List;
 @Setter
 public class ReviewReq {
 
+    @ApiModelProperty(name = "리뷰 작성자 Id", example = "1")
+    private Long userId;
+
     @ApiModelProperty(name = "공연의 시즌 Id", example = "1")
     private Long seasonId;
 

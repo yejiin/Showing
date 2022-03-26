@@ -3,6 +3,7 @@ package com.showing.backend.api.controller;
 import com.showing.backend.api.request.ReviewReq;
 import com.showing.backend.api.service.ReviewService;
 import com.showing.backend.common.auth.JwtUtil;
+import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.common.exception.handler.ErrorResponse;
 import com.showing.backend.common.model.BaseResponseBody;
 import io.swagger.annotations.*;
@@ -56,15 +57,15 @@ public class ReviewController {
             @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
-    @PostMapping("/users/{userId}")
-    public ResponseEntity<BaseResponseBody> addReview(@PathVariable Long userId, @RequestBody ReviewReq req) {
+    @PostMapping("")
+    public ResponseEntity<BaseResponseBody> addReview(@RequestBody ReviewReq req) {
         // userId 유효성 검사
-        if (userId.equals(JwtUtil.getCurrentId()
-                                 .orElse(-1L))) {
-            throw new AccessDeniedException("Access denied");
+        Long userId = req.getUserId();
+        if (userId == null || userId.equals(JwtUtil.getCurrentId().orElse(-1L))) {
+            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 
-        reviewService.addReview(userId, req);
+        reviewService.addReview(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED, ADD_REVIEW));
     }
 
