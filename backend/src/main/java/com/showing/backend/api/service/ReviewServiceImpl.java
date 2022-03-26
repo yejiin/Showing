@@ -1,6 +1,6 @@
 package com.showing.backend.api.service;
 
-import com.showing.backend.api.request.AddReviewReq;
+import com.showing.backend.api.request.ReviewReq;
 import com.showing.backend.api.response.ReviewByUserPreviewRes;
 import com.showing.backend.api.response.ReviewDetailRes;
 import com.showing.backend.common.exception.NotFoundException;
@@ -90,7 +90,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void addReview(Long userId, AddReviewReq req) {
+    public void addReview(Long userId, ReviewReq req) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
 
