@@ -1,14 +1,15 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ReviewReq;
-import com.showing.backend.api.response.PreviewReviewByUserRes;
-import com.showing.backend.api.response.ReviewDetailRes;
+import com.showing.backend.api.response.*;
 
 import java.util.List;
 
 public interface ReviewService {
 
     List<PreviewReviewByUserRes> getPreviewReviewListByUserId(Long userId);
+
+    List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId);
 
     ReviewDetailRes getReviewDetail(Long reviewId);
 
