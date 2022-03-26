@@ -3,6 +3,7 @@ package com.showing.backend.api.service;
 import com.showing.backend.api.request.ReviewReq;
 import com.showing.backend.api.response.ReviewByUserPreviewRes;
 import com.showing.backend.api.response.ReviewDetailRes;
+import com.showing.backend.db.entity.review.Review;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ public interface ReviewService {
     ReviewDetailRes getReviewDetail(Long reviewId);
 
     void addReview(ReviewReq req);
+
+    void modifyReview(Long reviewId, ReviewReq req);
 
 }

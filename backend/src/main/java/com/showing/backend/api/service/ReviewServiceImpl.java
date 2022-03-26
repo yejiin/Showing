@@ -15,9 +15,11 @@ import com.showing.backend.db.repository.performance.SeasonRepository;
 import com.showing.backend.db.repository.review.ReviewActorRepository;
 import com.showing.backend.db.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +82,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                          .endDate(season.getEndDate())
                                                          .viewDate(review.getPerformanceDate().toLocalDate())
                                                          .viewTime(review.getPerformanceDate().toLocalTime())
-                                                         .location(season.getLocation())
-                                                         .reviewActorNameList(reviewActorNameList)
+                                                         .location(season.getLocation()).reviewActorNameList(reviewActorNameList)
                                                          .content(review.getReviewContent())
                                                          .reviewCreateDate(review.getCreateDate())
                                                          .build();
@@ -91,11 +92,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void addReview(ReviewReq req) {
-        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
-        Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
-
         List<Long> castingIdList = req.getCastingIdList();
         List<ReviewActor> reviewActorList = new ArrayList<>();
+
+        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
 
         Review review = Review.builder()
                               .user(user)
@@ -111,6 +112,42 @@ public class ReviewServiceImpl implements ReviewService {
             reviewActorList.add(reviewActor);
         }
 
+        reviewActorRepository.saveAll(reviewActorList);
+    }
+
+    @Override
+    public void modifyReview(Long reviewId, ReviewReq req) {
+        List<Long> castingIdList = req.getCastingIdList();
+        List<ReviewActor> reviewActorList;
+
+        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
+
+        // 기존에 작성된 리뷰 정보
+        Review originReview = reviewRepository.getById(reviewId);
+        // 수정할 리뷰 정보
+        Review modifiedReview = Review.builder()
+                                      .id(reviewId)
+                                      .user(user)
+                                      .season(season)
+                                      .performanceDate(req.getShowDate().atTime(req.getShowTime()))
+                                      .reviewContent(req.getReviewContent())
+                                      .createDate(originReview.getCreateDate())
+                                      .updateDate(LocalDateTime.now())
+                                      .build();
+        reviewRepository.save(modifiedReview);
+
+        // 기존에 작성되어있던 캐스팅 배우 정보 삭제
+        reviewActorList = reviewActorRepository.findReviewActorsByReviewId(reviewId);
+        reviewActorRepository.deleteAll(reviewActorList);
+
+        // 새로 작성된 캐스팅 배우 정보 추가
+        reviewActorList = new ArrayList<>();
+        for (Long castingId : castingIdList) {
+            Casting casting = castingRepository.findById(castingId).orElseThrow(() -> new NotFoundException(ErrorCode.CASTING_NOT_FOUND));
+            ReviewActor reviewActor = new ReviewActor(modifiedReview, casting);
+            reviewActorList.add(reviewActor);
+        }
         reviewActorRepository.saveAll(reviewActorList);
     }
 
