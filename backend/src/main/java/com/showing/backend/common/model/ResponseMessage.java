@@ -17,5 +17,6 @@ public class ResponseMessage {
 
     // Review
     public static final String ADD_REVIEW = "리뷰 추가 성공";
-    
+    public static final String GET_REVIEW = "리뷰 조회 성공";
+
 }
