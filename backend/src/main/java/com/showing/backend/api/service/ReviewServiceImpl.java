@@ -55,6 +55,43 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<ReviewByUserRes> getReviewListByUserId(Long userId) {
+        // userId 가 작성한 모든 리뷰 목록
+        List<Review> reviewList = reviewRepository.findByUserIdOrderByUpdateDateDesc(userId);
+        List<ReviewByUserRes> reviewResList = new ArrayList<>();
+        List<ReviewActor> reviewActorList;
+        List<String> reviewActorNameList;
+
+        // 리뷰별로 반복
+        for (Review review : reviewList) {
+            // 리뷰 id로 리뷰에 작성되어있는 캐스팅 정보를 조회한다.
+            reviewActorList = reviewActorRepository.findReviewActorsByReviewId(review.getId());
+
+            // 리뷰에 작성되어있는 캐스팅 정보에서 배우 이름을 추출한다.
+            reviewActorNameList = new ArrayList<>();
+            for (ReviewActor reviewActor : reviewActorList) {
+                reviewActorNameList.add(reviewActor.getCasting().getActor().getActorName());
+            }
+
+            Performance performance = review.getSeason().getPerformance();
+            ReviewByUserRes reviewRes = ReviewByUserRes.builder()
+                                                       .reviewId(review.getId())
+                                                       .userId(userId)
+                                                       .userName(review.getUser().getNickname())
+                                                       .performanceId(performance.getId())
+                                                       .performanceName(performance.getPerformanceName())
+                                                       .reviewActorNameList(reviewActorNameList)
+                                                       .content(review.getReviewContent())
+                                                       .reviewCreateDate(review.getCreateDate().toLocalDate())
+                                                       .build();
+
+            reviewResList.add(reviewRes);
+        }
+
+        return reviewResList;
+    }
+
+    @Override
     public List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId) {
         // performanceId 에 해당하는 모든 시즌
         List<Season> seasonList = seasonRepository.findAllByPerformanceId(performanceId);
