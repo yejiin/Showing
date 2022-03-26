@@ -115,6 +115,45 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<ReviewBySeasonRes> getReviewListBySeasonId(Long seasonId) {
+        List<Review> reviewList = reviewRepository.findAllBySeasonIdOrderByUpdateDateDesc(seasonId);
+        List<ReviewBySeasonRes> reviewResList = new ArrayList<>();
+        List<ReviewActor> reviewActorList;
+        List<String> reviewActorNameList;
+
+        for (Review review : reviewList) {
+            // 작성한 리뷰 내 캐스팅 배우 목록
+            reviewActorList = reviewActorRepository.findReviewActorsByReviewId(review.getId());
+            // 작성한 리뷰 내 캐스팅 배우 이름 목록
+            reviewActorNameList = new ArrayList<>();
+            for (ReviewActor reviewActor : reviewActorList) {
+                reviewActorNameList.add(reviewActor.getCasting().getActor().getActorName());
+            }
+
+            // 리뷰 작성자
+            User user = review.getUser();
+            // 리뷰를 작성한 시즌의 공연
+            Performance performance = review.getSeason().getPerformance();
+
+            ReviewBySeasonRes reviewRes = ReviewBySeasonRes.builder()
+                                                           .reviewId(review.getId())
+                                                           .userId(user.getId())
+                                                           .userName(user.getNickname())
+                                                           .userImage(user.getUserImage())
+                                                           .performanceId(performance.getId())
+                                                           .performanceName(performance.getPerformanceName())
+                                                           .content(review.getReviewContent())
+                                                           .castingActorNameList(reviewActorNameList)
+                                                           .reviewCreateDate(review.getCreateDate().toLocalDate())
+                                                           .build();
+
+            reviewResList.add(reviewRes);
+        }
+
+        return reviewResList;
+    }
+
+    @Override
     public ReviewDetailRes getReviewDetail(Long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
         Season season = review.getSeason();
