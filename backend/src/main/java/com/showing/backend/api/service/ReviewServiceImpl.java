@@ -1,7 +1,7 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ReviewReq;
-import com.showing.backend.api.response.ReviewByUserPreviewRes;
+import com.showing.backend.api.response.PreviewReviewByUserRes;
 import com.showing.backend.api.response.ReviewDetailRes;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
@@ -15,7 +15,6 @@ import com.showing.backend.db.repository.performance.SeasonRepository;
 import com.showing.backend.db.repository.review.ReviewActorRepository;
 import com.showing.backend.db.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,14 +33,14 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewActorRepository reviewActorRepository;
 
     @Override
-    public List<ReviewByUserPreviewRes> getReviewListByUserId(Long userId) {
-        List<Review> reviewList = reviewRepository.findByUserId(userId);
-        List<ReviewByUserPreviewRes> reviewPreviewList = new ArrayList<>();
+    public List<PreviewReviewByUserRes> getPreviewReviewListByUserId(Long userId) {
+        List<Review> reviewList = reviewRepository.findByUserIdOrderByUpdateDateDesc(userId);
+        List<PreviewReviewByUserRes> reviewPreviewList = new ArrayList<>();
 
         for (Review review : reviewList) {
             Performance performance = review.getSeason().getPerformance();
 
-            ReviewByUserPreviewRes reviewPreview = ReviewByUserPreviewRes.builder()
+            PreviewReviewByUserRes reviewPreview = PreviewReviewByUserRes.builder()
                                                                          .reviewId(review.getId())
                                                                          .userId(userId)
                                                                          .performanceId(performance.getId())
