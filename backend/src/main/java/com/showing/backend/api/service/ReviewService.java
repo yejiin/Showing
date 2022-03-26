@@ -9,6 +9,8 @@ public interface ReviewService {
 
     List<PreviewReviewByUserRes> getPreviewReviewListByUserId(Long userId);
 
+    List<ReviewByUserRes> getReviewListByUserId(Long userId);
+
     List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId);
 
     ReviewDetailRes getReviewDetail(Long reviewId);
