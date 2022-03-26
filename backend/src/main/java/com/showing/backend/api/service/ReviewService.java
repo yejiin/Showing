@@ -13,6 +13,8 @@ public interface ReviewService {
 
     List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId);
 
+    List<ReviewBySeasonRes> getReviewListBySeasonId(Long seasonId);
+
     ReviewDetailRes getReviewDetail(Long reviewId);
 
     void addReview(ReviewReq req);

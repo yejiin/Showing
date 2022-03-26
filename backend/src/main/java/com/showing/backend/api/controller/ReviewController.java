@@ -55,7 +55,7 @@ public class ReviewController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_REVIEW, reviewService.getReviewListByUserId(userId)));
     }
 
-    @ApiOperation(value = "공연별 리뷰 미리보기 조회", notes = "공연별로 리뷰 미리보기 목록을 최신순으로 조회합니다.")
+    @ApiOperation(value = "공연별 리뷰 미리보기 조회", notes = "공연별로 리뷰 미리보기 목록을 수정 최신순으로 조회합니다.")
     @ApiResponses({@ApiResponse(code = 200, message = GET_REVIEW),
             @ApiResponse(code = 400, message = "Invalid Input 오류", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
@@ -64,6 +64,17 @@ public class ReviewController {
     @GetMapping("/performances/{performanceId}")
     public ResponseEntity<BaseResponseBody> ListPreviewReviewByPerformance(@PathVariable Long performanceId) {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_REVIEW, reviewService.getPreviewReviewListByPerformanceId(performanceId)));
+    }
+
+    @ApiOperation(value = "공연 시즌별 리뷰 전체 목록 조회", notes = "공연 시즌별로 리뷰 전체 목록을 수정 최신순으로 조회합니다.")
+    @ApiResponses({@ApiResponse(code = 200, message = GET_REVIEW),
+            @ApiResponse(code = 400, message = "Invalid Input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
+    @GetMapping("/seasons/{seasonId}")
+    public ResponseEntity<BaseResponseBody> ListReviewBySeason(@PathVariable Long seasonId) {
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_REVIEW, reviewService.getReviewListBySeasonId(seasonId)));
     }
 
     @ApiOperation(value = "리뷰 상세 조회", notes = "리뷰 상세 정보를 조회합니다.")

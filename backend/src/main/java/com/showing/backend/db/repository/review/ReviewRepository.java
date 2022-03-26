@@ -16,6 +16,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByUserIdOrderByUpdateDateDesc(Long userId);
 
     /**
+     * review table 에서 seasonId 시즌의 모든 리뷰를 수정 최신순으로 조회한다.
+     */
+    List<Review> findAllBySeasonIdOrderByUpdateDateDesc(Long seasonId);
+
+    /**
      * review table 에서 seasonList 에 포함된 시즌의 모든 리뷰를 수정 최신순으로 조회한다.
      */
     List<Review> findBySeasonInOrderByUpdateDateDesc(List<Season> seasonList);
