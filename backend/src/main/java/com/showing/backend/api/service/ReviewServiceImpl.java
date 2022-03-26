@@ -90,14 +90,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void addReview(Long userId, ReviewReq req) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    public void addReview(ReviewReq req) {
+        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
 
         List<Long> castingIdList = req.getCastingIdList();
         List<ReviewActor> reviewActorList = new ArrayList<>();
 
-        Review review = Review.builder().user(user).season(season).performanceDate(req.getShowDate().atTime(req.getShowTime()))
+        Review review = Review.builder()
+                              .user(user)
+                              .season(season)
+                              .performanceDate(req.getShowDate().atTime(req.getShowTime()))
                               .reviewContent(req.getReviewContent())
                               .build();
         reviewRepository.save(review);
