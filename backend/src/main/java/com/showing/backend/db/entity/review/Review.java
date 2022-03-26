@@ -6,7 +6,6 @@ import com.showing.backend.db.entity.performance.Season;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
