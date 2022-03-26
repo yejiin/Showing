@@ -20,7 +20,7 @@ public class AddReviewReq {
     @ApiModelProperty(name = "공연을 관람한 날짜", example = "2022-03-24")
     private LocalDate showDate;
 
-    @ApiModelProperty(name = "관람한 공연의 시작 시각", example = "16:00")
+    @ApiModelProperty(name = "관람한 공연의 시작 시각", example = "16:30:00")
     private LocalTime showTime;
 
     @ApiModelProperty(name = "리뷰 내용", example = "리뷰입니다.")
