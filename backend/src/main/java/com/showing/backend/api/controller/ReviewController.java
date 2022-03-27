@@ -132,9 +132,6 @@ public class ReviewController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<BaseResponseBody> deleteReview(@PathVariable Long reviewId) {
-        // userId 유효성 검사
-        JwtUtil.getCurrentId().orElseThrow(() -> new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage()));
-
         reviewService.deleteReview(reviewId);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, DELETE_REVIEW));
     }
