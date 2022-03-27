@@ -11,12 +11,18 @@ public enum ErrorCode {
     // Show
     SEASON_NOT_FOUND(404, "S001", "Season Not Found"),
     CASTING_NOT_FOUND(404, "S002", "Casting Not Found"),
+    PERFORMANCE_NOT_FOUND(404,"S003", "Performance Not Found"),
     // User
     REFRESH_TOKEN_INVALID(403,"U001","Refresh token is invalid"),
     USER_NOT_FOUND(404, "U002", "User Not Found"),
-    ACCESS_DENIED(404, "U003", "Access Denied"),
+    ACCESS_DENIED(403, "U003", "Access Denied"),
+    // Rating
+    RATING_INVALID_VALUE(400,"R001","Invalid Rating Value"),
+    RATING_DUPLICATE_VALUE(400,"R002","Already Rated Performance"),
+    RATING_NOT_FOUND(404,"R003","Rating Not Found"),
     // Review
     REVIEW_NOT_FOUND(404,"R001","Review Not Found");
+
 
     private int status;
     private final String code;

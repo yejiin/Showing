@@ -2,14 +2,14 @@ package com.showing.backend.db.entity.performance;
 
 import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "star_point")
 public class StarPoint extends BaseTimeEntity {
 
@@ -27,4 +27,12 @@ public class StarPoint extends BaseTimeEntity {
 
     @Column
     private int rating;
+
+    @Builder
+    public StarPoint(Long id, User user, Performance performance, int rating) {
+        this.id = id;
+        this.user = user;
+        this.performance = performance;
+        this.rating = rating;
+    }
 }
