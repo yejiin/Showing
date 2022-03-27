@@ -1,10 +1,12 @@
 package com.showing.backend.api.controller;
 
+import com.showing.backend.api.request.ModifyUserInfoReq;
 import com.showing.backend.api.response.LoginRes;
 import com.showing.backend.api.response.TokenRes;
 import com.showing.backend.api.service.AuthService;
 import com.showing.backend.api.service.UserService;
 import com.showing.backend.common.auth.JwtTokenProvider;
+import com.showing.backend.common.auth.JwtUtil;
 import com.showing.backend.common.exception.InvalidException;
 import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.common.exception.handler.ErrorResponse;
@@ -20,7 +22,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 import static com.showing.backend.common.model.ResponseMessage.*;
 
@@ -112,9 +117,9 @@ public class UserController {
             @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
             @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
-    @GetMapping(value = "/logout/{id}")
-    public ResponseEntity<BaseResponseBody> logout(@PathVariable Long id) {
-        userService.logout(id);
+    @GetMapping(value = "/logout/{userId}")
+    public ResponseEntity<BaseResponseBody> logout(@PathVariable Long userId) {
+        userService.logout(userId);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK,LOGOUT));
     }
 
@@ -125,11 +130,30 @@ public class UserController {
             @ApiResponse(code = 403, message = INVALID_TOKEN, response = ErrorResponse.class),
             @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
     })
-    @PostMapping(value = "/refresh/{id}")
-    public ResponseEntity<BaseResponseBody> refreshToken(@PathVariable Long id, @RequestParam String refreshToken){
+    @PostMapping(value = "/refresh/{userId}")
+    public ResponseEntity<BaseResponseBody> refreshToken(@PathVariable Long userId, @RequestParam String refreshToken){
         if(!tokenProvider.validateToken(refreshToken))
             throw new InvalidException(ErrorCode.REFRESH_TOKEN_INVALID);
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED,REFRESH_TOKEN,userService.refreshAccessToken(userId,refreshToken)));
+    }
+
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED,REFRESH_TOKEN,userService.refreshAccessToken(id,refreshToken)));
     }
 
+    @ApiOperation(value = "유저 정보 수정", notes = "마이페이지에서 해당 유저의 정보를 수정하는 api입니다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = MODIFY_USER_INFO, response = TokenRes.class),
+            @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
+            @ApiResponse(code = 403, message = INVALID_TOKEN, response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
+    })
+    @PutMapping(value = "")
+    public ResponseEntity<BaseResponseBody> modifyUserInfo(@RequestBody ModifyUserInfoReq req) {
+        // userId 유효성 체크
+        Long userId = req.getUserId();
+        if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
+            throw new AccessDeniedException("Access denied");
+        userService.modifyUserInfo(req);
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK,MODIFY_USER_INFO));
+    }
 }
