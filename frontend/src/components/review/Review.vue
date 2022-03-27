@@ -130,4 +130,7 @@ div.right {
 .backArrow:not(:disabled):not(.disabled) {
     cursor: pointer;
 }
+label, h3 {
+  font-weight: bold;
+}
 </style>
