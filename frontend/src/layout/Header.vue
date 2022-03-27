@@ -39,7 +39,7 @@ export default {
 }
 .logo_position {
   margin-left: 5% !important;
-  margin-right: 60%;
+  margin-right: 55%;
 }
 .custnavi {
   border-bottom: solid 0.5px #e5e8eb;
