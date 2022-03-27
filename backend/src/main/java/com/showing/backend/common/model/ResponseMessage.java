@@ -29,7 +29,7 @@ public class ResponseMessage {
 
     // Rating
     public static final String ADD_RATING = "별점 등록 성공";
-    public static final String UPDATE_RATING = "별점 수정 성공";
+    public static final String MODIFY_RATING = "별점 수정 성공";
     public static final String DELETE_RATING = "별점 삭제 성공";
 
     // Performance
