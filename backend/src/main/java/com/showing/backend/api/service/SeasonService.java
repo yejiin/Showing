@@ -8,5 +8,6 @@ import java.util.List;
 public interface SeasonService {
 
     List<SeasonDateRes> getSeasonList(Long performanceId);
+
     SeasonRes getSeasonInfo(Long seasonId);
 }
