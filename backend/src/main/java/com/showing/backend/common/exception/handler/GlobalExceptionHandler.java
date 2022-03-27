@@ -1,6 +1,7 @@
 package com.showing.backend.common.exception.handler;
 
 import com.showing.backend.common.exception.BusinessException;
+import com.showing.backend.common.exception.InvalidException;
 import com.showing.backend.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,15 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> notFoundException(NotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
+    }
+
+    /**
+     * Value Invalid Exception 처리
+     */
+    @ExceptionHandler(InvalidException.class)
+    public ResponseEntity<ErrorResponse> invalidException(InvalidException e) {
         ErrorCode errorCode = e.getErrorCode();
         return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
     }
