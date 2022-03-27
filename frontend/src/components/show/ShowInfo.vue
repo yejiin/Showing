@@ -1,12 +1,23 @@
 <template>
   <div>
     <b-card>
-      <!-- <h5 class="main_title">공연정보</h5> -->
-      <b-dropdown variant="secondary" id="dropdown-1" text="공연정보" class="m-md-0">
-        <b-dropdown-item>시즌3</b-dropdown-item>
-        <b-dropdown-item>시즌2</b-dropdown-item>
-        <b-dropdown-item>시즌1</b-dropdown-item>
-      </b-dropdown>
+      <div class="dropdown">
+        <button
+          class="btn p-0 btn-white dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          공연정보
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item">시즌3</a>
+          <a class="dropdown-item">시즌2</a>
+          <a class="dropdown-item">시즌1</a>
+        </div>
+      </div>
       <br />
       <br />
       <span class="badge badge-pill badge-warning">15세 이상 관람가</span>
@@ -43,12 +54,18 @@ export default {
   float: right;
 }
 
-.btn-secondary {
+.btn-white {
   color: #212529;
-  background-color: white !important;
-  border-color: white !important;
-  -webkit-box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
-  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+  background-color: #fff;
+  border-color: #fff;
+  -webkit-box-shadow: 0 0px 0px, 0 0px 0px;
+  box-shadow: 0 0px 0px, 0 0px 0px;
+  font-size: 20px;
+}
+
+.btn-white:hover {
+  -webkit-box-shadow: 0 0px 0px, 0 0px 0px;
+  box-shadow: 0 0px 0px, 0 0px 0px;
 }
 
 .location {
