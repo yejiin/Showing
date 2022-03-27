@@ -17,7 +17,11 @@ public class ResponseMessage {
 
     // Review
     public static final String ADD_REVIEW = "리뷰 추가 성공";
+    public static final String GET_REVIEW = "리뷰 조회 성공";
+    public static final String MODIFY_REVIEW = "리뷰 수정 성공";
+    public static final String DELETE_REVIEW = "리뷰 삭제 성공";
 
     // Performance
     public static final String GET_SEASON = "시즌 정보 조회 성공";
+
 }
