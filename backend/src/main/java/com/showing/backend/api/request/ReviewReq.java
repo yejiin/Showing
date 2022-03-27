@@ -9,10 +9,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@ApiModel("AddReviewReq")
+@ApiModel("ReviewReq")
 @Getter
 @Setter
-public class AddReviewReq {
+public class ReviewReq {
+
+    @ApiModelProperty(name = "리뷰 작성자 Id", example = "1")
+    private Long userId;
 
     @ApiModelProperty(name = "공연의 시즌 Id", example = "1")
     private Long seasonId;
@@ -20,7 +23,7 @@ public class AddReviewReq {
     @ApiModelProperty(name = "공연을 관람한 날짜", example = "2022-03-24")
     private LocalDate showDate;
 
-    @ApiModelProperty(name = "관람한 공연의 시작 시각", example = "16:00")
+    @ApiModelProperty(name = "관람한 공연의 시작 시각", example = "16:30:00")
     private LocalTime showTime;
 
     @ApiModelProperty(name = "리뷰 내용", example = "리뷰입니다.")

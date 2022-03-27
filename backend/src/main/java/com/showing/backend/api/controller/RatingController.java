@@ -39,7 +39,7 @@ public class RatingController {
     public ResponseEntity<BaseResponseBody> addRating(@RequestBody AddRatingReq req) {
         // userId 유효성 체크
         if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
-            throw new InvalidException(ErrorCode.NOT_ALLOWED_APPROACH);
+            throw new InvalidException(ErrorCode.ACCESS_DENIED);
         ratingService.addRating(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED, ADD_RATING));
     }
@@ -54,7 +54,7 @@ public class RatingController {
     public ResponseEntity<BaseResponseBody> updateRating(@RequestBody UpdateRatingReq req) {
         // userId 유효성 체크
         if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
-            throw new InvalidException(ErrorCode.NOT_ALLOWED_APPROACH);
+            throw new InvalidException(ErrorCode.ACCESS_DENIED);
         ratingService.updateRating(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, UPDATE_RATING));
     }

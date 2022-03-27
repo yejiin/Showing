@@ -4,7 +4,6 @@ import com.showing.backend.api.request.AddRatingReq;
 import com.showing.backend.api.request.UpdateRatingReq;
 import com.showing.backend.common.exception.InvalidException;
 import com.showing.backend.common.exception.NotFoundException;
-import com.showing.backend.common.exception.UserNotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.performance.Performance;
@@ -30,7 +29,7 @@ public class RatingServiceImpl implements RatingService {
      */
     @Override
     public void addRating(AddRatingReq req) {
-        User user = userRepository.findById(req.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(req.getUserId()).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
         Performance performance = performanceRepository.findById(req.getPerformanceId()).orElseThrow(()->new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
 
         // 해당 유저의 공연 평점이 이미 존재하면 exception
