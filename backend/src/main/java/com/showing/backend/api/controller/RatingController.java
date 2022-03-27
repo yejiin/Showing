@@ -50,7 +50,7 @@ public class RatingController {
             @ApiResponse(code = 403, message = FORBIDDEN, response = ErrorResponse.class),
             @ApiResponse(code = 404, message = NOT_FOUND, response = ErrorResponse.class),
             @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)})
-    @PutMapping(value = "/")
+    @PutMapping(value = "")
     public ResponseEntity<BaseResponseBody> modifyRating(@RequestBody ModifyRatingReq req) {
         // userId 유효성 체크
         if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
