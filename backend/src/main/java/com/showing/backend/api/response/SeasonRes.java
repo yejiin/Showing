@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @ApiModel("SeasonResponse")
@@ -21,10 +21,10 @@ public class SeasonRes {
     String seasonImage;
 
     @ApiModelProperty(name = "공연 시작일시", example = "2022-3-24")
-    LocalDateTime startDate;
+    LocalDate startDate;
 
     @ApiModelProperty(name = "공연 종료일시", example = "2022-4-8")
-    LocalDateTime endDate;
+    LocalDate endDate;
 
     @ApiModelProperty(name = "장소", example = "세종문화회관 대극장")
     String location;
