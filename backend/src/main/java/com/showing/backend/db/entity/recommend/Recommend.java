@@ -19,9 +19,10 @@ public class Recommend extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "performance_id")
+    private Performance performance;
 
-    @Column
-    private String peformanceIds;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recommend_performance_id")
+    private Performance recPerformance;
 }
