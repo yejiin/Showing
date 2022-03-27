@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'season',
     'tag',
     'casting',
-    'recommend',
-    'api',
+    'recommend'
 ]
 
 MIDDLEWARE = [
