@@ -1,7 +1,7 @@
 package com.showing.backend.api.controller;
 
 import com.showing.backend.api.request.AddRatingReq;
-import com.showing.backend.api.request.UpdateRatingReq;
+import com.showing.backend.api.request.ModifyRatingReq;
 import com.showing.backend.api.service.RatingService;
 import com.showing.backend.common.auth.JwtUtil;
 import com.showing.backend.common.exception.InvalidException;
@@ -51,11 +51,11 @@ public class RatingController {
             @ApiResponse(code = 404, message = NOT_FOUND, response = ErrorResponse.class),
             @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)})
     @PutMapping(value = "/")
-    public ResponseEntity<BaseResponseBody> modifyRating(@RequestBody UpdateRatingReq req) {
+    public ResponseEntity<BaseResponseBody> modifyRating(@RequestBody ModifyRatingReq req) {
         // userId 유효성 체크
         if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
             throw new InvalidException(ErrorCode.ACCESS_DENIED);
-        ratingService.updateRating(req);
+        ratingService.modifyRating(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, MODIFY_RATING));
     }
 
@@ -66,7 +66,7 @@ public class RatingController {
             @ApiResponse(code = 404, message = NOT_FOUND, response = ErrorResponse.class),
             @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)})
     @DeleteMapping(value = "/{starId}")
-    public ResponseEntity<BaseResponseBody> modifyRating(@PathVariable Long starId) {
+    public ResponseEntity<BaseResponseBody> deleteRating(@PathVariable Long starId) {
         ratingService.deleteRating(starId);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, DELETE_RATING));
     }
