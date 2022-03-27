@@ -15,6 +15,4 @@ public interface SeasonRepository extends JpaRepository<Season, Long> {
      */
     List<Season> findByPerformanceId(Long performanceId);
 
-    List<Season> findAllByPerformanceId(Long performanceId);
-
 }
