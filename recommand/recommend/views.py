@@ -32,10 +32,10 @@ class PerformanceSimilarity(APIView):
         tags_sim_sort_ind = content_based_tag(seasons)
         actors_sim_sort_ind = content_based_actor(seasons)
 
-        performances = Performance.objects.values('id')
+        performances = Performance.objects.values('id').order_by('id')
 
         for id in performances:
-            content_based_recommend(id, tags_sim_sort_ind, actors_sim_sort_ind)
+            content_based_recommend(id['id'], tags_sim_sort_ind, actors_sim_sort_ind)
 
         return Response()
 
@@ -71,7 +71,6 @@ def create_tag(seasons):
                     tag_list.append(word)
 
         tag_sentence = ' '.join(t for t in tag_list)
-        performance = {'performance_id': id, 'description': tag_sentence}
         performances_id.append(id)
         descriptions.append(tag_sentence)
 
@@ -88,27 +87,26 @@ def create_tag(seasons):
     tfidf = tf * idf
     tfidf = tfidf / np.linalg.norm(tfidf, axis=1, keepdims=True)
 
-    # print(tfidf)
-
     # 태그 - 가중치 생성,
     tag_weight = {}
     for id in performances_id:
         val_list = tfidf.loc[id].sort_values(ascending=False).head(15).to_dict()
         tag_weight[id] = val_list
 
-        # DB 저장
-        for t in val_list:
-            performance = Performance.objects.get(pk=id)
+        # # DB 저장
+        # for t in val_list:
+        #     performance = Performance.objects.get(pk=id)
 
-            tag = Tag()
-            tag.performance = performance
-            tag.tag_name = t
-            tag.weight = val_list[t]
-            tag.save()
+            # tag = Tag()
+            # tag.performance = performance
+            # tag.tag_name = t
+            # tag.weight = val_list[t]
+            # tag.save()
 
     return performances_id, tag_weight
 
 
+# 태그 기반 유사도
 def content_based_tag(seasons):
     performances_id, tag_weight = create_tag(seasons)
     # print(tag_weight)
@@ -131,6 +129,7 @@ def content_based_tag(seasons):
     return tags_sim_sort_ind
 
 
+# 배우 기반 유사도
 def content_based_actor(seasons):
     performances = Performance.objects.values('id', 'last_season_id')
     performances_df = pd.DataFrame(performances)
@@ -188,11 +187,11 @@ def content_based_actor(seasons):
     return actors_sim_sort_ind
 
 
-def find_recommend(pid, tags_sim_sort_ind, actors_sim_sort_ind):
+def content_based_recommend(pid, tags_sim_sort_ind, actors_sim_sort_ind):
 
     # 함수 호출
-    p = find_sim_performance_by_tag(tags_sim_sort_ind, pid)
-    pa = find_sim_performance_by_tag(actors_sim_sort_ind, pid)
+    p = find_sim_performance(tags_sim_sort_ind, pid)
+    pa = find_sim_performance(actors_sim_sort_ind, pid)
     # print(p)
     # print(pa)
     performance = Performance.objects.get(pk=pid)
@@ -216,9 +215,9 @@ def find_recommend(pid, tags_sim_sort_ind, actors_sim_sort_ind):
     # 특정 공연과 유사도가 높은 공연 top_n개 리턴
 
 
-def find_sim_performance_by_tag(sorted_ind, pid, top_n=30):
-
-    # print(sorted_ind)
+def find_sim_performance(sorted_ind, pid, top_n=15):
+    print(pid)
+    print(sorted_ind)
     if pid not in sorted_ind[0]:
         return
 
@@ -242,8 +241,3 @@ def find_sim_performance_by_tag(sorted_ind, pid, top_n=30):
 
     # DataFrame 으로 바꿔서 리턴
     return similar_indexes_id.tolist()
-
-
-# 전체 호출 함수 : pid 는 list
-def content_based_recommend(pid_list, tags_sim_sort_ind, actors_sim_sort_ind):
-    find_recommend(pid_list, tags_sim_sort_ind, actors_sim_sort_ind)
