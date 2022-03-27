@@ -1,6 +1,9 @@
 package com.showing.backend.api.service;
 
+import com.showing.backend.api.request.ModifyUserInfoReq;
+import com.showing.backend.api.response.MyPageRes;
 import com.showing.backend.api.response.TokenRes;
+import com.showing.backend.api.response.UserInfoRes;
 import com.showing.backend.common.model.KakaoProfile;
 import com.showing.backend.common.model.NaverProfile;
 import com.showing.backend.common.model.RoleType;
@@ -28,5 +31,9 @@ public interface UserService {
     TokenRes refreshAccessToken(Long id, String refreshToken);
 
     void logout(Long id);
+
+    MyPageRes getMyPageInfo(Long id);
+
+    void modifyUserInfo(ModifyUserInfoReq req);
 
 }

@@ -1,7 +1,12 @@
 package com.showing.backend.api.service;
 
+import com.showing.backend.api.request.ModifyUserInfoReq;
+import com.showing.backend.api.response.MyPageRes;
 import com.showing.backend.api.response.TokenRes;
+import com.showing.backend.api.response.UserInfoRes;
 import com.showing.backend.common.auth.JwtTokenProvider;
+import com.showing.backend.common.exception.NotFoundException;
+import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.common.model.KakaoProfile;
 import com.showing.backend.common.model.NaverProfile;
 import com.showing.backend.common.model.RoleType;
@@ -117,6 +122,28 @@ public class UserServiceImpl implements UserService {
         user.setRefreshToken(null);
         userRepository.save(user);
 
+    }
+
+    /*
+    마이페이지 정보 조회
+     */
+    @Override
+    public MyPageRes getMyPageInfo(Long id) {
+        return null;
+    }
+
+    /*
+    유저 정보 수정
+     */
+    @Override
+    public void modifyUserInfo(ModifyUserInfoReq req) {
+
+        User user = userRepository.findById(req.getUserId()).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        user.setNickname(req.getNickName());
+        user.setIntroduce(req.getIntroduce());
+        user.setUserImage(req.getUserImage());
+
+        userRepository.save(user);
     }
 
 
