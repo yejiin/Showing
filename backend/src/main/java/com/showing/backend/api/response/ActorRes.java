@@ -15,6 +15,9 @@ public class ActorRes {
     @ApiModelProperty(name = "배우 id", example = "1")
     Long actorId;
 
+    @ApiModelProperty(name = "캐스팅 id", example = "1")
+    Long castingId;
+
     @ApiModelProperty(name = "배역", example = "이대길")
     String role;
 
