@@ -1,5 +1,6 @@
 <template>
   <div>
+    <br /><br />
     <b-card>
       <b-card-text class="my_review">회원님의 리뷰는 5개 입니다</b-card-text>
       <a target="_blank" class="btn btn-neutral btn-icon review">
