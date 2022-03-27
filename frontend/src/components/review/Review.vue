@@ -4,20 +4,24 @@
                 리뷰 상세
             </base-button>
             <modal :show.sync="modals.modal1">
-                <!-- <div>
+                <!-- <div class="backArrow"> -->
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="ni ni-bold-left"></i>
+                    <!-- <i class="ni ni-bold-left"></i> -->
+                    &times;
                   </button>
-                </div> -->
+                <!-- </div> -->
                 <div>
                   <div class="modalHeader title">
                     <img :src="user.img" alt="profile image" class="profile"/>
-                    <h6 class="inline title">김싸피</h6>
+                    <h6 class="inline title">{{user.nickname}}</h6>
                   </div>
                   <div style="width:100%; position:relative">
                     
                     <div class="showInfo left mb-3">
-                      <h3 class="title">{{show.title}}</h3>
+                      <div>
+                        <h3>{{show.title}}</h3>
+                        <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
+                      </div>
                       <label for="date">관람일정</label><p class="inline right" type="input">{{show.date}}</p><br>
                       <label for="time">관람시간</label><p class="inline" type="input">{{show.time}}</p><br>
                       <label for="location">관람장소</label><p class="inline" type="input">{{show.location}}</p><br>
@@ -62,6 +66,8 @@ export default {
       show : {
         title : '지킬 앤 하이드',
         img : 'http://ticketimage.interpark.com/PlayDictionary/DATA/PlayDic/PlayDicUpload/040001/21/08/0400012108_167640_01.532.gif',
+        startDate : "2022.01.01",
+        endDate : "2022.05.03",
         date : '2022년 2월 2일',
         time : '17:00',
         location : '샤롯데씨어터',
@@ -74,10 +80,10 @@ export default {
 </script>
 
 <style scoped>
-.searchInput {
-  margin-bottom: 0px !important;
-  margin-right: 5%;
-}
+/* * {
+  font-family: "Noto Sans" !important;
+   font-size: 15px;
+} */
 .inline {
   display: inline;
   margin-left: 10px;
@@ -89,12 +95,13 @@ export default {
   border-radius: 70%;
 }
 .title {
-  margin-bottom: 5%;
+  margin-bottom: 4%;
 }
 .showimage {
   width: 95%;
   float: right;
   margin-right: 5%;
+  border-radius: 5%;
 }
 div.left {
   width: 60%;
@@ -113,5 +120,14 @@ div.right {
   background-color: #F8F8F8;
   border-radius: 5%;
 }
-
+.backArrow {
+  clear: both;
+  float: left;
+  display: block;
+  background-color: transparent;
+  border: 0;
+}
+.backArrow:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
 </style>
