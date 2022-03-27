@@ -6,14 +6,14 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <search></search>
-      <login></login>
+      <login style="margin-right: 15%"></login>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
 import Search from "@/components/search/Search.vue";
-import Login from "@/components/user/Login.vue";
+import Login from "@/components/user/LoginModal.vue";
 
 export default {
   name: "Header",
@@ -33,14 +33,17 @@ export default {
 .navbar.navbar-dark.bg-dark {
   background-color: white !important;
 }
+
 .logo {
   color: #5461e6;
   cursor: pointer;
 }
+
 .logo_position {
   margin-left: 5% !important;
   margin-right: 55%;
 }
+
 .custnavi {
   border-bottom: solid 0.5px #e5e8eb;
 }
