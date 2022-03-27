@@ -24,5 +24,5 @@ public class Tag extends BaseTimeEntity {
     private String tagName;
 
     @Column
-    private Double weight;
+    private Float weight;
 }
