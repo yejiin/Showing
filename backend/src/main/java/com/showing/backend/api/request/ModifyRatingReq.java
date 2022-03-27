@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("UpdateRatingReq")
+@ApiModel("ModifyRatingReq")
 @Getter
 @Setter
-public class UpdateRatingReq {
+public class ModifyRatingReq {
 
     @ApiModelProperty(name = "유저의 Id", example = "1")
     private Long userId;
