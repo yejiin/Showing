@@ -39,7 +39,8 @@ out/
 # frontend
 .DS_Store
 node_modules
-/dist
+dist
+package-lock.json
 
 # local env files
 .env.local
@@ -60,5 +61,6 @@ yarn-error.log*
 *.sw?
 
 commit.sh
-crawling/chromedriver.exe
+
+# chromedriver
 crawling/chromedriver
