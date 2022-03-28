@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FavoriteActorRepository extends JpaRepository<FavoriteActor, Long> {
+public interface FavoriteActorRepository extends JpaRepository<FavoriteActor, Long>, FavoriteActorRepositoryCustom {
 
     FavoriteActor findByUserAndActor(User user, Actor actor);
 
