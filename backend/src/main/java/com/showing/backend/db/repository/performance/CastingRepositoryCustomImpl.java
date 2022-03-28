@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor //
+@RequiredArgsConstructor
 public class CastingRepositoryCustomImpl implements CastingRepositoryCustom{
 
     private final JPAQueryFactory jpaQueryFactory; // check
