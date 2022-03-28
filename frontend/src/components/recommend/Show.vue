@@ -15,11 +15,13 @@
         style="max-width: 20rem"
       >
         <!-- card content -->
-        공연 이름&nbsp;
-        <b-badge class="mr-1" pill variant="light"><b-icon icon="star-fill" scale="0.8"></b-icon> 별점</b-badge>
+        {{ similarRecommend[index].performanceName }}&nbsp;
+        <b-badge class="mr-1" pill variant="light"
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarRecommend[index].starPointAverage }}</b-badge
+        >
         <b-badge pill variant="primary">공연중</b-badge>
         <br />
-        기간
+        {{ similarRecommend[index].lastSeasonStartDate }} ~ {{ similarRecommend[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -35,6 +37,10 @@
 <script>
 export default {
   name: "Show",
+  props: {
+    type: String,
+    similarRecommend: Array,
+  },
   data() {
     return {
       cards: [
@@ -57,7 +63,11 @@ export default {
       currentPageIndex: 0,
     };
   },
-
+  async created() {
+    if (this.type == "similar") {
+      this.cardsPerPage = 4;
+    }
+  },
   computed: {
     currentPageCards() {
       this.createPages();
