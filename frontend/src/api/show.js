@@ -14,8 +14,8 @@ function getShow(success, fail) {
   api.get(`/performances`).then(success).catch(fail);
 }
 
-function detailShow(performanceId, success, fail) {
-  api.get(`/performances/${performanceId}`).then(success).catch(fail);
+function detailShow(userId, param, success, fail) {
+  api.get(`/performances/${userId}`, { params: param }).then(success).catch(fail);
 }
 
 export { getSeasonShow, detailSeasonShow, getShow, detailShow };
