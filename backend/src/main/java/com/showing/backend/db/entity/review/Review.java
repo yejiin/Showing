@@ -1,23 +1,21 @@
 package com.showing.backend.db.entity.review;
 
+import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.performance.Season;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@Entity
 @Table(name = "review")
-public class Review {
+public class Review extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +34,5 @@ public class Review {
 
     @Column
     private String reviewContent;
-
-    @CreatedDate
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    private LocalDateTime updateDate;
 
 }
