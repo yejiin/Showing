@@ -16,13 +16,7 @@ public class Tag extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "performance_id")
-    private Performance performance;
-
     @Column
     private String tagName;
 
-    @Column
-    private Float weight;
 }
