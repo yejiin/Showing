@@ -1,5 +1,7 @@
 package com.showing.backend.api.controller;
 
+import com.showing.backend.api.response.MainPerformanceListRes;
+import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.api.service.PerformanceService;
 import com.showing.backend.api.service.SeasonService;
 import com.showing.backend.common.auth.JwtUtil;
@@ -11,9 +13,9 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.showing.backend.common.model.ResponseMessage.*;
@@ -39,7 +41,7 @@ public class PerformanceController {
             @PathVariable("userId") @ApiParam(value = "유저 id", required = true) Long userId,
             @RequestParam("performanceId") @ApiParam(value = "확인할 공연의 id", required = true) Long performanceId){
         // userId 유효성 검사
-        if(!Objects.equals(userId, JwtUtil.getCurrentId().orElse(null)))
+        if(!Objects.equals(userId, JwtUtil.getCurrentId().orElse(null)) || userId == null)
             throw new InvalidException(ErrorCode.ACCESS_DENIED);
 
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE, performanceService.getPerformanceDetail(userId,performanceId)));
