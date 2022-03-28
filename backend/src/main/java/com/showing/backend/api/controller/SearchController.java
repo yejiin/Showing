@@ -26,7 +26,7 @@ public class SearchController {
             @ApiResponse(code = 401, message = "인증 실패", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ErrorResponse.class)
     })
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<BaseResponseBody> getContentsList(
             @RequestParam(value = "keyword") @ApiParam(value = "검색할 키워드", required = true) String keyword){
 
