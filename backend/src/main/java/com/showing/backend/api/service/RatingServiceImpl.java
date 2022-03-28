@@ -26,14 +26,14 @@ public class RatingServiceImpl implements RatingService {
 
     /*
     별점 추가
-     */
+    */
     @Override
     public void addRating(AddRatingReq req) {
         User user = userRepository.findById(req.getUserId()).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
         Performance performance = performanceRepository.findById(req.getPerformanceId()).orElseThrow(()->new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
 
         // 해당 유저의 공연 평점이 이미 존재하면 exception
-        starPointRepository.findByUserAndPerformance(user,performance).ifPresent(s->{
+        starPointRepository.findByUser_IdAndPerformance_Id(user.getId(),performance.getId()).ifPresent(s->{
             throw new InvalidException(ErrorCode.RATING_DUPLICATE_VALUE);
         });
 
@@ -73,4 +73,18 @@ public class RatingServiceImpl implements RatingService {
 
         starPointRepository.delete(starPoint);
     }
+
+    /*
+    별점 조회
+    */
+    @Override
+    public int getRating(Long userId, Long performanceId) {
+        StarPoint starPoint = starPointRepository.findByUser_IdAndPerformance_Id(userId, performanceId).orElse(null);
+        int rating = 0;
+        if(starPoint != null){
+            rating = starPoint.getRating();
+        }
+        return rating;
+    }
+
 }
