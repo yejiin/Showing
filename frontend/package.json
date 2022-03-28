@@ -17,6 +17,7 @@
     "vue-flatpickr-component": "^8.1.1",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.2",
+    "vue-simple-suggest": "^1.11.2",
     "vue-star-rating": "^1.7.0",
     "vue2-transitions": "^0.2.3",
     "vuex": "^3.4.0"
