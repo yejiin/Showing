@@ -3,14 +3,17 @@ package com.showing.backend.db.entity.recommend;
 import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.Tag;
 import com.showing.backend.db.entity.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "favorite_tag")
 public class FavoriteTag extends BaseTimeEntity {
 
@@ -27,5 +30,6 @@ public class FavoriteTag extends BaseTimeEntity {
     private Tag tag;
 
     @Column
-    private int weight;
+    @ColumnDefault("0")
+    private float weight;
 }
