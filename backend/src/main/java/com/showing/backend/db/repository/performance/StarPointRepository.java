@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface StarPointRepository extends JpaRepository<StarPoint, Long> {
+public interface StarPointRepository extends JpaRepository<StarPoint, Long>, StarPointRepositoryCustom{
 
     Optional<StarPoint> findByUser_IdAndPerformance_Id(Long userId, Long performanceId);
 }
