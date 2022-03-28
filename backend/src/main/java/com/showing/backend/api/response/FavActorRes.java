@@ -12,10 +12,10 @@ import lombok.Setter;
 @Setter
 public class FavActorRes {
 
-    @ApiModelProperty(name = "배우 이미지 링크", example = "http://k.kakaocdn.net/dn/")
-    String actorImage;
-
     @ApiModelProperty(name = "배우 이름", example = "장혁")
     String actorName;
 
+    @ApiModelProperty(name = "배우 이미지 링크", example = "http://k.kakaocdn.net/dn/")
+    String actorImage;
+    
 }
