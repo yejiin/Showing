@@ -94,7 +94,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId) {
         // performanceId 에 해당하는 모든 시즌
-        List<Season> seasonList = seasonRepository.findAllByPerformanceId(performanceId);
+        List<Season> seasonList = seasonRepository.findByPerformanceId(performanceId);
         // seasonList 시즌들의 모든 리뷰
         List<Review> reviewList = reviewRepository.findBySeasonInOrderByUpdateDateDesc(seasonList);
         List<PreviewReviewByPerformanceRes> previewReviewList = new ArrayList<>();

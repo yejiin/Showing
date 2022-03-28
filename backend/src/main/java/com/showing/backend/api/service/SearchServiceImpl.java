@@ -19,7 +19,7 @@ public class SearchServiceImpl implements SearchService{
     @Override
     @Transactional
     public List<SearchRes> getPerformanceList(String keyword) {
-        List<Performance> performanceList = performanceRepository.findByPerformanceNameContaining(keyword);
+        List<Performance> performanceList = performanceRepository.findTop5ByPerformanceNameContaining(keyword);
         List<SearchRes> searchResList = new ArrayList<>();
         for (Performance performance : performanceList){
             SearchRes searchRes = SearchRes.builder()
