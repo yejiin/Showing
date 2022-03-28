@@ -17,4 +17,5 @@ public interface RatingService {
 
     Optional<Long> getRatingCount(User user, int type);
 
+    List<Long> getRatingRatio(User user);
 }

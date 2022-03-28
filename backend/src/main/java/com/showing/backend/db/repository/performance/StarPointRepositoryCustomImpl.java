@@ -30,4 +30,13 @@ public class StarPointRepositoryCustomImpl implements StarPointRepositoryCustom 
         return Optional.ofNullable(count.get(0));
     }
 
+    @Override
+    public Long getRatingCountByUserAndRating(User user,int rating) {
+
+        return Optional.ofNullable(jpaQueryFactory.select(qStarPoint.count())
+                .from(qStarPoint)
+                .where(qStarPoint.user.eq(user).and(qStarPoint.rating.eq(rating)))
+                .fetch().get(0)).orElse(0L);
+
+    }
 }
