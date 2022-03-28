@@ -24,7 +24,7 @@ public class FavoriteActorRepositoryCustomImpl implements FavoriteActorRepositor
      */
     @Override
     public Optional<List<FavActorRes>> getFavActorListByUser(User user) {
-        List<FavActorRes> res = jpaQueryFactory.select(Projections.constructor(FavActorRes.class,qActor.actorName,qActor.actorName))
+        List<FavActorRes> res = jpaQueryFactory.select(Projections.constructor(FavActorRes.class,qActor.actorName,qActor.actorImage))
                 .from(qActor).join(qFavoriteActor)
                 .on(qActor.eq(qFavoriteActor.actor))
                 .where(qFavoriteActor.user.eq(user))
