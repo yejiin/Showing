@@ -15,9 +15,9 @@
         style="max-width: 20rem"
       >
         <i style="font-size: 40px" class="ni ni-circle-08"></i>&nbsp;
-        <b-card-title class="comment_writer">작성자</b-card-title>
+        <b-card-title class="comment_writer">{{ review[index].userName }}</b-card-title>
         <hr />
-        <b-card-text>리뷰 내용</b-card-text>
+        <b-card-text>{{ review[index].content }}</b-card-text>
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { getAllShowReview } from "@/api/review.js";
+
 export default {
   name: "Comment",
   data() {
@@ -54,7 +56,20 @@ export default {
       pageCount: 0,
       cardsPerPage: 4,
       currentPageIndex: 0,
+      review: [],
     };
+  },
+  async created() {
+    await getAllShowReview(
+      "1103",
+      (response) => {
+        this.review = response.data.data;
+        // console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 
   computed: {
