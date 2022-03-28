@@ -10,4 +10,7 @@ public interface RatingService {
     void modifyRating(ModifyRatingReq req);
 
     void deleteRating(Long starId);
+
+    int getRating(Long userId, Long performanceId);
+
 }
