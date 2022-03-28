@@ -1,9 +1,9 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ModifyUserInfoReq;
+import com.showing.backend.api.response.FavActorRes;
 import com.showing.backend.api.response.MyPageRes;
 import com.showing.backend.api.response.TokenRes;
-import com.showing.backend.api.response.UserInfoRes;
 import com.showing.backend.common.auth.JwtTokenProvider;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
@@ -16,13 +16,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService {
+
     private final JwtTokenProvider tokenProvider;
+
+    private final ActorService actorService;
+    private final RatingService ratingService;
     private final UserRepository userRepository;
 
     /*
@@ -129,7 +134,26 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public MyPageRes getMyPageInfo(Long id) {
-        return null;
+
+        User user = userRepository.findById(id).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        List<FavActorRes> actorResList = actorService.getFavoriteActorList(user);
+        Long MusicalCnt = ratingService.getRatingCount(user, 1);
+        Long PlayCnt = ratingService.getRatingCount(user,2);
+        List<Long> ratingCntList = ratingService.getRatingRatio(user);
+        Double ratingAvg = ratingService.getRatingAvg(user);
+
+        return MyPageRes.builder()
+                .nickName(user.getNickname())
+                .email(user.getEmail())
+                .introduce(user.getIntroduce())
+                .userImage(user.getUserImage())
+                .favoriteActorList(actorResList)
+                .muscialCnt(MusicalCnt)
+                .playCnt(PlayCnt)
+                .ratingCntList(ratingCntList)
+                .ratingAvg(ratingAvg)
+                .build();
     }
 
     /*

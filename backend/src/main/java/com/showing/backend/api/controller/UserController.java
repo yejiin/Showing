@@ -137,7 +137,19 @@ public class UserController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED,REFRESH_TOKEN,userService.refreshAccessToken(userId,refreshToken)));
     }
 
-        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED,REFRESH_TOKEN,userService.refreshAccessToken(id,refreshToken)));
+    @ApiOperation(value = "마이페이지 유저 정보 조회", notes = "마이페이지에서 해당 유저의 정보를 조회하는 api입니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = GET_USER_INFO, response = TokenRes.class),
+            @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
+            @ApiResponse(code = 403, message = INVALID_TOKEN, response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)
+    })
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<BaseResponseBody> getUserInfo(@PathVariable Long userId) {
+        // userId 유효성 체크
+        if(!Objects.equals(userId, JwtUtil.getCurrentId().orElse(null)))
+            throw new AccessDeniedException("Access denied");
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK,GET_USER_INFO,userService.getMyPageInfo(userId)));
     }
 
     @ApiOperation(value = "유저 정보 수정", notes = "마이페이지에서 해당 유저의 정보를 수정하는 api입니다.")
