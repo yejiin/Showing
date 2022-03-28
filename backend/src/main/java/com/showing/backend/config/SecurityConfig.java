@@ -2,6 +2,7 @@ package com.showing.backend.config;
 
 import com.showing.backend.common.auth.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -32,30 +33,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-           .antMatchers("/h2-console/**", "/error", "/swagger-resources/**", "/swagger-ui/**", "/api/v1/users/kakao/**","/api/v1/users/naver/**", "/v2/api-docs");
+                .antMatchers("/h2-console/**", "/error", "/swagger-resources/**", "/swagger-ui/**",
+                        "/api/v1/users/kakao/**","/api/v1/users/naver/**",
+                        "/v2/api-docs")
+                .antMatchers(HttpMethod.GET,"/api/v1/reviews/**")
+                .antMatchers("/api/v1/reviews/performances/**")
+                .antMatchers("/api/v1/reviews/seasons/**")
+                .antMatchers("/api/v1/performances/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
-            .and()
-            .csrf()
-            .disable()
-            // 에러 처리 핸들러 등록
-            .exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .accessDeniedHandler(jwtAccessDeniedHandler)
-            .and()
+                .and()
+                .csrf()
+                .disable()
+                // 에러 처리 핸들러 등록
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .and()
 
-            // 세션을 사용하지 않고 jwt 사용
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .apply(new JwtSecurityConfig(tokenProvider));
+                // 세션을 사용하지 않고 jwt 사용
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .apply(new JwtSecurityConfig(tokenProvider));
     }
 
 }

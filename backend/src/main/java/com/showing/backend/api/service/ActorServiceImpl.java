@@ -1,6 +1,7 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.response.ActorRes;
+import com.showing.backend.api.response.FavActorRes;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.db.entity.User;
@@ -49,4 +50,8 @@ public class ActorServiceImpl implements ActorService {
         favoriteActorRepository.save(favoriteActor);
     }
 
+    @Override
+    public List<FavActorRes> getFavoriteActorList(User user) {
+        return favoriteActorRepository.getFavActorListByUser(user).orElse(null);
+    }
 }
