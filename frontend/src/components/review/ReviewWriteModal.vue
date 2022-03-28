@@ -37,16 +37,16 @@
                                             input-class="smaller"
                                 >
                                 </datepicker>
-                                 <!-- <b-form-datepicker id="example-datepicker" v-model="value" class="mb-2"></b-form-datepicker> -->
                             </div>
                         </div>
                       <div class="form-group picker">
                             <div class="input-group">
                                 <label for="time" class="bold pickerlabel">관람시간</label>
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                    <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
 
                                 </div>
+                                <input type="time" name="" id="" class="form-control">
                             </div>
                             
                         </div>
@@ -238,6 +238,12 @@ div.right {
 .cast {
     clear :both;
 }
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background-image: url("./assets/pngwing.png");
+    background-size: 12px 12px;
+    border-color: transparent;
+}
+
 
 </style>
 
