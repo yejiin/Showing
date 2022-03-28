@@ -31,6 +31,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final CastingRepository castingRepository;
     private final ReviewActorRepository reviewActorRepository;
 
+    private final ActorService actorService;
+
     @Override
     public List<PreviewReviewByUserRes> getPreviewReviewListByUserId(Long userId) {
         List<Review> reviewList = reviewRepository.findByUserIdOrderByUpdateDateDesc(userId);
@@ -207,6 +209,10 @@ public class ReviewServiceImpl implements ReviewService {
             Casting casting = castingRepository.findById(castingId).orElseThrow(() -> new NotFoundException(ErrorCode.CASTING_NOT_FOUND));
             ReviewActor reviewActor = new ReviewActor(review, casting);
             reviewActorList.add(reviewActor);
+
+            // 선호 배우 가중치를 증가시킨다.
+            Actor actor = casting.getActor();
+            actorService.setFavoriteActorWeight(1, user, actor);
         }
 
         reviewActorRepository.saveAll(reviewActorList);
