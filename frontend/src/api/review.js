@@ -2,7 +2,7 @@ import { apiInstance } from "./index.js";
 
 const api = apiInstance();
 
-function listMyReview(userId, success, fail) {
+function getMyReview(userId, success, fail) {
   api.get(`/reviews/users/${userId}`).then(success).catch(fail);
 }
 
@@ -18,4 +18,4 @@ function modifyMyReview(reviewId, review, success, fail) {
   api.put(`/reviews/${reviewId}`, JSON.stringify(review)).then(success).catch(fail);
 }
 
-export { listMyReview, addMyReview, deleteMyReview, modifyMyReview };
+export { getMyReview, addMyReview, deleteMyReview, modifyMyReview };

@@ -2,12 +2,12 @@ import { apiInstance } from "./index.js";
 
 const api = apiInstance();
 
-function listMainRecommend(userId, success, fail) {
+function getMainRecommend(userId, success, fail) {
   api.get(`/recommend/user/${userId}`).then(success).catch(fail);
 }
 
-function listSimilarRecommend(showId, success, fail) {
+function getSimilarRecommend(showId, success, fail) {
   api.get(`/recommend/${showId}`).then(success).catch(fail);
 }
 
-export { listMainRecommend, listSimilarRecommend };
+export { getMainRecommend, getSimilarRecommend };
