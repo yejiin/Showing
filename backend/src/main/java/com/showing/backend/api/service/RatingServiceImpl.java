@@ -84,7 +84,7 @@ public class RatingServiceImpl implements RatingService {
     공연 타입 별 평가 수 조회
     */
     @Override
-    public Optional<Long> getRatingCount(User user, int type) {
+    public Long getRatingCount(User user, int type) {
 
         return starPointRepository.getRatingCountByUserAndType(user, type);
     }
@@ -101,6 +101,13 @@ public class RatingServiceImpl implements RatingService {
         }
 
         return countList;
+    }
+
+    /*
+    별점 평균
+    */
+    public Double getRatingAvg(User user) {
+        return starPointRepository.getRatingAvgByUser(user);
     }
 
 }

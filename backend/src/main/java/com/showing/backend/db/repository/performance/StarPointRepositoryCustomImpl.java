@@ -19,7 +19,7 @@ public class StarPointRepositoryCustomImpl implements StarPointRepositoryCustom 
     QPerformance qPerformance = QPerformance.performance;
 
     @Override
-    public Optional<Long> getRatingCountByUserAndType(User user, int type) {
+    public Long getRatingCountByUserAndType(User user, int type) {
 
         List<Long> count = jpaQueryFactory.select(qStarPoint.count())
                 .from(qStarPoint).join(qPerformance)
@@ -27,7 +27,7 @@ public class StarPointRepositoryCustomImpl implements StarPointRepositoryCustom 
                 .where(qStarPoint.user.eq(user).and(qPerformance.performanceType.eq(type)))
                 .fetch();
 
-        return Optional.ofNullable(count.get(0));
+        return Optional.ofNullable(count.get(0)).orElse(0L);
     }
 
     @Override
@@ -39,4 +39,15 @@ public class StarPointRepositoryCustomImpl implements StarPointRepositoryCustom 
                 .fetch().get(0)).orElse(0L);
 
     }
+
+    @Override
+    public Double getRatingAvgByUser(User user) {
+
+        return Optional.ofNullable(jpaQueryFactory.select(qStarPoint.rating.avg())
+                .from(qStarPoint)
+                .where(qStarPoint.user.eq(user))
+                .fetch().get(0)).orElse(0D);
+    }
+
+
 }
