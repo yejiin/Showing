@@ -223,22 +223,10 @@ public class ReviewServiceImpl implements ReviewService {
         List<Long> castingIdList = req.getCastingIdList();
         List<ReviewActor> reviewActorList;
 
-        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
-        Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
-
-        // 기존에 작성된 리뷰 정보
-        Review originReview = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
-        // 수정할 리뷰 정보
-        Review modifiedReview = Review.builder()
-                                      .id(reviewId)
-                                      .user(user)
-                                      .season(season)
-                                      .performanceDate(req.getShowDate().atTime(req.getShowTime()))
-                                      .reviewContent(req.getReviewContent())
-                                      .createDate(originReview.getCreateDate())
-                                      .updateDate(LocalDateTime.now())
-                                      .build();
-        reviewRepository.save(modifiedReview);
+        // 기존에 작성된 리뷰 정보를 가져와서 수정한다.
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
+        review.setPerformanceDate(req.getShowDate().atTime(req.getShowTime()));
+        review.setReviewContent(req.getReviewContent());
 
         // 기존에 작성되어있던 캐스팅 배우 정보 삭제
         reviewActorList = reviewActorRepository.findReviewActorsByReviewId(reviewId);
@@ -248,7 +236,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewActorList = new ArrayList<>();
         for (Long castingId : castingIdList) {
             Casting casting = castingRepository.findById(castingId).orElseThrow(() -> new NotFoundException(ErrorCode.CASTING_NOT_FOUND));
-            ReviewActor reviewActor = new ReviewActor(modifiedReview, casting);
+            ReviewActor reviewActor = new ReviewActor(review, casting);
             reviewActorList.add(reviewActor);
         }
         reviewActorRepository.saveAll(reviewActorList);
