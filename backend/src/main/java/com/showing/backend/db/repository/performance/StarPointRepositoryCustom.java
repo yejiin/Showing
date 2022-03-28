@@ -10,4 +10,5 @@ public interface StarPointRepositoryCustom {
 
     Optional<Long> getRatingCountByUserAndType(User user, int type);
 
+    Long getRatingCountByUserAndRating(User user,int rating);
 }

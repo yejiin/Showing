@@ -89,5 +89,18 @@ public class RatingServiceImpl implements RatingService {
         return starPointRepository.getRatingCountByUserAndType(user, type);
     }
 
+    /*
+    유저 별 별점 분포 수 ( 별점 rating 당 count )
+    */
+    @Override
+    public List<Long> getRatingRatio(User user) {
+        List<Long> countList = new ArrayList<>();
+
+        for (int i = 1; i <= 10; i++) {
+            countList.add(starPointRepository.getRatingCountByUserAndRating(user,i));
+        }
+
+        return countList;
+    }
 
 }
