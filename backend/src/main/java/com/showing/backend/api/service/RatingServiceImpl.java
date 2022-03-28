@@ -14,9 +14,15 @@ import com.showing.backend.db.repository.performance.StarPointRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class RatingServiceImpl implements RatingService {
 
@@ -73,4 +79,15 @@ public class RatingServiceImpl implements RatingService {
 
         starPointRepository.delete(starPoint);
     }
+
+    /*
+    공연 타입 별 평가 수 조회
+    */
+    @Override
+    public Optional<Long> getRatingCount(User user, int type) {
+
+        return starPointRepository.getRatingCountByUserAndType(user, type);
+    }
+
+
 }
