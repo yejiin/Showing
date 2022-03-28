@@ -18,6 +18,9 @@ public class StarPointRepositoryCustomImpl implements StarPointRepositoryCustom 
     QStarPoint qStarPoint = QStarPoint.starPoint;
     QPerformance qPerformance = QPerformance.performance;
 
+    /**
+     * star_point table 에서 performance_type 별로 유저가 준 별점 갯수를 조회한다.
+     */
     @Override
     public Long getRatingCountByUserAndType(User user, int type) {
 
@@ -30,6 +33,9 @@ public class StarPointRepositoryCustomImpl implements StarPointRepositoryCustom 
         return Optional.ofNullable(count.get(0)).orElse(0L);
     }
 
+    /**
+     * star_point table 에서 rating 별로 유저가 준 별점 갯수를 조회한다.
+     */
     @Override
     public Long getRatingCountByUserAndRating(User user,int rating) {
 
@@ -40,6 +46,9 @@ public class StarPointRepositoryCustomImpl implements StarPointRepositoryCustom 
 
     }
 
+    /**
+     * star_point table 에서 유저가 준 별점의 평균을 조회한다.
+     */
     @Override
     public Double getRatingAvgByUser(User user) {
 
