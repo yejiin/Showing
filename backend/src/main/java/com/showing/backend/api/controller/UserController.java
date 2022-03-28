@@ -146,9 +146,6 @@ public class UserController {
     })
     @GetMapping(value = "/{userId}")
     public ResponseEntity<BaseResponseBody> getUserInfo(@PathVariable Long userId) {
-        // userId 유효성 체크
-        if(!Objects.equals(userId, JwtUtil.getCurrentId().orElse(null)))
-            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK,GET_USER_INFO,userService.getMyPageInfo(userId)));
     }
 
