@@ -25,6 +25,7 @@ public class FavoriteActorRepositoryCustomImpl implements FavoriteActorRepositor
                 .from(qActor).join(qFavoriteActor)
                 .on(qActor.eq(qFavoriteActor.actor))
                 .where(qFavoriteActor.user.eq(user))
+                .orderBy(qFavoriteActor.weight.desc())
                 .fetch();
 
         return Optional.ofNullable(res);
