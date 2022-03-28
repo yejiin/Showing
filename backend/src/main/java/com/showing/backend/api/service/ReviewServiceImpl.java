@@ -227,7 +227,7 @@ public class ReviewServiceImpl implements ReviewService {
         Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
 
         // 기존에 작성된 리뷰 정보
-        Review originReview = reviewRepository.getById(reviewId);
+        Review originReview = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
         // 수정할 리뷰 정보
         Review modifiedReview = Review.builder()
                                       .id(reviewId)
@@ -256,6 +256,16 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Long reviewId) {
+        // 선호 배우 가중치를 감소시킨다.
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
+        User user = review.getUser();
+
+        List<ReviewActor> reviewActorList = reviewActorRepository.findReviewActorsByReviewId(reviewId);
+        for (ReviewActor reviewActor : reviewActorList) {
+            Actor actor = reviewActor.getCasting().getActor();
+            actorService.setFavoriteActorWeight(-1, user, actor);
+        }
+
         // 리뷰 내 캐스팅 배우 정보 삭제
         reviewActorRepository.deleteAllByReviewId(reviewId);
         // 리뷰 삭제
