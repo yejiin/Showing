@@ -26,13 +26,18 @@
                             <h6 class="inline title">{{user.nickname}}</h6>
                         </div> -->
                         
-                        <div class="form-group picker">
-                            <div class="input-group">
+                        <div class="form-group picker" >
+                            <div class="input-group" >
                                 <label for="date" class="bold pickerlabel">관람일정</label>
                                 <div class="input-group-prepend" >
                                     <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                   
                                 </div>
-                                <input class="form-control datepicker" placeholder="Select date" type="text" value="06/20/2020">
+                                <datepicker class="form-control"
+                                            input-class="smaller"
+                                >
+                                </datepicker>
+                                 <!-- <b-form-datepicker id="example-datepicker" v-model="value" class="mb-2"></b-form-datepicker> -->
                             </div>
                         </div>
                       <div class="form-group picker">
@@ -40,9 +45,10 @@
                                 <label for="time" class="bold pickerlabel">관람시간</label>
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+
                                 </div>
-                                <input class="form-control datepicker" placeholder="Select date" type="text" value="06/20/2020">
                             </div>
+                            
                         </div>
                       <label for="location" class="bold">관람장소</label><p class="inline" type="input">{{show.location}}</p><br>
                       
@@ -53,8 +59,14 @@
                     </div>
                   </div>
                   <div class="cast">
-                        <label class="bold left">캐스팅</label><label style="font-size:6px;margin-left:10px">관람한 공연의 캐스트를 선택해주세요</label><br>
-                      <b-badge pill variant="primary" v-for="(index, key) in show.actors" :key="key" class="casting">{{index}}</b-badge>
+                        <label class="bold left">캐스팅</label>
+                        <label style="font-size:6px;margin-left:10px">관람한 공연의 캐스트를 선택해주세요</label><br>
+                      <span class="badge badge-pill badge-warning casting"
+                               v-for="(index, key) in show.actors" :key="key" 
+                               @click="selectactors(index.id)"
+                      >
+                        {{index.name}}
+                      </span>
                     </div>
                   <div class="content">
                       <p style="margin:8%;" >
@@ -68,12 +80,18 @@
 </div>
 </template>
 
-<script src="/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
 <script>
+
 import Modal from "@/components/Modal.vue";
+import Datepicker from "vuejs-datepicker";
+import Timeselector from 'vue-timeselector';
+
 export default {
   components: {
-    Modal
+    Modal,
+    Datepicker,
+    Timeselector
   },
   props: {
     type: String,
@@ -100,10 +118,50 @@ export default {
         date : '2022년 2월 2일',
         time : '17:00',
         location : '샤롯데씨어터',
-        actors : ['룰루루','랄라라','아이패드','비싸다','이야호','마라탕','고양이'],
+        actors : [
+            {
+            id : 1,
+            name :'룰루루'
+            },
+            {
+            id : 2,
+            name :'랄라라'
+            },
+            {
+            id : 3,
+            name :'아이패드'
+            },
+            {
+            id : 4,
+            name :'비싸다'
+            },
+            {
+            id : 5,
+            name :'이야호'
+            },
+            {
+            id : 6,
+            name :'마라탕'
+            },
+            {
+            id : 7,
+            name :'고양이'
+            }
+            ],
         content : '가을이 차고 내 마음도 차고 이대로 담아두기엔 너무 안타까워 너를 향해 가는데... 놓침... 지금 이순간이 바로 그 순간이야~ 제일 맘에 드는 옷을 입고 노란 꽃 한 송이를 손에 들고 널 바라보다 그만 나도모르게 웃어버렸네 이게 아닌데 내 맘은 이게 아닌데~~~ 술이 차고 밤공기도 차고 두 눈을 감아야만 네 모습이 보여'
+      },
+      review :{
+          actors:[],
       }
-    };
+    }
+  },
+  methods :{
+      selectactors(id){
+        //   뱃지 색깔 바꾸기
+        this.review.actors.push(id)
+        console.log(this.review.actors)
+        
+      }
   }
 };
 </script>
@@ -180,4 +238,14 @@ div.right {
 .cast {
     clear :both;
 }
+
+</style>
+
+<style>
+    .smaller {
+        height : 50% !important;
+        width : 100% !important;
+        border: 0px !important;
+        color : darkgrey
+    }
 </style>
