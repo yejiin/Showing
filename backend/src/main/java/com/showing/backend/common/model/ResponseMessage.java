@@ -39,4 +39,7 @@ public class ResponseMessage {
     public static final String GET_SEASON_LIST = "시즌 목록 조회 성공";
     public static final String GET_SEASON = "시즌 정보 조회 성공";
 
+    // Recommend
+    public static final String GET_RECOMMEND = "추천목록 조회 성공";
+
 }

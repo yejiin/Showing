@@ -5,9 +5,11 @@ import com.showing.backend.api.request.ModifyRatingReq;
 import com.showing.backend.common.exception.InvalidException;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
+import com.showing.backend.db.entity.PerformanceTag;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.performance.Performance;
 import com.showing.backend.db.entity.performance.StarPoint;
+import com.showing.backend.db.repository.PerformanceTagRepository;
 import com.showing.backend.db.repository.UserRepository;
 import com.showing.backend.db.repository.performance.PerformanceRepository;
 import com.showing.backend.db.repository.performance.StarPointRepository;
@@ -18,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,9 +27,12 @@ import java.util.Optional;
 @Service
 public class RatingServiceImpl implements RatingService {
 
+    private final TagService tagService;
+
     private final UserRepository userRepository;
     private final PerformanceRepository performanceRepository;
     private final StarPointRepository starPointRepository;
+    private final PerformanceTagRepository performanceTagRepository;
 
     /*
      * 별점 추가
@@ -49,6 +53,17 @@ public class RatingServiceImpl implements RatingService {
         if (rating <= 0 || rating > 10)
             throw new InvalidException(ErrorCode.RATING_INVALID_VALUE);
 
+        // 별점이 3 이상 이면 선호 태그 가중치 변경
+        if (rating >= 6) {
+
+            // 해당 공연의 태그를 가져온다
+            List<PerformanceTag> performanceTagList = performanceTagRepository.findAllByPerformance(performance);
+            for (PerformanceTag tag : performanceTagList) {
+                // 가중치 더해주기
+                tagService.setFavoriteTagWeight(user, tag.getTag(), tag.getWeight());
+            }
+
+        }
         StarPoint starPoint = StarPoint.builder()
                 .user(user)
                 .performance(performance)
@@ -71,9 +86,26 @@ public class RatingServiceImpl implements RatingService {
         if (rating <= 0 || rating > 10)
             throw new InvalidException(ErrorCode.RATING_INVALID_VALUE);
 
-        starPoint.setRating(req.getRating());
-        starPointRepository.save(starPoint);
+        int preRating = starPoint.getRating();
 
+        // 별점이 3점 위로 올랐다면 선호태그 가중치를 더해준다.
+        if (rating >= 6 && preRating < 6) {
+            List<PerformanceTag> performanceTagList = performanceTagRepository
+                    .findAllByPerformance(starPoint.getPerformance());
+            for (PerformanceTag tag : performanceTagList) {
+                tagService.setFavoriteTagWeight(starPoint.getUser(), tag.getTag(), tag.getWeight());
+            }
+        }
+        // 별점이 3점 아래로 떨어졌다면 선호태그 가중치를 빼준다.
+        else if (rating < 6 && preRating >= 6) {
+            List<PerformanceTag> performanceTagList = performanceTagRepository
+                    .findAllByPerformance(starPoint.getPerformance());
+            for (PerformanceTag tag : performanceTagList) {
+                tagService.setFavoriteTagWeight(starPoint.getUser(), tag.getTag(), tag.getWeight() * -1);
+            }
+        }
+
+        starPoint.setRating(rating);
     }
 
     /*
@@ -84,6 +116,17 @@ public class RatingServiceImpl implements RatingService {
         StarPoint starPoint = starPointRepository.findById(starId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.RATING_NOT_FOUND));
 
+        if (starPoint.getRating() >= 6) {
+
+            // 해당 공연의 태그를 가져온다
+            List<PerformanceTag> performanceTagList = performanceTagRepository
+                    .findAllByPerformance(starPoint.getPerformance());
+            for (PerformanceTag tag : performanceTagList) {
+                // 가중치 빼주기
+                tagService.setFavoriteTagWeight(starPoint.getUser(), tag.getTag(), tag.getWeight() * -1);
+            }
+
+        }
         starPointRepository.delete(starPoint);
     }
 
