@@ -148,7 +148,7 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> getUserInfo(@PathVariable Long userId) {
         // userId 유효성 체크
         if(!Objects.equals(userId, JwtUtil.getCurrentId().orElse(null)))
-            throw new AccessDeniedException("Access denied");
+            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK,GET_USER_INFO,userService.getMyPageInfo(userId)));
     }
 
@@ -162,9 +162,8 @@ public class UserController {
     @PutMapping(value = "")
     public ResponseEntity<BaseResponseBody> modifyUserInfo(@RequestBody ModifyUserInfoReq req) {
         // userId 유효성 체크
-        Long userId = req.getUserId();
         if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
-            throw new AccessDeniedException("Access denied");
+            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         userService.modifyUserInfo(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK,MODIFY_USER_INFO));
     }
