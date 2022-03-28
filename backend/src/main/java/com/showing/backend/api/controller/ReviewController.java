@@ -84,7 +84,7 @@ public class ReviewController {
             @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
     @GetMapping("/{reviewId}")
-    public ResponseEntity<BaseResponseBody> DetailReview(@PathVariable Long reviewId) {
+    public ResponseEntity<BaseResponseBody> detailReview(@PathVariable Long reviewId) {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_REVIEW, reviewService.getReviewDetail(reviewId)));
     }
 
