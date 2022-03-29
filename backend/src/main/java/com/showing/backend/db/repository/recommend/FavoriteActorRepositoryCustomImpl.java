@@ -20,7 +20,7 @@ public class FavoriteActorRepositoryCustomImpl implements FavoriteActorRepositor
     QFavoriteActor qFavoriteActor = QFavoriteActor.favoriteActor;
 
     /**
-     * performance table 에서 유저의 선호 배우리스트를 weight 내림차순으로 조회ㄴ한다.
+     * performance table 에서 유저의 선호 배우리스트를 weight 내림차순으로 조회한다.
      */
     @Override
     public Optional<List<FavActorRes>> getFavActorListByUser(User user) {

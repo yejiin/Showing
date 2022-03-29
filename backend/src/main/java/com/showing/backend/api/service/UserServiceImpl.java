@@ -2,6 +2,7 @@ package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ModifyUserInfoReq;
 import com.showing.backend.api.response.FavActorRes;
+import com.showing.backend.api.response.FavTagRes;
 import com.showing.backend.api.response.MyPageRes;
 import com.showing.backend.api.response.TokenRes;
 import com.showing.backend.common.auth.JwtTokenProvider;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final JwtTokenProvider tokenProvider;
 
+    private final TagService tagService;
     private final ActorService actorService;
     private final RatingService ratingService;
     private final UserRepository userRepository;
@@ -138,6 +140,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         List<FavActorRes> actorResList = actorService.getFavoriteActorList(user);
+        List<FavTagRes> tagResList = tagService.getFavoriteTagList(user);
         Long MusicalCnt = ratingService.getRatingCount(user, 1);
         Long PlayCnt = ratingService.getRatingCount(user,2);
         List<Long> ratingCntList = ratingService.getRatingRatio(user);
@@ -148,6 +151,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .introduce(user.getIntroduce())
                 .userImage(user.getUserImage())
+                .favoriteTagList(tagResList)
                 .favoriteActorList(actorResList)
                 .muscialCnt(MusicalCnt)
                 .playCnt(PlayCnt)
