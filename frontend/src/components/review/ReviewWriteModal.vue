@@ -74,8 +74,7 @@
 </div>
 </template>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
 <script>
 
 import Modal from "@/components/Modal.vue";
@@ -90,16 +89,7 @@ export default {
   },
   props: {
     performance : String,
-    show : {
-      seasonId,
-      seasonImage : '',
-        startDate : "",
-        endDate : "",
-        date : '',
-        time : '',
-        location : '',
-        actors : []
-    },
+    
   },
   data() {
     return {
@@ -107,12 +97,22 @@ export default {
         modal1: false,
       },
       review :{
-          seasonId : Number(this.show.seasonId),
+          seasonId : 1,
           showDate :'',
           showTime :'',
           castingIdList:[],
           reviewContent:'',
-          userId : Number(this.userId)
+          userId : 1
+      },
+      show : {
+        seasonId : '',
+        seasonImage : '',
+          startDate : "",
+          endDate : "",
+          date : '',
+          time : '',
+          location : '',
+          actors : []
       },
     }
   },
@@ -149,6 +149,14 @@ export default {
         this.addMyReview(this.review)
         this.modals.modal1 = false
         // 이 다음 내용도 clear 해야함!
+        this.review = {
+          seasonId : Number(this.show.seasonId),
+          showDate :'',
+          showTime :'',
+          castingIdList:[],
+          reviewContent:'',
+          userId : Number(this.userId)
+        }
       },
       // 날짜 포맷 정리
       dateFommatter(date){
