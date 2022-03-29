@@ -14,6 +14,8 @@ public interface RatingService {
 
     void deleteRating(Long starId);
 
+    int getRating(Long userId, Long performanceId);
+
     Long getRatingCount(User user, int type);
 
     List<Long> getRatingRatio(User user);
