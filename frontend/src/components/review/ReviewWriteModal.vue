@@ -4,14 +4,11 @@
                 리뷰 작성하기
             </base-button>
             <modal :show.sync="modals.modal1">
-                <!-- <div class="backArrow"> -->
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="modals.modal1 = false">
-                    <!-- <i class="ni ni-bold-left"></i> -->
                     &times;
                   </button>
-                <!-- </div> -->
                 <br/>
-                <br>
+                <br/>
                 <div>
                   
                   <div style="width:100%; position:relative">
@@ -21,37 +18,29 @@
                         <h3>{{show.title}}</h3>
                         <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
                       </div>
-                      <!-- <div class="modalHeader title">
-                            <img :src="user.img" alt="profile image" class="profile"/>
-                            <h6 class="inline title">{{user.nickname}}</h6>
-                        </div> -->
-                        
-                        <div class="form-group picker" >
-                            <div class="input-group" >
-                                <label for="date" class="bold pickerlabel">관람일정</label>
-                                <div class="input-group-prepend" >
-                                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                                   
-                                </div>
-                                <datepicker class="form-control"
-                                            input-class="smaller"
-                                >
-                                </datepicker>
-                            </div>
-                        </div>
+                      <div class="form-group picker" >
+                          <div class="input-group" >
+                              <label for="date" class="bold pickerlabel">관람일정</label>
+                              <div class="input-group-prepend" >
+                                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                  
+                              </div>
+                              <datepicker class="form-control"
+                                          input-class="smaller"
+                              >
+                              </datepicker>
+                          </div>
+                      </div>
                       <div class="form-group picker">
                             <div class="input-group">
                                 <label for="time" class="bold pickerlabel">관람시간</label>
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
-
                                 </div>
                                 <input type="time" name="" id="" class="form-control">
                             </div>
-                            
                         </div>
                       <label for="location" class="bold">관람장소</label><p class="inline" type="input">{{show.location}}</p><br>
-                      
                     </div>
                     
                     <div class="right mb-3">
@@ -89,13 +78,11 @@
 
 import Modal from "@/components/Modal.vue";
 import Datepicker from "vuejs-datepicker";
-import Timeselector from 'vue-timeselector';
 
 export default {
   components: {
     Modal,
     Datepicker,
-    Timeselector
   },
   props: {
     type: String,
@@ -157,7 +144,6 @@ export default {
       review :{
           actors:[],
       },
-      selectedactor:[]
     }
   },
   methods :{
@@ -181,12 +167,6 @@ export default {
         }
         console.log(this.review.actors)
       }
-  },
-  created() {
-      this.show.actors.forEach(element => {
-          this.selectedactor.push(true)
-      });
-      this.selectedactor.push(true)
   }
 };
 </script>
