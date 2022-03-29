@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <show-header :heading="heading"></show-header>
-    <my-review :seasonShowName="seasonShowName" seasonShow="seasonShow"></my-review>
+    <my-review :seasonShowName="seasonShowName" :seasonShow="seasonShow"></my-review>
     <show-info :info="info" :actor="actor" :description="description"></show-info>
     <word-cloud></word-cloud>
     <comment :previewReview="previewReview"></comment>
@@ -76,8 +76,6 @@ export default {
       "1103",
       (response) => {
         this.seasonShow = response.data.data;
-        console.log(this.seasonShow);
-        console.log(this.seasonShowName);
       },
       (error) => {
         console.log(error);
