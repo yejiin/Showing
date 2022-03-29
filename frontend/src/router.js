@@ -23,7 +23,7 @@ export default new Router({
       },
     },
     {
-      path: "/show",
+      path: "/show/:showId",
       name: "ShowDetail",
       components: {
         header: Header,
