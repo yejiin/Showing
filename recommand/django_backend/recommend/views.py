@@ -61,8 +61,13 @@ def create_tag(seasons):
     descriptions = []  # 공연 설명 리스트
     for id in performance_desc:
         description_tag = []
-        morpheme = kkma.pos(performance_desc[id])
-        description_tag.append(morpheme)
+        # print('설명 : ', performance_desc[id])
+
+        try:
+            morpheme = kkma.pos(performance_desc[id])
+            description_tag.append(morpheme)
+        except:
+            print('error', performance_desc[id])
 
         tag_list = []
         for sentence in description_tag:
@@ -143,7 +148,7 @@ def content_based_actor(seasons):
     df_merge_col = pd.merge(performances_df, seasons_df, left_on='last_season_id', right_on='id')
     df_merge_col.rename(columns={'id_x': 'performance_id'}, inplace=True)
     df_merge_col = df_merge_col[['performance_id', 'last_season_id', 'playdb_id']]
-    # print("df_merge_col : ", df_merge_col)
+    # print(df_merge_col)
 
     actors = Casting.objects.values('season_playdb_id', 'actor_playdb_id')
     df = pd.DataFrame(actors)
@@ -163,8 +168,8 @@ def content_based_actor(seasons):
     e = {}
     for i in df_merge_col['playdb_id']:
         # print(i)
-        e[df_merge_col[df_merge_col['playdb_id'] == i]['performance_id'].tolist(
-        )[0]] = actors_df[actors_df['season_playdb_id'] == i]['cast'].to_dict()
+        e[df_merge_col[df_merge_col['playdb_id'] == i]['performance_id'].tolist()[0]] = \
+            actors_df[actors_df['season_playdb_id'] == i]['cast'].to_dict()
 
     # print(e)
     # print(len(e))
@@ -180,6 +185,7 @@ def content_based_actor(seasons):
 
     # 코사인 유사도가 높은 순으로 정렬
     actors_sim_sort_ind = sim_actor.argsort()[:, ::-1]
+
     # 정렬된 행렬 저장 index 는 공연 id
     keys = df_merge_col['performance_id'].tolist()
     actors_sim_sort_ind = pd.DataFrame(actors_sim_sort_ind, index=keys)
@@ -188,41 +194,37 @@ def content_based_actor(seasons):
 
 
 def content_based_recommend(pid, tags_sim_sort_ind, actors_sim_sort_ind):
-
+    print('pid:', pid)
     # 함수 호출
     p = find_sim_performance(tags_sim_sort_ind, pid)
     pa = find_sim_performance(actors_sim_sort_ind, pid)
-    # print(p)
-    # print(pa)
+    # print("p:", p)
+    # print("pa: ", pa)
+    
+    if p == None:
+        p = []
+    if pa == None:
+        pa = []
+
+    pid_list = list(set(p + pa))
     performance = Performance.objects.get(pk=pid)
-    if p != None:
-        for sim_id in p:
-            recommend_performance = Performance.objects.get(pk=sim_id)
+    for sim_id in pid_list:
+        recommend_performance = Performance.objects.get(pk=sim_id)
 
-            recommend = Recommend()
-            recommend.performance = performance
-            recommend.recommend_performance = recommend_performance
-            recommend.save()
-
-    if pa != None:
-        for sim_id in pa:
-            recommend_performance = Performance.objects.get(pk=sim_id)
-
-            recommend = Recommend()
-            recommend.performance = performance
-            recommend.recommend_performance = recommend_performance
-            recommend.save()
+        recommend = Recommend()
+        recommend.performance = performance
+        recommend.recommend_performance = recommend_performance
+        recommend.save()
     # 특정 공연과 유사도가 높은 공연 top_n개 리턴
 
 
-def find_sim_performance(sorted_ind, pid, top_n=15):
-    print(pid)
-    print(sorted_ind)
+def find_sim_performance(sorted_ind, pid, top_n=30):
+
     if pid not in sorted_ind[0]:
         return
 
     # 원하는 개수만큼만 뽑기
-    similar_indexes = sorted_ind.loc[pid, : str(top_n)]
+    similar_indexes = sorted_ind.loc[pid, : top_n]
     # print(similar_indexes)
     similar_indexes = similar_indexes.values.flatten()
 
@@ -235,9 +237,5 @@ def find_sim_performance(sorted_ind, pid, top_n=15):
     keys = pd.DataFrame(sorted_ind.index)
     similar_indexes_id = keys.iloc[similar_indexes]
     similar_indexes_id = np.setdiff1d(similar_indexes_id, pid)
-    # print(type(similar_indexes_id))
-    # print(similar_indexes_id.split())
-    # print(list(similar_indexes_id))
 
-    # DataFrame 으로 바꿔서 리턴
     return similar_indexes_id.tolist()

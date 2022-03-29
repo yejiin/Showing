@@ -1,5 +1,6 @@
 package com.showing.backend.api.response;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class PerformanceRes {
 
@@ -28,6 +30,6 @@ public class PerformanceRes {
     // 러닝 여부 (0: 공연완료, 1: 공연중, 2: 공연예정)
     int lastSeasonProceedFlag;
 
-    float starPointAverage;
+    double starPointAverage;
 
 }

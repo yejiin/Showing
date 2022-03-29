@@ -18,7 +18,6 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     private final PerformanceRepository performanceRepository;
     private final SeasonService seasonService;
-    private final RatingService ratingService;
     private final ReviewService reviewService;
     private final RankingService rankingService;
 
@@ -32,14 +31,13 @@ public class PerformanceServiceImpl implements PerformanceService {
      */
     @Transactional
     @Override
-    public PerformanceDetailRes getPerformanceDetail(Long userId, Long performancdId) {
-        Performance performance = performanceRepository.findById(performancdId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
-        float starPointAvg = rankingService.getStarPointAverage(performancdId);
-        int rating = ratingService.getRating(userId, performancdId);
+    public PerformanceDetailRes getPerformanceDetail(Long performanceId) {
+        Performance performance = performanceRepository.findById(performanceId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
+        RankingRes rankingRes = rankingService.getRankingInfo(performanceId);
         SeasonRes seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
-        List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performancdId);
+        List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performanceId);
 
-        return PerformanceDetailRes.of(performance,starPointAvg,rating,seasonRes,previewReviewList);
+        return PerformanceDetailRes.of(performance,rankingRes,seasonRes,previewReviewList);
     }
 
     /*
