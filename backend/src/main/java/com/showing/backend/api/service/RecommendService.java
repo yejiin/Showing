@@ -1,5 +1,6 @@
 package com.showing.backend.api.service;
 
+import com.showing.backend.api.response.PerformanceByActorRes;
 import com.showing.backend.api.response.PerformanceRes;
 
 import java.util.List;
@@ -10,6 +11,6 @@ public interface RecommendService {
 
     List<PerformanceRes> getRecommendPerformanceListByUser(Long userId, int starPoint);
 
-    List<PerformanceRes> getFavoriteActorPerformanceListByUser(Long userId);
+    PerformanceByActorRes getFavoriteActorPerformanceListByUser(Long userId);
 
 }
