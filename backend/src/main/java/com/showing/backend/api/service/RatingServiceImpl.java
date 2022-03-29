@@ -2,6 +2,7 @@ package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.AddRatingReq;
 import com.showing.backend.api.request.ModifyRatingReq;
+import com.showing.backend.api.response.RatingRes;
 import com.showing.backend.common.exception.InvalidException;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
@@ -134,13 +135,21 @@ public class RatingServiceImpl implements RatingService {
      * 별점 조회
      */
     @Override
-    public int getRating(Long userId, Long performanceId) {
+    public RatingRes getRating(Long userId, Long performanceId) {
         StarPoint starPoint = starPointRepository.findByUser_IdAndPerformance_Id(userId, performanceId).orElse(null);
-        int rating = 0;
-        if (starPoint != null) {
-            rating = starPoint.getRating();
+        RatingRes ratingRes;
+        if (starPoint == null) {
+            ratingRes = RatingRes.builder()
+                    .starId((long)0)
+                    .rating(0)
+                    .build();
+        }else{
+            ratingRes = RatingRes.builder()
+                    .starId(starPoint.getId())
+                    .rating(starPoint.getRating())
+                    .build();
         }
-        return rating;
+        return ratingRes;
     }
 
     /*
