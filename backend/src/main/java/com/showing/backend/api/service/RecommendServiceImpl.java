@@ -48,7 +48,12 @@ public class RecommendServiceImpl implements RecommendService {
     public PerformanceByActorRes getFavoriteActorPerformanceListByUser(Long userId) {
         // 사용자의 선호 배우 상위 5명 중 한명 랜덤 조회
         Long randomFavoriteActor = actorService.getOneFavoriteActorId(userId);
-        return null;
+
+        // 배우가 출연한 공연 목록 조회
+        PerformanceByActorRes performanceByActorRes = new PerformanceByActorRes();
+        performanceByActorRes.setPerformanceInfoList(recommendRepository.getPerformanceListRandomFavoriteActorId(randomFavoriteActor));
+
+        return performanceByActorRes;
     }
 
 }
