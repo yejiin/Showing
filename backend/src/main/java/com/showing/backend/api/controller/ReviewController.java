@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 import static com.showing.backend.common.model.ResponseMessage.*;
 
 @Api(value = "리뷰 API", tags = {"review"})
@@ -32,8 +34,8 @@ public class ReviewController {
     @GetMapping("/users/{userId}/preview")
     public ResponseEntity<BaseResponseBody> ListPreviewReviewByUser(@PathVariable Long userId) {
         // userId 유효성 검사
-        if (userId.equals(JwtUtil.getCurrentId().orElse(-1L))) {
-            throw new AccessDeniedException("Access denied");
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
+            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_REVIEW, reviewService.getPreviewReviewListByUserId(userId)));
@@ -48,8 +50,8 @@ public class ReviewController {
     @GetMapping("/users/{userId}")
     public ResponseEntity<BaseResponseBody> ListReviewByUser(@PathVariable Long userId) {
         // userId 유효성 검사
-        if (userId.equals(JwtUtil.getCurrentId().orElse(-1L))) {
-            throw new AccessDeniedException("Access denied");
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
+            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_REVIEW, reviewService.getReviewListByUserId(userId)));
@@ -84,7 +86,7 @@ public class ReviewController {
             @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
     @GetMapping("/{reviewId}")
-    public ResponseEntity<BaseResponseBody> DetailReview(@PathVariable Long reviewId) {
+    public ResponseEntity<BaseResponseBody> detailReview(@PathVariable Long reviewId) {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_REVIEW, reviewService.getReviewDetail(reviewId)));
     }
 
@@ -98,7 +100,7 @@ public class ReviewController {
     public ResponseEntity<BaseResponseBody> addReview(@RequestBody ReviewReq req) {
         // userId 유효성 검사
         Long userId = req.getUserId();
-        if (userId == null || userId.equals(JwtUtil.getCurrentId().orElse(-1L))) {
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
             throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 
@@ -116,7 +118,7 @@ public class ReviewController {
     public ResponseEntity<BaseResponseBody> modifyReview(@PathVariable Long reviewId, @RequestBody ReviewReq req) {
         // userId 유효성 검사
         Long userId = req.getUserId();
-        if (userId == null || userId.equals(JwtUtil.getCurrentId().orElse(-1L))) {
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
             throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 

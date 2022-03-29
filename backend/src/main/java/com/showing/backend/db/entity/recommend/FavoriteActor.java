@@ -3,14 +3,16 @@ package com.showing.backend.db.entity.recommend;
 import com.showing.backend.db.entity.BaseTimeEntity;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.performance.Actor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "favorite_actor")
 public class FavoriteActor extends BaseTimeEntity {
 

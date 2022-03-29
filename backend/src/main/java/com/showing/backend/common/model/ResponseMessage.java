@@ -20,6 +20,8 @@ public class ResponseMessage {
     public static final String INVALID_TOKEN = "유효하지 않은 리프레쉬 토큰";
     public static final String LOGIN = "로그인 성공";
     public static final String LOGOUT = "로그아웃 성공";
+    public static final String GET_USER_INFO = "유저 정보 조회 성공";
+    public static final String MODIFY_USER_INFO = "유저 정보 수정 성공";
 
     // Review
     public static final String ADD_REVIEW = "리뷰 추가 성공";
@@ -33,6 +35,12 @@ public class ResponseMessage {
     public static final String DELETE_RATING = "별점 삭제 성공";
 
     // Performance
+    public static final String GET_PERFORMANCE = "공연 정보 조회 성공";
+    public static final String GET_PERFORMANCE_LIST = "공연 목록 조회 성공";
+    public static final String GET_SEASON_LIST = "시즌 목록 조회 성공";
     public static final String GET_SEASON = "시즌 정보 조회 성공";
+
+    // Recommend
+    public static final String GET_RECOMMEND = "추천목록 조회 성공";
 
 }
