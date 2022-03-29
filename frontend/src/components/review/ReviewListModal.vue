@@ -1,10 +1,10 @@
 <template>
 <div>
-  <base-button block type="white" class=" mb-3" @click="modals.modal1 = true">
+  <base-button block type="white" class=" mb-3 modalbutton inline" @click="modals.modal1 = true">
                 리뷰 목록
             </base-button>
             <modal :show.sync="modals.modal1"
-                    modal-classes="modal-dialog modal-lg">
+                    modal-classes="modal-dialog">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 &times;
                 </button>
@@ -12,15 +12,15 @@
                 <br>
                 <div>
                     <h3 class="inline">{{show.title}}</h3>
-                    <select name="season" id="season">
-                        <option v-for="i in seasons" :key="i" :value="i.id">{{i.name}}</option>
+                    <select name="season" id="season" @change="getSeasonReview($event)">
+                        <option v-for="i in seasons" :key="i" :value="i.seasonId">{{i.startDate}}~{{i.endDate}}</option>
                     </select>
                 </div>
                 <br>
-                <div v-for="review in reviews" :key="review.id">
+                <div v-for="review in reviews" :key="review.reviewId">
                     <div id="reviewHeader" class="review">
                         <div class="inreview">
-                            <div class="left"><h5 class="bold mb-1" >{{review.date}}</h5></div>
+                            <div class="left"><h5 class="bold mb-1" >{{review.viewDate}}</h5></div>
                             <div>
                                 <a href="" class="udpatedelete">
                                     <i class="fa fa-pencil"></i>
@@ -33,12 +33,12 @@
                                 </a>
                             </div>
                             <div class="title" style="clear:both">
-                                <img :src="review.author.img" alt="profile image" class="profile inline"/>
-                                <p class="username inline">{{review.author.nickname}}</p>
+                                <img :src="review.userImage" alt="profile image" class="profile inline"/>
+                                <p class="username inline">{{review.userName}}</p>
                             </div>
                             <div class="mb-2">
                                 <label for="casing" class="bold rightmargin inline"><h6 class="bold rightmargin inline">캐스팅</h6></label>
-                                <b-badge pill variant="primary" v-for="(index, key) in review.casting" :key="key">{{index}}</b-badge>
+                                <b-badge pill variant="primary" v-for="(index, key) in review.castingActorNameList" :key="key">{{index}}</b-badge>
                             </div>
                             <div class="">
                                 <p class="content">{{review.content}}</p>
@@ -54,6 +54,7 @@
 
 <script>
 import Modal from "@/components/Modal.vue";
+import {getAllReview} from "@/api/review.js"
 export default {
   components: {
     Modal
@@ -67,8 +68,8 @@ export default {
         modal1: false,
       },
       show : {
+        id : '',
         title : '지킬 앤 하이드',
-        img : 'http://ticketimage.interpark.com/PlayDictionary/DATA/PlayDic/PlayDicUpload/040001/21/08/0400012108_167640_01.532.gif',
         startDate : "2022.01.01",
         endDate : "2022.05.03",
       },
@@ -86,43 +87,31 @@ export default {
               name : "2022.01.01~2022.03.04"
           }
       ],
-      reviews:[
-          {
-              id : 1,
-              date: "2022.03.04",
-              author: {
-                  nickname : '지앤하',
-                  img : "http://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_640x640.jpg"
-              },
-              casting : ['홍길동', '룰루루'],
-              content : "거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 "
-
-          },
-          {
-              id : 2,
-              date: "2022.03.04",
-              author: {
-                  nickname : '지앤하',
-                  img : "http://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_640x640.jpg"
-              },
-              casting : ['홍길동', '룰루루'],
-              content : "거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 "
-
-          },
-          {
-              id : 3,
-              date: "2022.03.04",
-              author: {
-                  nickname : '지앤하',
-                  img : "http://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_640x640.jpg"
-              },
-              casting : ['홍길동', '룰루루'],
-              content : "거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 마싯다 거봉 "
-
-          }
-      ],
+      reviews:[]
     };
-  }
+  },
+  methods : {
+    
+  },
+  created() {
+    var s = 1;
+    getAllReview(s, response =>{
+      
+      console.log(response.data)
+      this.reviews = response.data.data
+      this.show.title = response.data.data[0].performanceName
+      this.show.id = response.data.data[0].performanceId
+
+      console.log(this.seasons)
+    }, fail=>{
+      console.log(fail)
+    })
+    console.log("이거슨 저장된 리뷰")
+    console.log(this.reviews)
+    
+
+  },
+  
 };
 </script>
 
@@ -209,5 +198,9 @@ select#season {
     margin-left:4%;
     margin-right:4%;
     margin-bottom: 1%;
+}
+.modalbutton {
+  width : 20%;
+
 }
 </style>
