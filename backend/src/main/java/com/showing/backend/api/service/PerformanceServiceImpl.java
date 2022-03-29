@@ -1,9 +1,6 @@
 package com.showing.backend.api.service;
 
-import com.showing.backend.api.response.PerformanceDetailRes;
-import com.showing.backend.api.response.PerformanceRes;
-import com.showing.backend.api.response.PreviewReviewByPerformanceRes;
-import com.showing.backend.api.response.SeasonRes;
+import com.showing.backend.api.response.*;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.db.entity.performance.Performance;
@@ -14,26 +11,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PerformanceServiceImpl implements PerformanceService {
 
     private final PerformanceRepository performanceRepository;
+    private final SeasonService seasonService;
+    private final RatingService ratingService;
+    private final ReviewService reviewService;
+    private final RankingService rankingService;
 
     @Override
     public List<Long> getPerformanceIdListByUserAndStarPoint(Long userId, int starPoint) {
         return performanceRepository.findByUserIdAndStarPointGreaterThanEqual(userId, starPoint);
     }
-
-    private final PerformanceRepository performanceRepository;
-    private final SeasonService seasonService;
-    private final RatingService ratingService;
-    private final ReviewService reviewService;
-    private final RankingService rankingService;
 
     /*
      * 공연 상세 조회
