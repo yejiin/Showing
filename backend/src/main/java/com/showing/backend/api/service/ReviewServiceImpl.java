@@ -67,7 +67,6 @@ public class ReviewServiceImpl implements ReviewService {
         Performance performance = performanceRepository.findById(performanceId).orElseThrow(()->new NotFoundException(PERFORMANCE_NOT_FOUND));
         // userid 유저가 performanceId 공연에 작성한 리뷰 리스트
         List<Review> reviewList = reviewRepository.getReviewByPerformanceAndUser(performanceId,userId);
-        System.out.println(reviewList.size());
         List<ReviewActor> reviewActorList;
         List<String> reviewActorNameList;
         List<ReviewByUserRes> resList = new ArrayList<>();
