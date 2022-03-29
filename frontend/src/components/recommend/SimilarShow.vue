@@ -1,25 +1,30 @@
 <template>
   <div>
-    <h6>캐스팅</h6>
     <!-- carousel area -->
-    <b-card-group deck class="mb-0 comment_list">
+    <b-card-group deck class="mb-0">
       <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
       <i class="ni ni-bold-left arrow"></i>
       <b-card
         v-for="(item, index) in currentPageCards"
         :key="index"
         class="mr-0 mb-2"
+        img-src="https://picsum.photos/300/400/?image=25"
+        img-alt="Image"
+        img-top
         tag="article"
-        style="max-width: 20rem; border: 0px"
+        style="max-width: 20rem"
       >
-        <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
+        <!-- card content -->
+        {{ similarRecommend[index].performanceName }}&nbsp;
+        <b-badge class="mr-1" pill variant="light"
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarRecommend[index].starPointAverage }}</b-badge
+        >
+        <b-badge pill variant="primary">공연중</b-badge>
         <br />
-        <b-card-text>{{ actor[index].role }}</b-card-text>
-        <h5 class="actor_name">{{ actor[index].actorName }}</h5>
+        {{ similarRecommend[index].lastSeasonStartDate }} ~ {{ similarRecommend[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
-    <br />
     <!-- pagination area -->
     <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
     <div class="pagination" v-if="cards.length > cardsPerPage">
@@ -30,11 +35,10 @@
 </template>
 
 <script>
+import { getSimilarRecommend } from "@/api/recommend.js";
+
 export default {
-  name: "ActorList",
-  props: {
-    actor: Array,
-  },
+  name: "SimilarShow",
   data() {
     return {
       cards: [
@@ -53,9 +57,22 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 6,
+      cardsPerPage: 4,
       currentPageIndex: 0,
+      similarRecommend: [],
     };
+  },
+  async created() {
+    await getSimilarRecommend(
+      "1",
+      (response) => {
+        this.similarRecommend = response.data.data;
+        // console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
   computed: {
     currentPageCards() {
@@ -115,6 +132,20 @@ export default {
   height: 13px;
 }
 
+.card {
+  border: 0px;
+}
+
+.card-img-top {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.card-body {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .arrow {
   margin-top: 10%;
   color: #9badf6;
@@ -122,15 +153,5 @@ export default {
 
 .arrow_right {
   margin-left: 1%;
-}
-
-.card-text {
-  color: black;
-  text-align: center;
-}
-
-.actor_name {
-  margin-top: 0px;
-  text-align: center;
 }
 </style>

@@ -15,11 +15,11 @@
         style="max-width: 20rem"
       >
         <!-- card content -->
-        공연 이름&nbsp;
+        공연이름&nbsp;
         <b-badge class="mr-1" pill variant="light"><b-icon icon="star-fill" scale="0.8"></b-icon> 별점</b-badge>
         <b-badge pill variant="primary">공연중</b-badge>
         <br />
-        기간
+        시작일 ~ 종료일
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -57,7 +57,6 @@ export default {
       currentPageIndex: 0,
     };
   },
-
   computed: {
     currentPageCards() {
       this.createPages();
