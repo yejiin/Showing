@@ -3,6 +3,8 @@ package com.showing.backend.api.response;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -17,6 +19,6 @@ public class PerformanceByActorRes {
     String actorName;
 
     @ApiModelProperty(name = "공연 정보")
-    PerformanceRes performanceInfo;
+    List<PerformanceRes> performanceInfoList;
 
 }
