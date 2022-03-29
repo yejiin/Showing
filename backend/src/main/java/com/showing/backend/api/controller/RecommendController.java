@@ -1,16 +1,18 @@
 package com.showing.backend.api.controller;
 
 import com.showing.backend.api.service.RecommendService;
+import com.showing.backend.common.auth.JwtUtil;
+import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.common.exception.handler.ErrorResponse;
 import com.showing.backend.common.model.BaseResponseBody;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.showing.backend.common.model.ResponseMessage.GET_RECOMMEND;
 
@@ -44,6 +46,11 @@ public class RecommendController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
     @GetMapping("/users/{userId}")
     public ResponseEntity<BaseResponseBody> getRecommendPerformanceListByUser(@PathVariable Long userId) {
+        // userId 유효성 검사
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
+            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
+        }
+
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RECOMMEND, recommendService.getRecommendPerformanceListByUser(userId, 8)));
     }
 
