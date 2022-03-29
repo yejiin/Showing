@@ -16,6 +16,9 @@ public class PerformanceDetailRes {
     @ApiModelProperty(name = "공연 id", example = "1")
     Long performanceId;
 
+    @ApiModelProperty(name = "공연 이름", example = "데스노트")
+    String performanceName;
+
     @ApiModelProperty(name = "공연 이미지", example = "http://k.kakaocdn.net/dn/")
     String performanceImage;
 
@@ -34,6 +37,7 @@ public class PerformanceDetailRes {
     public static PerformanceDetailRes of(Performance performance, float starPointAvg, SeasonRes seasonRes, List<PreviewReviewByPerformanceRes> previewReviewList){
         PerformanceDetailRes res = new PerformanceDetailRes();
         res.setPerformanceId(performance.getId());
+        res.setPerformanceName(performance.getPerformanceName());
         res.setPerformanceImage(performance.getPerformanceImage());
         res.setPerformanceType(performance.getPerformanceType());
         res.setStarPointAverage(starPointAvg);
