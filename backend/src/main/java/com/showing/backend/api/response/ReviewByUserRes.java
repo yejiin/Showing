@@ -23,7 +23,7 @@ public class ReviewByUserRes {
     @ApiModelProperty(name = "리뷰 내용", example = "리뷰입니다.")
     String content;
 
-    @ApiModelProperty(name = "리뷰 작성일", example = "2022-03-04")
-    LocalDate reviewCreateDate;
+    @ApiModelProperty(name = "공연 관람일", example = "2022-03-04")
+    LocalDate viewDate;
 
 }

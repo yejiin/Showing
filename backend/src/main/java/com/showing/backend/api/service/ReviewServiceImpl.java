@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                                          .performanceId(performance.getId())
                                                                          .performanceName(performance.getPerformanceName())
                                                                          .performanceImage(performance.getPerformanceImage())
-                                                                         .reviewCreateDate(review.getCreateDate().toLocalDate())
+                                                                         .viewDate(review.getPerformanceDate().toLocalDate())
                                                                          .build();
 
             previewReviewList.add(previewReview);
@@ -89,7 +88,7 @@ public class ReviewServiceImpl implements ReviewService {
                     .userNickName(review.getUser().getNickname())
                     .reviewActorNameList(reviewActorNameList)
                     .content(review.getReviewContent())
-                    .reviewCreateDate(LocalDate.from(review.getPerformanceDate()))
+                    .viewDate(LocalDate.from(review.getPerformanceDate()))
                     .build();
 
             resList.add(reviewRes);
@@ -151,7 +150,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                            .performanceName(performance.getPerformanceName())
                                                            .content(review.getReviewContent())
                                                            .castingActorNameList(reviewActorNameList)
-                                                           .reviewCreateDate(review.getCreateDate().toLocalDate())
+                                                           .viewDate(review.getPerformanceDate().toLocalDate())
                                                            .build();
 
             reviewResList.add(reviewRes);
