@@ -31,30 +31,60 @@ def insert_on_duplicate(table, conn, keys, data_iter):
 
 # query = "SELECT * from season"
 # season_db = pd.read_sql_query(query, conn)
-# season_db.to_csv(r"./seasons.csv", index=False, encoding="utf-8-sig")
+# season_db.to_csv(r"./시즌들어간거.csv", index=False, encoding="utf-8-sig")
 
-df_all = pd.read_csv("./seasons_noid.csv")
+df1 = pd.read_csv("./시즌들어간거.csv")
+df_all = pd.read_csv("./시즌합친거.csv") 
 
 start_time = time.time()
 
+indexList = []
+
+for i in range(0,len(df1)+1):
+  id = df1.loc[i]["playdb_id"]
+  print(i,"번째")
+  print(id)
+  if (df_all["playdb_id"]==id).any():
+    # print(id)
+    idx = df_all.loc[df_all["playdb_id"]==id].index
+    print(idx)
+  # indexList.append(idx)
+    df_all = df_all.drop(idx,inplace=True)
+
+# id = df1.loc[1]["playdb_id"]
+# print(id)
+# idx = df_all.loc[df_all["playdb_id"]==id]
+
+
+# for item in indexList:
+  # df2.drop(item,inplace=True)
+
+
+
+
+df_all.to_csv("./시즌안들어간거.csv",index=False, encoding="utf-8-sig",  header=True)
 # df_all['id']=None
 
-# df_all.to_csv("./seasons_noid.csv",index=False, encoding="utf-8-sig",  header=True)
-
+# df_all["description"]= df_all["description"].replace(r'\\n','', regex=True)
+# df_all.to_csv("./seasons_noid_noenter.csv",index=False, encoding="utf-8-sig",  header=True)
 # 로우 별 db 저장
 # for i in range(0, len(df_all.index) + 1):
-df = df_all.iloc[0:1]
-try:
-        df.to_sql(
-            name="season",
-            con=db_connection,
-            if_exists="append",
-            index=False,
-            method="multi",
-        )
-except Exception as e:
-    print("에러 발생 : ")
-    print(df)
+
+  # df_all["id"][i]=i+1802
+# df = df_all.iloc[1:2]
+# try:
+#         df.to_sql(
+#             name="season",
+#             con=db_connection,
+#             if_exists="append",
+#             index=False,
+#             # method="multi",
+#         )
+# except Exception as e:
+#     print("에러 발생 : ")
+#     print(df)
+# df_all.to_csv("./seasons_play_newid.csv",index=False, encoding="utf-8-sig",  header=True)
+
 
 # 전체 db 저장
 # try:
