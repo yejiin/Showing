@@ -6,6 +6,7 @@ import Header from "./layout/Header";
 
 import MainPage from "./views/MainPage.vue";
 import ShowDetail from "./views/ShowDetail.vue";
+import Callback from "./views/Callback.vue";
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
         default: ShowDetail,
         footer: AppFooter,
       },
+    },
+    {
+      path: "/callback",
+      name: "Callback",
+      component: Callback,
     },
   ],
   scrollBehavior: (to) => {
