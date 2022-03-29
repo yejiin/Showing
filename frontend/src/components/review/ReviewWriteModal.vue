@@ -14,7 +14,7 @@
                   <div style="width:100%; position:relative">
                     <div class="showInfo left mb-3">
                       <div>
-                        <h3>{{show.title}}</h3>
+                        <h3>{{performance}}</h3>
                         <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
                       </div>
                       <div class="form-group picker" >
@@ -45,7 +45,7 @@
                     </div>
                     
                     <div class="right mb-3">
-                      <img class="showimage" :src="show.img" alt="show image"/>
+                      <img class="showimage" :src="show.seasonImage" alt="show image"/>
                     </div>
                   </div>
                   <div class="cast">
@@ -81,7 +81,6 @@
 import Modal from "@/components/Modal.vue";
 import Datepicker from "vuejs-datepicker";
 import {addMyReview} from "@/api/review.js";
-import {getSeasonShow} from "@/api/show.js";
 
 export default {
   name : 'ReviewWriteModal',
@@ -90,24 +89,21 @@ export default {
     Datepicker,
   },
   props: {
-    type: String,
-    seasonId : String,
-    userId : String,
-  },
-  data() {
-    return {
-      modals: {
-        modal1: false,
-      },
-      show : {
-        title : '',
-        img : '',
+    performance : String,
+    show : {
+      seasonImage : '',
         startDate : "",
         endDate : "",
         date : '',
         time : '',
         location : '',
         actors : []
+    },
+  },
+  data() {
+    return {
+      modals: {
+        modal1: false,
       },
       review :{
           seasonId : Number(this.seasonId),
@@ -167,11 +163,7 @@ export default {
         time = time +":00"
         this.review.showTime = time
       },
-      getSeasonShow,
   },
-  created() {
-    this.show = this.getSeasonShow(this.seasonId)
-  }
 };
 </script>
 
