@@ -13,14 +13,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CastingRepositoryCustomImpl implements CastingRepositoryCustom{
 
-    private final JPAQueryFactory jpaQueryFactory; // check
+    private final JPAQueryFactory jpaQueryFactory;
 
     QActor qActor = QActor.actor;
     QCasting qCasting = QCasting.casting;
 
     @Override
     public Optional<List<ActorRes>> getCastingBySeason(Long seasonPlaydbId) {
-        List<ActorRes> res = jpaQueryFactory.select(Projections.constructor(ActorRes.class,qActor.id, qCasting.role, qActor.actorImage, qActor.actorName))
+        List<ActorRes> res = jpaQueryFactory.select(Projections.constructor(ActorRes.class,qActor.id, qCasting.id, qCasting.role, qActor.actorImage, qActor.actorName))
                 .from(qCasting).join(qActor)
                 .on(qActor.playdbId.eq(qCasting.actor.playdbId))
                 .where(qCasting.season.playdbId.eq(seasonPlaydbId))
