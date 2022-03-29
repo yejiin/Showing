@@ -43,7 +43,6 @@ public class ReviewServiceImpl implements ReviewService {
 
             PreviewReviewByUserRes previewReview = PreviewReviewByUserRes.builder()
                                                                          .reviewId(review.getId())
-                                                                         .userId(userId)
                                                                          .performanceId(performance.getId())
                                                                          .performanceName(performance.getPerformanceName())
                                                                          .performanceImage(performance.getPerformanceImage())
