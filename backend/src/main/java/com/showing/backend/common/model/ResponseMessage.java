@@ -35,6 +35,12 @@ public class ResponseMessage {
     public static final String DELETE_RATING = "별점 삭제 성공";
 
     // Performance
+    public static final String GET_PERFORMANCE = "공연 정보 조회 성공";
+    public static final String GET_PERFORMANCE_LIST = "공연 목록 조회 성공";
+    public static final String GET_SEASON_LIST = "시즌 목록 조회 성공";
     public static final String GET_SEASON = "시즌 정보 조회 성공";
+
+    // Recommend
+    public static final String GET_RECOMMEND = "추천목록 조회 성공";
 
 }
