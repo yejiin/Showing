@@ -14,17 +14,8 @@ public class ReviewByUserRes {
     @ApiModelProperty(name = "리뷰 Id", example = "1")
     Long reviewId;
 
-    @ApiModelProperty(name = "리뷰 작성 사용자 Id", example = "1")
-    Long userId;
-
     @ApiModelProperty(name = "리뷰 작성자 이름", example = "홍길동")
-    String userName;
-
-    @ApiModelProperty(name = "공연 Id", example = "1")
-    Long performanceId;
-
-    @ApiModelProperty(name = "공연 이름", example = "절벽")
-    String performanceName;
+    String userNickName;
 
     @ApiModelProperty(name = "리뷰에 입력된 캐스팅 배우 이름 리스트", example = "['홍길동', '고길동']")
     List<String> reviewActorNameList;
