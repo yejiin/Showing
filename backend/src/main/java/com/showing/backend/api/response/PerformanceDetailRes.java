@@ -25,22 +25,18 @@ public class PerformanceDetailRes {
     @ApiModelProperty(name = "공연 평균 별점", example = "1")
     float starPointAverage;
 
-    @ApiModelProperty(name = "공연 별점", example = "3")
-    int rating;
-
     @ApiModelProperty(name = "공연 최근 시즌 정보")
     SeasonRes seasonRes;
 
     @ApiModelProperty(name = "공연 리뷰 목록 미리보기")
     List<PreviewReviewByPerformanceRes> previewReviewList;
 
-    public static PerformanceDetailRes of(Performance performance, float starPointAvg, int rating, SeasonRes seasonRes, List<PreviewReviewByPerformanceRes> previewReviewList){
+    public static PerformanceDetailRes of(Performance performance, float starPointAvg, SeasonRes seasonRes, List<PreviewReviewByPerformanceRes> previewReviewList){
         PerformanceDetailRes res = new PerformanceDetailRes();
         res.setPerformanceId(performance.getId());
         res.setPerformanceImage(performance.getPerformanceImage());
         res.setPerformanceType(performance.getPerformanceType());
         res.setStarPointAverage(starPointAvg);
-        res.setRating(rating);
         res.setSeasonRes(seasonRes);
         res.setPreviewReviewList(previewReviewList);
 
