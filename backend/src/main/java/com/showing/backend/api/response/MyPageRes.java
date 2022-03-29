@@ -48,6 +48,6 @@ public class MyPageRes {
     private Double ratingAvg;
 
     @ApiModelProperty(name = "평가 리스트", example = "")
-    private List<MyPerformanceRes> performanceList;
+    private List<PreviewReviewByUserRes> reviewList;
 
 }

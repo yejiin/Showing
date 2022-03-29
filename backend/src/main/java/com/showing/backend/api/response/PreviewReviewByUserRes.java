@@ -13,9 +13,6 @@ public class PreviewReviewByUserRes {
     @ApiModelProperty(name = "리뷰 Id", example = "1")
     Long reviewId;
 
-    @ApiModelProperty(name = "리뷰 작성 사용자 Id", example = "1")
-    Long userId;
-
     @ApiModelProperty(name = "공연 Id", example = "1")
     Long performanceId;
 

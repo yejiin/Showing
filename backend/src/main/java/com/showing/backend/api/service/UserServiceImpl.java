@@ -1,10 +1,7 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ModifyUserInfoReq;
-import com.showing.backend.api.response.FavActorRes;
-import com.showing.backend.api.response.FavTagRes;
-import com.showing.backend.api.response.MyPageRes;
-import com.showing.backend.api.response.TokenRes;
+import com.showing.backend.api.response.*;
 import com.showing.backend.common.auth.JwtTokenProvider;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
@@ -30,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final TagService tagService;
     private final ActorService actorService;
     private final RatingService ratingService;
+    private final ReviewService reviewService;
     private final UserRepository userRepository;
 
     /*
@@ -145,6 +143,7 @@ public class UserServiceImpl implements UserService {
         Long PlayCnt = ratingService.getRatingCount(user,2);
         List<Long> ratingCntList = ratingService.getRatingRatio(user);
         Double ratingAvg = ratingService.getRatingAvg(user);
+        List<PreviewReviewByUserRes> reviewByUserResList = reviewService.getPreviewReviewListByUserId(user.getId());
 
         return MyPageRes.builder()
                 .nickName(user.getNickname())
@@ -157,6 +156,7 @@ public class UserServiceImpl implements UserService {
                 .playCnt(PlayCnt)
                 .ratingCntList(ratingCntList)
                 .ratingAvg(ratingAvg)
+                .reviewList(reviewByUserResList)
                 .build();
     }
 
