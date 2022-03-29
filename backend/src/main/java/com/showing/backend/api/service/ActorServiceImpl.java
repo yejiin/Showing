@@ -63,7 +63,7 @@ public class ActorServiceImpl implements ActorService {
     public Actor getOneFavoriteActorId(Long userId) {
         List<Actor> favoriteActorIdList = favoriteActorRepository.findTopCountByUserId(5, userId);
 
-        int index = (int) (Math.random() * 5);
+        int index = (int) (Math.random() * favoriteActorIdList.size());
 
         return favoriteActorIdList.get(index);
     }
