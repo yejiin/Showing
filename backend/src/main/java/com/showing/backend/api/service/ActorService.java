@@ -16,4 +16,6 @@ public interface ActorService {
 
     List<FavActorRes> getFavoriteActorList(User user);
 
+    Long getOneFavoriteActorId(Long userId);
+
 }
