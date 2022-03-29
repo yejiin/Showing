@@ -76,4 +76,22 @@ public class PerformanceController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_SEASON, seasonService.getSeasonInfo(seasonId)));
     }
 
+
+    @ApiOperation(value = "추천 공연, 선호배우 공연, 뮤지컬 평점랭킹, 연극 평점랭킹", notes = "메인화면에 필요한 공연의 정보를 보여준다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = GET_PERFORMANCE_LIST),
+            @ApiResponse(code = 400, message = "실패", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ErrorResponse.class)
+    })
+    @GetMapping("/ranking/{userId}")
+    public ResponseEntity<BaseResponseBody> getMainPerformanceList(
+            @PathVariable("userId") @ApiParam(value = "접속한 유저의 id", required = true) Long userId){
+        if(!Objects.equals(userId, JwtUtil.getCurrentId().orElse(null)) || userId == null)
+            throw new InvalidException(ErrorCode.ACCESS_DENIED);
+        List<PerformanceRes> musicalList = performanceService.getPerformanceListByStarPointAvg(1);
+        List<PerformanceRes> playList = performanceService.getPerformanceListByStarPointAvg(2);
+
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE_LIST, new MainPerformanceListRes(musicalList, playList)));
+    }
 }
