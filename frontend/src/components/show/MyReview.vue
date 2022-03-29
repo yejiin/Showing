@@ -18,6 +18,10 @@
 <script>
 export default {
   name: "MyReview",
+  props: {
+    seasonShowName: String,
+    seasonShow: Object,
+  },
 };
 </script>
 
