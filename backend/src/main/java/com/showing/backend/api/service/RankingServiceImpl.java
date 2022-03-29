@@ -14,8 +14,8 @@ public class RankingServiceImpl implements RankingService{
      * 특정 공연의 평균 별점 조회
      */
     @Override
-    public float getStarPointAverage(Long performanceId) {
-        return rankingRepository.findAverageRatingByPerformanceId(performanceId).orElse((float)0.0); //
+    public double getStarPointAverage(Long performanceId) {
+        return rankingRepository.findAverageRatingByPerformanceId(performanceId).orElse(0.0); //
     }
 
 }

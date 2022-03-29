@@ -12,6 +12,6 @@ public interface RankingRepository extends JpaRepository<Ranking, Long> {
     /*
      * 공연의 평균 별점 조회
      */
-    Optional<Float> findAverageRatingByPerformanceId(Long performanceId);
+    Optional<Double> findAverageRatingByPerformanceId(Long performanceId);
 
 }
