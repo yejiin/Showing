@@ -5,7 +5,7 @@
             </base-button>
             <modal :show.sync="modals.modal1">
                 <!-- <div class="backArrow"> -->
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="modals.modal1 = false">
                     <!-- <i class="ni ni-bold-left"></i> -->
                     &times;
                   </button>
@@ -61,8 +61,8 @@
                   <div class="cast">
                         <label class="bold left">캐스팅</label>
                         <label style="font-size:6px;margin-left:10px">관람한 공연의 캐스트를 선택해주세요</label><br>
-                      <span class="badge badge-pill badge-warning casting"
-                               v-for="(index, key) in show.actors" :key="key" 
+                      <span  class="badge badge-pill casting badge-primary"
+                               v-for="(index, key) in show.actors" :key="key" :id="index.id"
                                @click="selectactors(index.id)"
                       >
                         {{index.name}}
@@ -75,7 +75,11 @@
                       </p>
                   </div>
                 </div>
-                
+                <template slot="footer">
+                    <base-button type="white">Save</base-button>
+                    <base-button type="link" class="ml-auto" @click="modals.modal1 = false">Cancle
+                    </base-button>
+                </template>
             </modal>
 </div>
 </template>
@@ -152,16 +156,37 @@ export default {
       },
       review :{
           actors:[],
-      }
+      },
+      selectedactor:[]
     }
   },
   methods :{
       selectactors(id){
-        //   뱃지 색깔 바꾸기
-        this.review.actors.push(id)
+        // 클릭된 블록
+        let cur = document.getElementById(id)
+        // 해당 블록이 이미 선택되었으면(warning으로 변해 있으면)
+        if(cur.className=="badge badge-pill casting badge-warning"){
+          // 다시 primary로 변경하고 선택된 actors에서 뺌
+          cur.className = "badge badge-pill casting badge-primary"
+          for(var i = 0; i<this.review.actors.length;i++){
+            if(this.review.actors[i]===id){
+              this.review.actors.splice(i, 1)
+              i--
+            }
+          }
+        }
+        else { // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
+          cur.className = "badge badge-pill casting badge-warning"
+           this.review.actors.push(id)
+        }
         console.log(this.review.actors)
-        
       }
+  },
+  created() {
+      this.show.actors.forEach(element => {
+          this.selectedactor.push(true)
+      });
+      this.selectedactor.push(true)
   }
 };
 </script>
