@@ -33,4 +33,17 @@ public class FavoriteActorRepositoryCustomImpl implements FavoriteActorRepositor
 
         return Optional.ofNullable(res);
     }
+
+    /**
+     * favorite_actor table 에서 유저의 선호 배우리스트를 weight 내림차순으로 count개 만큼 조회한다.
+     */
+    @Override
+    public List<Long> findTopCountByUserId(int count, Long userId) {
+        return jpaQueryFactory.select(qFavoriteActor.actor.id)
+                              .from(qFavoriteActor)
+                              .where(qFavoriteActor.user.id.eq(userId))
+                              .orderBy(qFavoriteActor.weight.desc())
+                              .limit(count)
+                              .fetch();
+    }
 }
