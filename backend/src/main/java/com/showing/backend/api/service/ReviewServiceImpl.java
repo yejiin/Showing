@@ -10,6 +10,7 @@ import com.showing.backend.db.entity.review.Review;
 import com.showing.backend.db.entity.review.ReviewActor;
 import com.showing.backend.db.repository.UserRepository;
 import com.showing.backend.db.repository.performance.CastingRepository;
+import com.showing.backend.db.repository.performance.PerformanceRepository;
 import com.showing.backend.db.repository.performance.SeasonRepository;
 import com.showing.backend.db.repository.review.ReviewActorRepository;
 import com.showing.backend.db.repository.review.ReviewRepository;
@@ -17,14 +18,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.showing.backend.common.exception.handler.ErrorCode.PERFORMANCE_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class ReviewServiceImpl implements ReviewService {
+
+    private final PerformanceRepository performanceRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final SeasonRepository seasonRepository;
@@ -55,16 +61,20 @@ public class ReviewServiceImpl implements ReviewService {
         return previewReviewList;
     }
 
+
     @Override
-    public List<ReviewByUserRes> getReviewListByUserId(Long userId) {
-        // userId 가 작성한 모든 리뷰 목록
-        List<Review> reviewList = reviewRepository.findByUserIdOrderByUpdateDateDesc(userId);
-        List<ReviewByUserRes> reviewResList = new ArrayList<>();
+    public List<ReviewByUserRes> getReviewListByPerformanceIdAndUserId(Long performanceId, Long userId) {
+
+        Performance performance = performanceRepository.findById(performanceId).orElseThrow(()->new NotFoundException(PERFORMANCE_NOT_FOUND));
+        // userid 유저가 performanceId 공연에 작성한 리뷰 리스트
+        List<Review> reviewList = reviewRepository.getReviewByPerformanceAndUser(performanceId,userId);
+        System.out.println(reviewList.size());
         List<ReviewActor> reviewActorList;
         List<String> reviewActorNameList;
+        List<ReviewByUserRes> resList = new ArrayList<>();
 
-        // 리뷰별로 반복
         for (Review review : reviewList) {
+
             // 리뷰 id로 리뷰에 작성되어있는 캐스팅 정보를 조회한다.
             reviewActorList = reviewActorRepository.findReviewActorsByReviewId(review.getId());
 
@@ -74,22 +84,18 @@ public class ReviewServiceImpl implements ReviewService {
                 reviewActorNameList.add(reviewActor.getCasting().getActor().getActorName());
             }
 
-            Performance performance = review.getSeason().getPerformance();
             ReviewByUserRes reviewRes = ReviewByUserRes.builder()
-                                                       .reviewId(review.getId())
-                                                       .userId(userId)
-                                                       .userName(review.getUser().getNickname())
-                                                       .performanceId(performance.getId())
-                                                       .performanceName(performance.getPerformanceName())
-                                                       .reviewActorNameList(reviewActorNameList)
-                                                       .content(review.getReviewContent())
-                                                       .reviewCreateDate(review.getCreateDate().toLocalDate())
-                                                       .build();
+                    .reviewId(review.getId())
+                    .userNickName(review.getUser().getNickname())
+                    .reviewActorNameList(reviewActorNameList)
+                    .content(review.getReviewContent())
+                    .reviewCreateDate(LocalDate.from(review.getPerformanceDate()))
+                    .build();
 
-            reviewResList.add(reviewRes);
+            resList.add(reviewRes);
         }
 
-        return reviewResList;
+        return resList;
     }
 
     @Override
