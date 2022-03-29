@@ -13,13 +13,18 @@
         img-top
         tag="article"
         style="max-width: 20rem"
+        @click="detailShow(index)"
       >
         <!-- card content -->
-        공연이름&nbsp;
-        <b-badge class="mr-1" pill variant="light"><b-icon icon="star-fill" scale="0.8"></b-icon> 별점</b-badge>
-        <b-badge pill variant="primary">공연중</b-badge>
+        {{ mainRecommendList[index].performanceName }}&nbsp;
+        <b-badge class="mr-1" pill variant="light"
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ mainRecommendList[index].starPointAverage }}</b-badge
+        >
+        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
+        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
+        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
         <br />
-        시작일 ~ 종료일
+        {{ mainRecommendList[index].lastSeasonStartDate }} ~ {{ mainRecommendList[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -35,18 +40,15 @@
 <script>
 export default {
   name: "Show",
+  props: {
+    mainRecommendList: Array,
+  },
   data() {
     return {
       cards: [
         {
           //Data in the card as objects
         },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
         {},
         {},
         {},
@@ -66,6 +68,12 @@ export default {
   },
 
   methods: {
+    detailShow(index) {
+      this.$router.push({
+        name: "ShowDetail",
+        params: { showId: this.mainRecommendList[index].performanceId },
+      });
+    },
     currentPage(i) {
       return i - 1 === this.currentPageIndex;
     },
