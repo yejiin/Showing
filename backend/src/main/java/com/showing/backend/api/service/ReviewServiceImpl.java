@@ -31,6 +31,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final CastingRepository castingRepository;
     private final ReviewActorRepository reviewActorRepository;
 
+    private final ActorService actorService;
+
     @Override
     public List<PreviewReviewByUserRes> getPreviewReviewListByUserId(Long userId) {
         List<Review> reviewList = reviewRepository.findByUserIdOrderByUpdateDateDesc(userId);
@@ -94,7 +96,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId) {
         // performanceId 에 해당하는 모든 시즌
-        List<Season> seasonList = seasonRepository.findAllByPerformanceId(performanceId);
+        List<Season> seasonList = seasonRepository.findByPerformanceId(performanceId);
         // seasonList 시즌들의 모든 리뷰
         List<Review> reviewList = reviewRepository.findBySeasonInOrderByUpdateDateDesc(seasonList);
         List<PreviewReviewByPerformanceRes> previewReviewList = new ArrayList<>();
@@ -207,6 +209,10 @@ public class ReviewServiceImpl implements ReviewService {
             Casting casting = castingRepository.findById(castingId).orElseThrow(() -> new NotFoundException(ErrorCode.CASTING_NOT_FOUND));
             ReviewActor reviewActor = new ReviewActor(review, casting);
             reviewActorList.add(reviewActor);
+
+            // 선호 배우 가중치를 증가시킨다.
+            Actor actor = casting.getActor();
+            actorService.setFavoriteActorWeight(1, user, actor);
         }
 
         reviewActorRepository.saveAll(reviewActorList);
@@ -217,22 +223,10 @@ public class ReviewServiceImpl implements ReviewService {
         List<Long> castingIdList = req.getCastingIdList();
         List<ReviewActor> reviewActorList;
 
-        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
-        Season season = seasonRepository.findById(req.getSeasonId()).orElseThrow(() -> new NotFoundException(ErrorCode.SEASON_NOT_FOUND));
-
-        // 기존에 작성된 리뷰 정보
-        Review originReview = reviewRepository.getById(reviewId);
-        // 수정할 리뷰 정보
-        Review modifiedReview = Review.builder()
-                                      .id(reviewId)
-                                      .user(user)
-                                      .season(season)
-                                      .performanceDate(req.getShowDate().atTime(req.getShowTime()))
-                                      .reviewContent(req.getReviewContent())
-                                      .createDate(originReview.getCreateDate())
-                                      .updateDate(LocalDateTime.now())
-                                      .build();
-        reviewRepository.save(modifiedReview);
+        // 기존에 작성된 리뷰 정보를 가져와서 수정한다.
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
+        review.setPerformanceDate(req.getShowDate().atTime(req.getShowTime()));
+        review.setReviewContent(req.getReviewContent());
 
         // 기존에 작성되어있던 캐스팅 배우 정보 삭제
         reviewActorList = reviewActorRepository.findReviewActorsByReviewId(reviewId);
@@ -242,7 +236,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewActorList = new ArrayList<>();
         for (Long castingId : castingIdList) {
             Casting casting = castingRepository.findById(castingId).orElseThrow(() -> new NotFoundException(ErrorCode.CASTING_NOT_FOUND));
-            ReviewActor reviewActor = new ReviewActor(modifiedReview, casting);
+            ReviewActor reviewActor = new ReviewActor(review, casting);
             reviewActorList.add(reviewActor);
         }
         reviewActorRepository.saveAll(reviewActorList);
@@ -250,6 +244,16 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Long reviewId) {
+        // 선호 배우 가중치를 감소시킨다.
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
+        User user = review.getUser();
+
+        List<ReviewActor> reviewActorList = reviewActorRepository.findReviewActorsByReviewId(reviewId);
+        for (ReviewActor reviewActor : reviewActorList) {
+            Actor actor = reviewActor.getCasting().getActor();
+            actorService.setFavoriteActorWeight(-1, user, actor);
+        }
+
         // 리뷰 내 캐스팅 배우 정보 삭제
         reviewActorRepository.deleteAllByReviewId(reviewId);
         // 리뷰 삭제

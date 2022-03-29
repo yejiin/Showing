@@ -16,12 +16,12 @@ public class Ranking extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id")
     private Performance performance;
 
     @Column
-    private int ranking;
+    private int ratingCount;
 
     @Column
     private Double averageRating;
