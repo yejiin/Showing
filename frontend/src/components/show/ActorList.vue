@@ -14,8 +14,8 @@
       >
         <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
         <br />
-        <b-card-text>배역</b-card-text>
-        <h5 class="actor_name">배우이름</h5>
+        <b-card-text>{{ actor[index].role }}</b-card-text>
+        <h5 class="actor_name">{{ actor[index].actorName }}</h5>
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -32,6 +32,9 @@
 <script>
 export default {
   name: "ActorList",
+  props: {
+    actor: Array,
+  },
   data() {
     return {
       cards: [
@@ -54,7 +57,6 @@ export default {
       currentPageIndex: 0,
     };
   },
-
   computed: {
     currentPageCards() {
       this.createPages();
