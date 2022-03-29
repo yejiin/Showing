@@ -2,6 +2,7 @@ package com.showing.backend.api.service;
 
 import com.showing.backend.api.response.PerformanceByActorRes;
 import com.showing.backend.api.response.PerformanceRes;
+import com.showing.backend.db.entity.performance.Actor;
 import com.showing.backend.db.repository.performance.PerformanceRepository;
 import com.showing.backend.db.repository.recommend.RecommendRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,12 +47,15 @@ public class RecommendServiceImpl implements RecommendService {
      */
     @Override
     public PerformanceByActorRes getFavoriteActorPerformanceListByUser(Long userId) {
+        PerformanceByActorRes performanceByActorRes = new PerformanceByActorRes();
+
         // 사용자의 선호 배우 상위 5명 중 한명 랜덤 조회
-        Long randomFavoriteActor = actorService.getOneFavoriteActorId(userId);
+        Actor randomFavoriteActor = actorService.getOneFavoriteActorId(userId);
+        performanceByActorRes.setActorId(randomFavoriteActor.getId());
+        performanceByActorRes.setActorName(randomFavoriteActor.getActorName());
 
         // 배우가 출연한 공연 목록 조회
-        PerformanceByActorRes performanceByActorRes = new PerformanceByActorRes();
-        performanceByActorRes.setPerformanceInfoList(recommendRepository.getPerformanceListRandomFavoriteActorId(randomFavoriteActor));
+        performanceByActorRes.setPerformanceInfoList(recommendRepository.getPerformanceListRandomFavoriteActorId(randomFavoriteActor.getId()));
 
         return performanceByActorRes;
     }
