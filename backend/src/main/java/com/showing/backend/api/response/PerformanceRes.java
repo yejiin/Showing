@@ -28,6 +28,6 @@ public class PerformanceRes {
     // 러닝 여부 (0: 공연완료, 1: 공연중, 2: 공연예정)
     int lastSeasonProceedFlag;
 
-    float starPointAverage;
+    double starPointAverage;
 
 }

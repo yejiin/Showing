@@ -34,7 +34,7 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Override
     public PerformanceDetailRes getPerformanceDetail(Long performancdId) {
         Performance performance = performanceRepository.findById(performancdId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
-        float starPointAvg = rankingService.getStarPointAverage(performancdId);
+        double starPointAvg = rankingService.getStarPointAverage(performancdId);
         SeasonRes seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
         List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performancdId);
 
