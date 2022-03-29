@@ -1,7 +1,7 @@
 <template>
 <div>
-  <base-button block type="white" class=" mb-3" @click="modals.modal1 = true">
-                리뷰 작성하기
+  <base-button block type="white" class=" mb-3 modalbutton" @click="modals.modal1 = true">
+                리뷰 작성
             </base-button>
             <modal :show.sync="modals.modal1">
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="modals.modal1 = false">
@@ -12,10 +12,9 @@
                 <div>
                   
                   <div style="width:100%; position:relative">
-                    
                     <div class="showInfo left mb-3">
                       <div>
-                        <h3>{{show.title}}</h3>
+                        <h3>{{performance}}</h3>
                         <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
                       </div>
                       <div class="form-group picker" >
@@ -27,6 +26,8 @@
                               </div>
                               <datepicker class="form-control"
                                           input-class="smaller"
+                                          v-model="review.showDate"
+                                          
                               >
                               </datepicker>
                           </div>
@@ -37,14 +38,14 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                                 </div>
-                                <input type="time" name="" id="" class="form-control">
+                                <input type="time" name="" id="" class="form-control" v-model="review.showTime">
                             </div>
                         </div>
                       <label for="location" class="bold">관람장소</label><p class="inline" type="input">{{show.location}}</p><br>
                     </div>
                     
                     <div class="right mb-3">
-                      <img class="showimage" :src="show.img" alt="show image"/>
+                      <img class="showimage" :src="show.seasonImage" alt="show image"/>
                     </div>
                   </div>
                   <div class="cast">
@@ -59,13 +60,13 @@
                     </div>
                   <div class="content">
                       <p style="margin:8%;" >
-                          <b-textarea  v-model="show.content" id="showcontent"></b-textarea>
+                          <b-textarea  v-model="review.reviewContent" id="showcontent"></b-textarea>
                           
                       </p>
                   </div>
                 </div>
                 <template slot="footer">
-                    <base-button type="white">Save</base-button>
+                    <base-button type="white" @click="addReview">Save</base-button>
                     <base-button type="link" class="ml-auto" @click="modals.modal1 = false">Cancle
                     </base-button>
                 </template>
@@ -78,75 +79,45 @@
 
 import Modal from "@/components/Modal.vue";
 import Datepicker from "vuejs-datepicker";
+import {addMyReview} from "@/api/review.js";
 
 export default {
+  name : 'ReviewWriteModal',
   components: {
     Modal,
     Datepicker,
   },
   props: {
-    type: String,
-    showId : Number,
-    userId : Number,
-
+    performance : String,
+    
   },
   data() {
     return {
       modals: {
         modal1: false,
-        modal2: false,
-        modal3: false
-      },
-      user:{
-        nickname : '김싸피',
-        img : 'http://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_640x640.jpg'
-      },
-      show : {
-        title : '지킬 앤 하이드',
-        img : 'http://ticketimage.interpark.com/PlayDictionary/DATA/PlayDic/PlayDicUpload/040001/21/08/0400012108_167640_01.532.gif',
-        startDate : "2022.01.01",
-        endDate : "2022.05.03",
-        date : '2022년 2월 2일',
-        time : '17:00',
-        location : '샤롯데씨어터',
-        actors : [
-            {
-            id : 1,
-            name :'룰루루'
-            },
-            {
-            id : 2,
-            name :'랄라라'
-            },
-            {
-            id : 3,
-            name :'아이패드'
-            },
-            {
-            id : 4,
-            name :'비싸다'
-            },
-            {
-            id : 5,
-            name :'이야호'
-            },
-            {
-            id : 6,
-            name :'마라탕'
-            },
-            {
-            id : 7,
-            name :'고양이'
-            }
-            ],
-        content : '가을이 차고 내 마음도 차고 이대로 담아두기엔 너무 안타까워 너를 향해 가는데... 놓침... 지금 이순간이 바로 그 순간이야~ 제일 맘에 드는 옷을 입고 노란 꽃 한 송이를 손에 들고 널 바라보다 그만 나도모르게 웃어버렸네 이게 아닌데 내 맘은 이게 아닌데~~~ 술이 차고 밤공기도 차고 두 눈을 감아야만 네 모습이 보여'
       },
       review :{
-          actors:[],
+          seasonId : 1,
+          showDate :'',
+          showTime :'',
+          castingIdList:[],
+          reviewContent:'',
+          userId : 1
+      },
+      show : {
+        seasonId : '',
+        seasonImage : '',
+          startDate : "",
+          endDate : "",
+          date : '',
+          time : '',
+          location : '',
+          actors : []
       },
     }
   },
   methods :{
+      // 배우 캐스팅 구하기
       selectactors(id){
         // 클릭된 블록
         let cur = document.getElementById(id)
@@ -154,20 +125,54 @@ export default {
         if(cur.className=="badge badge-pill casting badge-warning"){
           // 다시 primary로 변경하고 선택된 actors에서 뺌
           cur.className = "badge badge-pill casting badge-primary"
-          for(var i = 0; i<this.review.actors.length;i++){
-            if(this.review.actors[i]===id){
-              this.review.actors.splice(i, 1)
+          for(var i = 0; i<this.review.castingIdList.length;i++){
+            if(this.review.castingIdList[i]===id){
+              this.review.castingIdList.splice(i, 1)
               i--
             }
           }
         }
         else { // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
           cur.className = "badge badge-pill casting badge-warning"
-           this.review.actors.push(id)
+          this.review.castingIdList.push(id)
         }
-        console.log(this.review.actors)
-      }
-  }
+        console.log(this.review)
+        
+        console.log(this.review)
+        
+      },
+      // Review 추가하기
+      addMyReview,
+      addReview(){
+        this.dateFommatter(this.review.showDate)
+        this.timeFommatter(this.review.showTime)
+        this.addMyReview(this.review)
+        this.modals.modal1 = false
+        // 이 다음 내용도 clear 해야함!
+        this.review = {
+          seasonId : Number(this.show.seasonId),
+          showDate :'',
+          showTime :'',
+          castingIdList:[],
+          reviewContent:'',
+          userId : Number(this.userId)
+        }
+      },
+      // 날짜 포맷 정리
+      dateFommatter(date){
+        var month = date.getMonth()+1
+        if(month<10) month = "0"+month
+        var day = date.getDate()
+        if(day<10) day = "0"+day
+        var tmp = date.getFullYear()+"-"+month+"-"+day
+        this.review.showDate = tmp
+      },
+      // 시간 포맷 정리
+      timeFommatter(time){
+        time = time +":00"
+        this.review.showTime = time
+      },
+  },
 };
 </script>
 
@@ -248,7 +253,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     background-size: 12px 12px;
     border-color: transparent;
 }
+.modalbutton {
+  width : 20%;
 
+}
 
 </style>
 

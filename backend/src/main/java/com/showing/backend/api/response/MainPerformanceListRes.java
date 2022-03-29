@@ -14,8 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class MainPerformanceListRes {
 
-    // TODO 선호 배우, 추천 공연 리스트 추가 필요
-
     @ApiModelProperty(name = "뮤지컬 평균 별점 순위")
     List<PerformanceRes> musicalAvgList;
 
