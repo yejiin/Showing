@@ -31,11 +31,11 @@ public class PerformanceServiceImpl implements PerformanceService {
      */
     @Transactional
     @Override
-    public PerformanceDetailRes getPerformanceDetail(Long performancdId) {
-        Performance performance = performanceRepository.findById(performancdId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
-        RankingRes rankingRes = rankingService.getRankingInfo(performancdId);
+    public PerformanceDetailRes getPerformanceDetail(Long performanceId) {
+        Performance performance = performanceRepository.findById(performanceId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
+        RankingRes rankingRes = rankingService.getRankingInfo(performanceId);
         SeasonRes seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
-        List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performancdId);
+        List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performanceId);
 
         return PerformanceDetailRes.of(performance,rankingRes,seasonRes,previewReviewList);
     }

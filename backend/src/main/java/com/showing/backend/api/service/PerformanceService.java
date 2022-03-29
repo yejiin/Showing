@@ -10,7 +10,7 @@ public interface PerformanceService {
 
     List<Long> getPerformanceIdListByUserAndStarPoint(Long userId, int starPoint);
 
-    PerformanceDetailRes getPerformanceDetail(Long performancdId);
+    PerformanceDetailRes getPerformanceDetail(Long performanceId);
 
     List<PerformanceRes> getPerformanceListByStarPointAvg(int performanceType);
 
