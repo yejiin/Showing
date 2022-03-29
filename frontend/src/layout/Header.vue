@@ -7,13 +7,17 @@
     <b-collapse id="nav-collapse" is-nav>
       <search></search>
       <login style="margin-right: 15%"></login>
+      <p v-if="userInfo.id">{{ userInfo.nickName }}님이 로그인하셨습니다.</p>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Search from "@/components/search/Search.vue";
 import Login from "@/components/user/LoginModal.vue";
+
+const userStore = "userStore";
 
 export default {
   name: "Header",
@@ -21,6 +25,11 @@ export default {
     Search,
     Login,
   },
+
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
+
   methods: {
     goToMain() {
       this.$router.push({ name: "MainPage" });
