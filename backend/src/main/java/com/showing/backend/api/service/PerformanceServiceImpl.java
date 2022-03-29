@@ -1,6 +1,7 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.response.PerformanceDetailRes;
+import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.api.response.PreviewReviewByPerformanceRes;
 import com.showing.backend.api.response.SeasonRes;
 import com.showing.backend.common.exception.NotFoundException;
@@ -21,15 +22,28 @@ public class PerformanceServiceImpl implements PerformanceService{
     private final SeasonService seasonService;
     private final RatingService ratingService;
     private final ReviewService reviewService;
+    private final RankingService rankingService;
 
+    /*
+     * 공연 상세 조회
+     */
     @Transactional
     @Override
     public PerformanceDetailRes getPerformanceDetail(Long userId, Long performancdId) {
         Performance performance = performanceRepository.findById(performancdId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
+        float starPointAvg = rankingService.getStarPointAverage(performancdId);
         int rating = ratingService.getRating(userId, performancdId);
         SeasonRes seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
         List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performancdId);
 
-        return PerformanceDetailRes.of(performance,rating,seasonRes,previewReviewList);
+        return PerformanceDetailRes.of(performance,starPointAvg,rating,seasonRes,previewReviewList);
+    }
+
+    /*
+     * 공연 타입 별 평균 별점 순으로 공연 목록 조회
+     */
+    @Override
+    public List<PerformanceRes> getPerformanceListByStarPointAvg(int performanceType) {
+        return performanceRepository.findByTypeAndStarPointAvg(performanceType);
     }
 }
