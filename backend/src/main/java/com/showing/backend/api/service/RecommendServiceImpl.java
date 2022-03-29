@@ -1,5 +1,6 @@
 package com.showing.backend.api.service;
 
+import com.showing.backend.api.response.PerformanceByActorRes;
 import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.db.repository.performance.PerformanceRepository;
 import com.showing.backend.db.repository.recommend.RecommendRepository;
@@ -44,7 +45,7 @@ public class RecommendServiceImpl implements RecommendService {
      * userId 사용자의 선호 배우 상위 5명 중 한명을 랜덤으로 선택해 출연 공연 목록을 조회한다.
      */
     @Override
-    public List<PerformanceRes> getFavoriteActorPerformanceListByUser(Long userId) {
+    public PerformanceByActorRes getFavoriteActorPerformanceListByUser(Long userId) {
         // 사용자의 선호 배우 상위 5명 중 한명 랜덤 조회
         Long randomFavoriteActor = actorService.getOneFavoriteActorId(userId);
         return null;
