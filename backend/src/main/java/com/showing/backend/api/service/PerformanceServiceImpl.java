@@ -10,13 +10,24 @@ import com.showing.backend.db.entity.performance.Performance;
 import com.showing.backend.db.repository.performance.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class PerformanceServiceImpl implements PerformanceService{
+public class PerformanceServiceImpl implements PerformanceService {
+
+    private final PerformanceRepository performanceRepository;
+
+    @Override
+    public List<Long> getPerformanceIdListByUserAndStarPoint(Long userId, int starPoint) {
+        return performanceRepository.findByUserIdAndStarPointGreaterThanEqual(userId, starPoint);
+    }
 
     private final PerformanceRepository performanceRepository;
     private final SeasonService seasonService;
