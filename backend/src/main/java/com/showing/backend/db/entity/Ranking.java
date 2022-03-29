@@ -21,7 +21,7 @@ public class Ranking extends BaseTimeEntity {
     private Performance performance;
 
     @Column
-    private int ranking;
+    private int ratingCount;
 
     @Column
     private Float averageRating;
