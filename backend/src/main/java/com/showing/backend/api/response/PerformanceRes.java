@@ -1,5 +1,6 @@
 package com.showing.backend.api.response;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.LocalDate;
