@@ -71,4 +71,17 @@ public class RatingController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, DELETE_RATING));
     }
 
+    @ApiOperation(value = "별점 조회", notes = "공연 별점을 조회합니다.")
+    @ApiResponses({@ApiResponse(code = 200, message = GET_RATING),
+            @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
+            @ApiResponse(code = 403, message = FORBIDDEN, response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = NOT_FOUND, response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)})
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<BaseResponseBody> getRating(@PathVariable Long userId, @RequestParam Long performanceId) {
+        // userId 유효성 체크
+        if(!Objects.equals(userId, JwtUtil.getCurrentId().orElse(null)) || userId == null)
+            throw new InvalidException(ErrorCode.ACCESS_DENIED);
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RATING, ratingService.getRating(userId, performanceId)));
+    }
 }
