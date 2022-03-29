@@ -17,6 +17,7 @@ public class RecommendServiceImpl implements RecommendService {
 
     private final RecommendRepository recommendRepository;
     private final PerformanceService performanceService;
+    private final ActorServiceImpl actorService;
 
     /**
      * performanceId 공연과 비슷한 공연 목록을 조회한다.
@@ -37,6 +38,16 @@ public class RecommendServiceImpl implements RecommendService {
         // userId 사용자가 별점 10점 중 starPoint점 이상 등록한 공연 Id 조회
         List<Long> performanceIdList = performanceService.getPerformanceIdListByUserAndStarPoint(userId, starPoint);
         return getRecommendPerformanceList(1, performanceIdList);
+    }
+
+    /**
+     * userId 사용자의 선호 배우 상위 5명 중 한명을 랜덤으로 선택해 출연 공연 목록을 조회한다.
+     */
+    @Override
+    public List<PerformanceRes> getFavoriteActorPerformanceListByUser(Long userId) {
+        // 사용자의 선호 배우 상위 5명 중 한명 랜덤 조회
+        Long randomFavoriteActor = actorService.getOneFavoriteActorId(userId);
+        return null;
     }
 
 }
