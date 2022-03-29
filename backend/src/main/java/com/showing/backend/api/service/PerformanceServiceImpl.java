@@ -44,6 +44,7 @@ public class PerformanceServiceImpl implements PerformanceService{
      */
     @Override
     public List<PerformanceRes> getPerformanceListByStarPointAvg(int performanceType) {
+        // performanceType = 1 (뮤지컬), 2 (연극)
         return performanceRepository.findByTypeAndStarPointAvg(performanceType);
     }
 }
