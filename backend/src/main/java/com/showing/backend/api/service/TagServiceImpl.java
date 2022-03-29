@@ -1,11 +1,14 @@
 package com.showing.backend.api.service;
 
+import com.showing.backend.api.response.FavTagRes;
 import com.showing.backend.db.entity.Tag;
 import com.showing.backend.db.entity.User;
 import com.showing.backend.db.entity.recommend.FavoriteTag;
 import com.showing.backend.db.repository.recommend.FavoriteTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -30,5 +33,14 @@ public class TagServiceImpl implements TagService {
         favoriteTag.setWeight(favoriteTag.getWeight()+weight);
         if(favoriteTag.getWeight()<0) favoriteTag.setWeight(0);
         favoriteTagRepository.save(favoriteTag);
+    }
+
+    /*
+    유저별 선호 태그 리스트
+     */
+    @Override
+    public List<FavTagRes> getFavoriteTagList(User user) {
+
+        return favoriteTagRepository.getFavTagResListByUser(user);
     }
 }
