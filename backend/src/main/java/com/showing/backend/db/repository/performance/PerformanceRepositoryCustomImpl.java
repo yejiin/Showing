@@ -18,7 +18,7 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
 
     QPerformance qPerformance = QPerformance.performance;
     QStarPoint qStarPoint = QStarPoint.starPoint;
-    QRanking qRanking = QRanking.ranking1;
+    QRanking qRanking = QRanking.ranking;
     QSeason qSeason = QSeason.season;
 
     /**
