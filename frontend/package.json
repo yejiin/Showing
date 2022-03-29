@@ -20,7 +20,8 @@
     "vue-star-rating": "^1.7.0",
     "vue2-transitions": "^0.2.3",
     "vuex": "^3.4.0",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex-persistedstate": "^4.1.0",
+    "vuejs-datepicker": "^1.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

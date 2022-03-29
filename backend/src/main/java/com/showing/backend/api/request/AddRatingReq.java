@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @ApiModel("AddRatingReq")
 @Getter
-@Setter
 public class AddRatingReq {
 
     @ApiModelProperty(name = "유저의 Id", example = "1")
