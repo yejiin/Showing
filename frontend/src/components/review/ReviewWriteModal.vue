@@ -91,6 +91,7 @@ export default {
   props: {
     performance : String,
     show : {
+      seasonId,
       seasonImage : '',
         startDate : "",
         endDate : "",
@@ -106,7 +107,7 @@ export default {
         modal1: false,
       },
       review :{
-          seasonId : Number(this.seasonId),
+          seasonId : Number(this.show.seasonId),
           showDate :'',
           showTime :'',
           castingIdList:[],
@@ -133,7 +134,7 @@ export default {
         }
         else { // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
           cur.className = "badge badge-pill casting badge-warning"
-           this.review.castingIdList.push(id)
+          this.review.castingIdList.push(id)
         }
         console.log(this.review)
         
