@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-card>
-      <h5 class="main_title">줄거리</h5>
-      <b-card-text>줄거리 내용</b-card-text>
+      <h5 class="main_title">작품설명</h5>
+      <b-card-text>{{ description }}</b-card-text>
       <h6 class="more">더보기</h6>
     </b-card>
     <br />
@@ -13,6 +13,9 @@
 <script>
 export default {
   name: "Story",
+  props: {
+    description: String,
+  },
 };
 </script>
 
