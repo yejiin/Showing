@@ -1,6 +1,8 @@
 package com.showing.backend.api.controller;
 
 import com.showing.backend.api.service.SearchService;
+import com.showing.backend.common.exception.InvalidException;
+import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.common.exception.handler.ErrorResponse;
 import com.showing.backend.common.model.BaseResponseBody;
 import io.swagger.annotations.*;
@@ -29,7 +31,9 @@ public class SearchController {
     @GetMapping("")
     public ResponseEntity<BaseResponseBody> getContentsList(
             @RequestParam(value = "keyword") @ApiParam(value = "검색할 키워드", required = true) String keyword){
-
+        //유효성 체크
+        if("".equals(keyword.trim()))
+            throw new InvalidException(ErrorCode.SEARCH_INVALID_VALUE);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE, searchService.getPerformanceList(keyword)));
     }
 }

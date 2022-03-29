@@ -21,8 +21,9 @@ public enum ErrorCode {
     RATING_DUPLICATE_VALUE(400,"R002","Already Rated Performance"),
     RATING_NOT_FOUND(404,"R003","Rating Not Found"),
     // Review
-    REVIEW_NOT_FOUND(404,"R001","Review Not Found");
-
+    REVIEW_NOT_FOUND(404,"R001","Review Not Found"),
+    // Search
+    SEARCH_INVALID_VALUE(400,"H001","Invalid Search Value");
 
     private int status;
     private final String code;
