@@ -54,7 +54,7 @@ export default {
   },
   created() {
     detailShow(
-      "966",
+      this.$route.params.showId,
       (response) => {
         this.heading.performanceId = response.data.data.performanceId;
         this.heading.performanceImage = response.data.data.performanceImage;
