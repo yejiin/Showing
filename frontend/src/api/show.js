@@ -14,6 +14,7 @@ function getRankingShow(success, fail) {
   api.get(`/performances/ranking`).then(success).catch(fail);
 }
 
+// 공연 상세 정보 api
 function detailShow(performanceId, success, fail) {
   api.get(`/performances/${performanceId}`).then(success).catch(fail);
 }

@@ -16,12 +16,22 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   name: "MyReview",
   props: {
     seasonShowName: String,
     seasonShow: Object,
     previewReview: Array,
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+    ...mapGetters({
+      isLogin: "user/isLogin",
+    }),
   },
 };
 </script>
