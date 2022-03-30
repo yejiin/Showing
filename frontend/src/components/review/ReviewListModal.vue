@@ -13,7 +13,7 @@
                 <div>
                     <h3 class="inline">{{show.title}}</h3>
                     <select name="season" id="season" @change="getSeasonReview($event)">
-                        <option v-for="i in seasons" :key="i" :value="i.seasonId">{{i.startDate}}~{{i.endDate}}</option>
+                        <option v-for="i in seasons" :key="i" :value="i.seasonId" :selected="i.seasonId===selectedseason">{{i.startDate}}~{{i.endDate}}</option>
                     </select>
                 </div>
                 <br>
@@ -55,6 +55,7 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import {getAllReview} from "@/api/review.js"
+import {detailSeasonShow} from '@/api/show.js';
 export default {
   components: {
     Modal
@@ -87,7 +88,8 @@ export default {
               name : "2022.01.01~2022.03.04"
           }
       ],
-      reviews:[]
+      reviews:[],
+      selectedseason : 1,
     };
   },
   methods : {
@@ -96,12 +98,16 @@ export default {
   created() {
     var s = 1;
     getAllReview(s, response =>{
-      
       console.log(response.data)
       this.reviews = response.data.data
       this.show.title = response.data.data[0].performanceName
       this.show.id = response.data.data[0].performanceId
-
+      detailSeasonShow(response.data.data[0].performanceId, response=>{
+        this.seasons = response.data.data.reverse()
+        console.log(response.data)
+      }, fail => {
+        console.log(fail)
+      })
       console.log(this.seasons)
     }, fail=>{
       console.log(fail)
