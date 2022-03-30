@@ -48,7 +48,7 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                                               .where(qStarPoint.performance.id.eq(qPerformance.id))
                                 , "starPointAverage"
                         )
-                ))
+                )).distinct()
                 .from(qRecommend)
                 .join(qPerformance).on(qPerformance.id.eq(qRecommend.recPerformance.id))
                 .join(qSeason).on(qSeason.id.eq(qPerformance.lastSeasonId))
@@ -78,7 +78,7 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                                               .where(qStarPoint.performance.id.eq(qPerformance.id))
                                 , "starPointAverage"
                         )
-                ))
+                )).distinct()
                 .from(qPerformance)
                 .join(qSeason).on(qSeason.performance.id.eq(qPerformance.id))
                 .join(qCasting).on(qCasting.season.playdbId.eq(qSeason.playdbId))
