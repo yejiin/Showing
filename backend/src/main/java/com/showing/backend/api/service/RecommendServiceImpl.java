@@ -2,7 +2,6 @@ package com.showing.backend.api.service;
 
 import com.showing.backend.api.response.*;
 import com.showing.backend.db.entity.performance.Actor;
-import com.showing.backend.db.repository.performance.PerformanceRepository;
 import com.showing.backend.db.repository.recommend.RecommendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,21 +41,28 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
     /**
-     * userId 사용자의 선호 배우 상위 5명 중 한명을 랜덤으로 선택해 출연 공연 목록을 조회한다.
+     * userId 사용자의 선호 배우 상위 5명 중 두명을 랜덤으로 선택해 출연 공연 목록을 조회한다.
      */
     @Override
-    public PerformanceByActorRes getFavoriteActorPerformanceListByUser(Long userId) {
-        PerformanceByActorRes performanceByActorRes = new PerformanceByActorRes();
+    public List<RecommendByActorRes> getFavoriteActorPerformanceListByUser(Long userId) {
+        List<RecommendByActorRes> recommendByActorResList = new ArrayList<>();
 
-        // 사용자의 선호 배우 상위 5명 중 한명 랜덤 조회
-        Actor randomFavoriteActor = actorService.getOneFavoriteActorId(userId);
-        performanceByActorRes.setActorId(randomFavoriteActor.getId());
-        performanceByActorRes.setActorName(randomFavoriteActor.getActorName());
+        // 사용자의 선호 배우 상위 5명 중 두명 랜덤 조회
+        List<Actor> randomFavoriteActor = actorService.getTwoFavoriteActorId(userId);
+        for (Actor actor : randomFavoriteActor) {
+            RecommendByActorRes recommendByActorRes = new RecommendByActorRes();
 
-        // 배우가 출연한 공연 목록 조회
-        performanceByActorRes.setPerformanceInfoList(recommendRepository.getPerformanceListRandomFavoriteActorId(randomFavoriteActor.getId()));
+            // response body에 배우 정보 설정
+            recommendByActorRes.setActorId(actor.getId());
+            recommendByActorRes.setActorName(actor.getActorName());
 
-        return performanceByActorRes;
+            // 배우가 출연한 공연 목록 조회
+            recommendByActorRes.setPerformanceInfoList(recommendRepository.getPerformanceListRandomFavoriteActorId(actor.getId()));
+
+            recommendByActorResList.add(recommendByActorRes);
+        }
+
+        return recommendByActorResList;
     }
 
     /**
