@@ -53,6 +53,7 @@ export default {
     };
   },
   created() {
+    // 공연 상세 정보 가져오기
     detailShow(
       this.$route.params.showId,
       (response) => {
@@ -70,17 +71,18 @@ export default {
 
         this.previewReview = response.data.data.previewReviewList;
 
-        getRating(
-          "1",
-          this.heading.performanceId,
-          (response) => {
-            this.heading.starId = response.data.data.starId;
-            this.heading.rating = response.data.data.rating;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        if (this.$store.getters["userStore/isLogin"])
+          getRating(
+            this.$store.getters["userStore/userInfo"].id,
+            this.heading.performanceId,
+            (response) => {
+              this.heading.starId = response.data.data.starId;
+              this.heading.rating = response.data.data.rating;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       },
       (error) => {
         console.log(error);
