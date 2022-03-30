@@ -18,6 +18,6 @@ public class RankingRes {
     @ApiModelProperty(name = "공연 평가 인원", example = "50")
     int ratingCount;
 
-    @ApiModelProperty(name = "공연 평균 별점", example = "5.5")
+    @ApiModelProperty(name = "공연 평균 별점", example = "4.5")
     double averageRating;
 }
