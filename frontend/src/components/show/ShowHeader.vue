@@ -12,7 +12,9 @@
       <h2 class="main_title">{{ heading.performanceName }}</h2>
       <br />
       <h6>
-        평균 <b-icon icon="star-fill" scale="0.8"></b-icon>{{ heading.starPointAverage }} ({{ heading.ratingCount }}명)
+        평균 <b-icon icon="star-fill" scale="0.8"></b-icon>{{ heading.starPointAverage / 2 }} ({{
+          heading.ratingCount
+        }}명)
       </h6>
       <hr />
       <br />
@@ -46,6 +48,22 @@ export default {
       value: null,
     };
   },
+  // watch: {
+  //   value: function () {
+  //     if (this.storeValue == 0) {
+  //       console.log("add");
+  //       // add
+  //     } else {
+  //       if (this.storeValue == this.value) {
+  //         console.log("delete");
+  //         // delete
+  //       } else {
+  //         console.log("modify");
+  //         // modify
+  //       }
+  //     }
+  //   },
+  // },
 };
 </script>
 
