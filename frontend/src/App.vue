@@ -20,6 +20,10 @@ export default {
 </script>
 
 <style>
+.click_img {
+  cursor: pointer;
+}
+
 .main_title {
   font-weight: bold;
 }
