@@ -15,7 +15,8 @@
         >
           <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
           <br />
-          <b-card-text>{{ actor[index].role }}</b-card-text>
+          <b-card-text v-if="actor[index].role != null">{{ actor[index].role }}</b-card-text>
+          <b-card-text v-else><br /></b-card-text>
           <h5 class="actor_name">{{ actor[index].actorName }}</h5>
         </b-card>
         <i class="ni ni-bold-right arrow arrow_right"></i>
@@ -43,7 +44,8 @@
         >
           <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
           <br />
-          <b-card-text>{{ otherSeasonActor[index].role }}</b-card-text>
+          <b-card-text v-if="otherSeasonActor[index].role != null">{{ otherSeasonActor[index].role }}</b-card-text>
+          <b-card-text v-else><br /></b-card-text>
           <h5 class="actor_name">{{ otherSeasonActor[index].actorName }}</h5>
         </b-card>
         <i class="ni ni-bold-right arrow arrow_right"></i>
