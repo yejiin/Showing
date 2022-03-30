@@ -5,6 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.showing.backend.api.response.PerformanceByActorRes;
 import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.db.entity.performance.*;
 import com.showing.backend.db.entity.recommend.QRecommend;
@@ -20,7 +21,6 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
     QRecommend qRecommend = QRecommend.recommend;
     QPerformance qPerformance = QPerformance.performance;
     QSeason qSeason = QSeason.season;
-    QSeason qLastSeason = QSeason.season;
     QCasting qCasting = QCasting.casting;
     QActor qActor = QActor.actor;
     QStarPoint qStarPoint = QStarPoint.starPoint;
@@ -54,24 +54,24 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .join(qSeason).on(qSeason.id.eq(qPerformance.lastSeasonId))
                 .where(qRecommend.performance.id.in(performanceIdList))
                 .where(qSeason.proceedFlag.between(type, 3))
-                .orderBy(qSeason.proceedFlag.desc())
+                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
                 .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(count)
                 .fetch();
     }
 
     @Override
-    public List<PerformanceRes> getPerformanceListRandomFavoriteActorId(Long actorId) {
+    public List<PerformanceByActorRes> getPerformanceListRandomFavoriteActorId(Long actorId) {
         return jpaQueryFactory
-                .select(Projections.constructor(PerformanceRes.class,
+                .select(Projections.constructor(PerformanceByActorRes.class,
                         qPerformance.id.as("performanceId"),
                         qPerformance.performanceName.as("performanceName"),
                         qPerformance.performanceType.as("performanceType"),
-                        qPerformance.lastSeasonId.as("lastSeasonId"),
-                        qLastSeason.seasonImage.as("lastSeasonImage"),
-                        qLastSeason.startDate.as("lastSeasonStartDate"),
-                        qLastSeason.endDate.as("lastSeasonEndDate"),
-                        qLastSeason.proceedFlag.as("lastSeasonProceedFlag"),
+                        qSeason.id.as("seasonId"),
+                        qSeason.seasonImage.as("seasonImage"),
+                        qSeason.startDate.as("seasonStartDate"),
+                        qSeason.endDate.as("seasonEndDate"),
+                        qSeason.proceedFlag.as("seasonProceedFlag"),
                         ExpressionUtils.as(
                                 JPAExpressions.select(qStarPoint.rating.avg())
                                               .from(qStarPoint)
@@ -83,7 +83,6 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .join(qSeason).on(qSeason.performance.id.eq(qPerformance.id))
                 .join(qCasting).on(qCasting.season.playdbId.eq(qSeason.playdbId))
                 .join(qActor).on(qActor.playdbId.eq(qCasting.actor.playdbId))
-                .join(qLastSeason).on(qLastSeason.id.eq(qPerformance.lastSeasonId))
                 .where(qActor.id.eq(actorId))
                 .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
                 .fetch();

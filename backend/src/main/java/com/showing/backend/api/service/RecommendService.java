@@ -10,7 +10,7 @@ public interface RecommendService {
 
     List<PerformanceRes> getRecommendPerformanceListByUser(Long userId, int starPoint);
 
-    PerformanceByActorRes getFavoriteActorPerformanceListByUser(Long userId);
+    List<RecommendByActorRes> getFavoriteActorPerformanceListByUser(Long userId);
 
     RecommendRes getRecommendList(Long userId);
 
