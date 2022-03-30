@@ -12,7 +12,7 @@ import com.showing.backend.db.repository.recommend.FavoriteActorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -57,14 +57,30 @@ public class ActorServiceImpl implements ActorService {
     }
 
     /**
-     * 사용자의 선호 배우 top5 중 랜덤으로 한명을 선택해서 반환
+     * 사용자의 선호 배우 top5 중 랜덤으로 두명을 선택해서 반환
      */
     @Override
-    public Actor getOneFavoriteActorId(Long userId) {
+    public List<Actor> getTwoFavoriteActorId(Long userId) {
+        List<Actor> randomFavoriteActorIdList = new ArrayList<>();
         List<Actor> favoriteActorIdList = favoriteActorRepository.findTopCountByUserId(5, userId);
+        Set<Integer> indexSet = new HashSet<>();
 
-        int index = (int) (Math.random() * favoriteActorIdList.size());
+        // 선호 배우가 없다면 비어있는 리스트 반환
+        if (favoriteActorIdList.size() == 0) {
+            return randomFavoriteActorIdList;
+        }
 
-        return favoriteActorIdList.get(index);
+        // 선호 배우가 2명 이상이라면 랜덤으로 2명이 선택될 때까지 반복
+        do {
+            int index = (int) (Math.random() * favoriteActorIdList.size());
+            indexSet.add(index);
+        } while (favoriteActorIdList.size() >= 2 && indexSet.size() < 2);
+
+        // 선택된 배우 정보 리스트에 추가
+        for (int index : indexSet) {
+            randomFavoriteActorIdList.add(favoriteActorIdList.get(index));
+        }
+
+        return randomFavoriteActorIdList;
     }
 }
