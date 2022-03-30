@@ -12,24 +12,31 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PerformanceRes {
 
+    @ApiModelProperty(name = "공연 Id", example = "1")
     Long performanceId;
 
+    @ApiModelProperty(name = "공연 이름", example = "절벽")
     String performanceName;
 
-    // 공연 종류 (0: 뮤지컬, 1: 연극)
+    @ApiModelProperty(name = "공연 종류", example = "0", notes = "1: 뮤지컬, 2: 연극")
     int performanceType;
 
+    @ApiModelProperty(name = "공연의 마지막 시즌 Id", example = "1")
     Long lastSeasonId;
 
+    @ApiModelProperty(name = "공연의 마지막 시즌 포스터 이미지", example = "http://playdb...")
     String lastSeasonImage;
 
+    @ApiModelProperty(name = "공연의 마지막 시즌 시작일", example = "2022-03-04")
     LocalDate lastSeasonStartDate;
 
+    @ApiModelProperty(name = "공연의 마지막 시즌 종료일", example = "2022-03-31")
     LocalDate lastSeasonEndDate;
 
-    // 러닝 여부 (0: 공연완료, 1: 공연중, 2: 공연예정)
+    @ApiModelProperty(name = "현재 러닝 여부", example = "2022-03-04", notes = "0: 공연완료, 1: 공연중, 2: 공연예정")
     int lastSeasonProceedFlag;
 
+    @ApiModelProperty(name = "공연의 평균 별점", example = "3.7")
     double starPointAverage;
 
 }
