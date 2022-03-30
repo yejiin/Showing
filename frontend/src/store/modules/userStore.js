@@ -11,7 +11,14 @@ const userStore = {
     isLogin: false,
   },
 
-  getters: {},
+  getters: {
+    userInfo({ userInfo }) {
+      return userInfo;
+    },
+    isLogin({ isLogin }) {
+      return isLogin;
+    },
+  },
 
   mutations: {
     SET_USER_INFO: (state, data) => {
