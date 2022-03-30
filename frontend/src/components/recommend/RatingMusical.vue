@@ -7,12 +7,13 @@
       <b-card
         v-for="(item, index) in currentPageCards"
         :key="index"
-        class="mr-0 mb-2"
+        class="mr-0 mb-2 click_img"
         img-src="https://picsum.photos/300/400/?image=25"
         img-alt="Image"
         img-top
         tag="article"
         style="max-width: 20rem"
+        @click="detailShow(index)"
       >
         <!-- card content -->
         {{ musicalList[index].performanceName }}&nbsp;
