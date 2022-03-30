@@ -1,20 +1,17 @@
 package com.showing.backend.api.controller;
 
-import com.showing.backend.api.response.MainPerformanceListRes;
-import com.showing.backend.api.response.PerformanceRes;
-import com.showing.backend.api.service.PerformanceService;
-import com.showing.backend.api.service.SeasonService;
+import com.showing.backend.api.response.*;
+import com.showing.backend.api.service.*;
 import com.showing.backend.common.exception.handler.ErrorResponse;
 import com.showing.backend.common.model.BaseResponseBody;
+import com.showing.backend.db.entity.performance.Performance;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.showing.backend.common.model.ResponseMessage.*;
@@ -27,6 +24,9 @@ public class PerformanceController {
 
     private final PerformanceService performanceService;
     private final SeasonService seasonService;
+    private final RankingService rankingService;
+    private final ReviewService reviewService;
+    private final RecommendService recommendService;
 
     @ApiOperation(value = "공연 정보", notes = "공연의 정보를 보여준다.")
     @ApiResponses({
@@ -37,9 +37,22 @@ public class PerformanceController {
     })
     @GetMapping("/{performanceId}")
     public ResponseEntity<BaseResponseBody> getPerformanceDetail(
-            @PathVariable("performanceId") @ApiParam(value = "확인할 공연의 id", required = true) Long performanceId){
+            @PathVariable("performanceId") @ApiParam(value = "확인할 공연의 id", required = true) Long performanceId, @RequestParam(value = "seasonId", required = false) Long seasonId){
+        Performance performance = performanceService.getPerformanceDetail(performanceId);
+        RankingRes rankingRes = rankingService.getRankingInfo(performanceId);
+        SeasonRes seasonRes;
+        if(seasonId == null){
+            seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
+        }else{
+            seasonRes = seasonService.getSeasonInfo(seasonId);
+        }
 
-        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE, performanceService.getPerformanceDetail(performanceId)));
+        List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performanceId);
+        List<Long> performanceIdList = new ArrayList<>();
+        performanceIdList.add(performanceId);
+        List<PerformanceRes> similarPerformanceList = recommendService.getRecommendPerformanceList(performance.getPerformanceType(), performanceIdList);
+
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE, PerformanceDetailRes.of(performance, rankingRes, seasonRes, previewReviewList, similarPerformanceList)));
     }
 
     @ApiOperation(value = "퍼포먼스 별 시즌 목록", notes = "시즌의 목록을 보여준다.")

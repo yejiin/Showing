@@ -2,7 +2,8 @@
   <div>
     <br /><br />
     <b-card>
-      <b-card-text class="my_review">회원님의 리뷰는 5개 입니다</b-card-text>
+
+      <b-card-text class="my_review">회원님의 리뷰는 {{ previewReview.length }}개 입니다</b-card-text>
       <a target="_blank" class="btn btn-neutral btn-icon review" @click="setMyReviewListModalStates(true)">
         <span class="nav-link-inner--text">내 리뷰 보기</span>
       </a>
@@ -13,8 +14,10 @@
     </b-card>
     <br />
     <br />
-    <review-list :showModal="modals.listmodal"></review-list>
-    <review-write></review-write>
+    <review-list :seasonShowName="seasonShowName"
+                :seasonShow="seasonShow"
+                :previewReview="previewReview"></review-list>
+    <review-write :seasonShowName="seasonShowName" :seasonShow="seasonShow"></review-write>
   </div>
 </template>
 
@@ -29,6 +32,7 @@ export default {
   props: {
     seasonShowName: String,
     seasonShow: Object,
+    previewReview: Array,
   },
   components :{
     ReviewList : ReviewListModalVue,

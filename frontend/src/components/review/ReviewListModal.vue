@@ -10,13 +10,13 @@
                 
                 <br>
                 <div>
-                    <h3 class="inline">{{show.title}}</h3>
+                    <h3 class="inline">{{seasonShowName}}</h3>
                     <select name="season" id="season" @change="getSeasonReview($event)">
                         <option v-for="i in seasons" :key="i" :value="i.seasonId" :selected="i.seasonId===selectedseason">{{i.startDate}}~{{i.endDate}}</option>
                     </select>
                 </div>
                 <br>
-                <div v-for="review in reviews" :key="review.reviewId">
+                <div v-for="review in seasonShow" :key="review.reviewId">
                     <div id="reviewHeader" class="review">
                         <div class="inreview">
                             <div class="left"><h5 class="bold mb-1" >{{review.viewDate}}</h5></div>
@@ -67,7 +67,10 @@ export default {
   },
   props: {
     type: String,
-    showModal : Boolean
+    showModal : Boolean,
+    seasonShowName: String,
+    seasonShow: Object,
+    previewReview: Array,
   },
   data() {
     return {
@@ -103,8 +106,8 @@ export default {
      ...mapActions(reviewStore, ["setMyReviewListModalState"]),
   },
   created() {
-    var s = 1;
-    getAllSeasonReview(s, response =>{
+    
+    getAllSeasonReview(seasonShow.seasonId, response =>{
       console.log(response.data)
       this.reviews = response.data.data
       this.show.title = response.data.data[0].performanceName

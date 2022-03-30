@@ -13,7 +13,7 @@ function apiInstance() {
 }
 
 function apiInstance2() {
-  const token = window.localStorage.getItem("access-token");
+  const token = window.sessionStorage.getItem("access-token");
   const instance = axios.create({
     baseURL: API_BASE_URL,
     headers: {

@@ -13,9 +13,6 @@ public class PreviewReviewByUserRes {
     @ApiModelProperty(name = "리뷰 Id", example = "1")
     Long reviewId;
 
-    @ApiModelProperty(name = "리뷰 작성 사용자 Id", example = "1")
-    Long userId;
-
     @ApiModelProperty(name = "공연 Id", example = "1")
     Long performanceId;
 
@@ -25,7 +22,7 @@ public class PreviewReviewByUserRes {
     @ApiModelProperty(name = "공연 사진", example = "http://ticketimage...")
     String performanceImage;
 
-    @ApiModelProperty(name = "리뷰 작성 날짜", example = "2022-02-23")
-    LocalDate reviewCreateDate;
+    @ApiModelProperty(name = "공연 관람일", example = "2022-02-23")
+    LocalDate viewDate;
 
 }
