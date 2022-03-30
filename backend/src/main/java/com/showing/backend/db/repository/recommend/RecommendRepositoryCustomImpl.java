@@ -20,6 +20,9 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
     QRecommend qRecommend = QRecommend.recommend;
     QPerformance qPerformance = QPerformance.performance;
     QSeason qSeason = QSeason.season;
+    QSeason qLastSeason = QSeason.season;
+    QCasting qCasting = QCasting.casting;
+    QActor qActor = QActor.actor;
     QStarPoint qStarPoint = QStarPoint.starPoint;
 
     /**
@@ -54,6 +57,35 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .orderBy(qSeason.proceedFlag.desc())
                 .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(count)
+                .fetch();
+    }
+
+    @Override
+    public List<PerformanceRes> getPerformanceListRandomFavoriteActorId(Long actorId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(PerformanceRes.class,
+                        qPerformance.id.as("performanceId"),
+                        qPerformance.performanceName.as("performanceName"),
+                        qPerformance.performanceType.as("performanceType"),
+                        qPerformance.lastSeasonId.as("lastSeasonId"),
+                        qLastSeason.seasonImage.as("lastSeasonImage"),
+                        qLastSeason.startDate.as("lastSeasonStartDate"),
+                        qLastSeason.endDate.as("lastSeasonEndDate"),
+                        qLastSeason.proceedFlag.as("lastSeasonProceedFlag"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qStarPoint.rating.avg())
+                                              .from(qStarPoint)
+                                              .where(qStarPoint.performance.id.eq(qPerformance.id))
+                                , "starPointAverage"
+                        )
+                ))
+                .from(qPerformance)
+                .join(qSeason).on(qSeason.performance.id.eq(qPerformance.id))
+                .join(qCasting).on(qCasting.season.playdbId.eq(qSeason.playdbId))
+                .join(qActor).on(qActor.playdbId.eq(qCasting.actor.playdbId))
+                .join(qLastSeason).on(qLastSeason.id.eq(qPerformance.lastSeasonId))
+                .where(qActor.id.eq(actorId))
+                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
                 .fetch();
     }
 
