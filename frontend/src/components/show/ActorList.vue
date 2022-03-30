@@ -1,37 +1,71 @@
 <template>
   <div>
     <h6>캐스팅</h6>
-    <!-- carousel area -->
-    <b-card-group deck class="mb-0 comment_list">
-      <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-      <i class="ni ni-bold-left arrow"></i>
-      <b-card
-        v-for="(item, index) in currentPageCards"
-        :key="index"
-        class="mr-0 mb-2"
-        tag="article"
-        style="max-width: 20rem; border: 0px"
-      >
-        <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
-        <br />
-        <b-card-text>배역</b-card-text>
-        <h5 class="actor_name">배우이름</h5>
-      </b-card>
-      <i class="ni ni-bold-right arrow arrow_right"></i>
-    </b-card-group>
-    <br />
-    <!-- pagination area -->
-    <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-    <div class="pagination" v-if="cards.length > cardsPerPage">
-      <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+    <div v-if="actor != null">
+      <!-- carousel area -->
+      <b-card-group deck class="mb-0 comment_list">
+        <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
+        <i class="ni ni-bold-left arrow"></i>
+        <b-card
+          v-for="(item, index) in currentPageCards"
+          :key="index"
+          class="mr-0 mb-2"
+          tag="article"
+          style="max-width: 20rem; border: 0px"
+        >
+          <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
+          <br />
+          <b-card-text>{{ actor[index].role }}</b-card-text>
+          <h5 class="actor_name">{{ actor[index].actorName }}</h5>
+        </b-card>
+        <i class="ni ni-bold-right arrow arrow_right"></i>
+      </b-card-group>
+      <br />
+      <!-- pagination area -->
+      <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
+      <div class="pagination" v-if="cards.length > cardsPerPage">
+        <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+      </div>
+      <br />
     </div>
-    <br />
+
+    <div v-if="otherSeasonActor != null">
+      <!-- carousel area -->
+      <b-card-group deck class="mb-0 comment_list">
+        <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
+        <i class="ni ni-bold-left arrow"></i>
+        <b-card
+          v-for="(item, index) in currentPageCards"
+          :key="index"
+          class="mr-0 mb-2"
+          tag="article"
+          style="max-width: 20rem; border: 0px"
+        >
+          <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
+          <br />
+          <b-card-text>{{ otherSeasonActor[index].role }}</b-card-text>
+          <h5 class="actor_name">{{ otherSeasonActor[index].actorName }}</h5>
+        </b-card>
+        <i class="ni ni-bold-right arrow arrow_right"></i>
+      </b-card-group>
+      <br />
+      <!-- pagination area -->
+      <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
+      <div class="pagination" v-if="cards.length > cardsPerPage">
+        <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+      </div>
+      <br />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "ActorList",
+  props: {
+    actor: Array,
+    otherSeasonActor: Array,
+  },
   data() {
     return {
       cards: [
@@ -54,7 +88,6 @@ export default {
       currentPageIndex: 0,
     };
   },
-
   computed: {
     currentPageCards() {
       this.createPages();

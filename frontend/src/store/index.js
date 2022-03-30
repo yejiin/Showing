@@ -2,13 +2,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
+import userStore from "@/store/modules/userStore.js";
+import reviewStore from "@/store/modules/reviewStore.js"
 Vue.use(Vuex);
-
-import memberStore from "@/store/modules/memberStore.js";
 
 const store = new Vuex.Store({
   modules: {
-    memberStore,
+    userStore,
+    reviewStore
   },
   plugins: [
     createPersistedState({

@@ -1,10 +1,8 @@
 <template>
 <div>
-  <base-button block type="white" class=" mb-3 modalbutton" @click="modals.modal1 = true">
-                리뷰 작성
-            </base-button>
-            <modal :show.sync="modals.modal1">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="modals.modal1 = false">
+
+            <modal :show.sync="modals.writeReview">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="setWriteModalStates(false)">
                     &times;
                   </button>
                 <br/>
@@ -67,7 +65,7 @@
                 </div>
                 <template slot="footer">
                     <base-button type="white" @click="addReview">Save</base-button>
-                    <base-button type="link" class="ml-auto" @click="modals.modal1 = false">Cancle
+                    <base-button type="link" class="ml-auto" @click="setWriteModalStates(false)">Cancle
                     </base-button>
                 </template>
             </modal>
@@ -80,7 +78,8 @@
 import Modal from "@/components/Modal.vue";
 import Datepicker from "vuejs-datepicker";
 import {addMyReview} from "@/api/review.js";
-
+import { mapState, mapActions } from "vuex";
+const reviewStore = "reviewStore";
 export default {
   name : 'ReviewWriteModal',
   components: {
@@ -93,9 +92,6 @@ export default {
   },
   data() {
     return {
-      modals: {
-        modal1: false,
-      },
       review :{
           seasonId : 1,
           showDate :'',
@@ -116,7 +112,14 @@ export default {
       },
     }
   },
+  computed:{
+   ...mapState(reviewStore, ['modals'])
+  },
   methods :{
+       ...mapActions(reviewStore, ["setWriteReviewModalState"]),
+       setWriteModalStates(status){
+         this.setWriteReviewModalState(status)
+       },
       // 배우 캐스팅 구하기
       selectactors(id){
         // 클릭된 블록
