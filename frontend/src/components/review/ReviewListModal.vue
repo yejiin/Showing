@@ -1,11 +1,10 @@
 <template>
 <div>
-  <base-button block type="white" class=" mb-3 modalbutton inline" @click="modals.modal1 = true">
-                리뷰 목록
-            </base-button>
-            <modal :show.sync="modals.modal1"
-                    modal-classes="modal-dialog">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+            <modal :show.sync="modals.myReviewList"
+                    modal-classes="modal-dialog"
+                    id="modal">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="setMyReviewListModalState(false)">
                 &times;
                 </button>
                 
@@ -53,21 +52,25 @@
 </template>
 
 <script>
+
 import Modal from "@/components/Modal.vue";
-import {getAllReview} from "@/api/review.js"
+import {getAllSeasonReview} from "@/api/review.js"
 import {detailSeasonShow} from '@/api/show.js';
+import { mapState, mapActions } from "vuex";
+
+const reviewStore = "reviewStore";
+
+
 export default {
   components: {
     Modal
   },
   props: {
     type: String,
+    showModal : Boolean
   },
   data() {
     return {
-      modals: {
-        modal1: false,
-      },
       show : {
         id : '',
         title : '지킬 앤 하이드',
@@ -90,14 +93,18 @@ export default {
       ],
       reviews:[],
       selectedseason : 1,
+ 
     };
   },
+  computed:{
+   ...mapState(reviewStore, ['modals'])
+  },
   methods : {
-    
+     ...mapActions(reviewStore, ["setMyReviewListModalState"]),
   },
   created() {
     var s = 1;
-    getAllReview(s, response =>{
+    getAllSeasonReview(s, response =>{
       console.log(response.data)
       this.reviews = response.data.data
       this.show.title = response.data.data[0].performanceName

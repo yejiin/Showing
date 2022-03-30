@@ -2,30 +2,36 @@
   <div>
     <h5 class="main_title comment_title">다른 사람의 리뷰</h5>
     <br />
-    <h6 class="more">더보기</h6>
-    <!-- carousel area -->
-    <b-card-group deck class="mb-0 comment_list">
-      <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-      <i class="ni ni-bold-left arrow"></i>
-      <b-card
-        v-for="(item, index) in currentPageCards"
-        :key="index"
-        class="mr-0 mb-2"
-        tag="article"
-        style="max-width: 20rem"
-      >
-        <i style="font-size: 40px" class="ni ni-circle-08"></i>&nbsp;
-        <b-card-title class="comment_writer">작성자</b-card-title>
-        <hr />
-        <b-card-text>리뷰 내용</b-card-text>
-      </b-card>
-      <i class="ni ni-bold-right arrow arrow_right"></i>
-    </b-card-group>
-    <br />
-    <!-- pagination area -->
-    <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-    <div class="pagination" v-if="cards.length > cardsPerPage">
-      <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+    <div v-if="previewReview == 0">
+      <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
+      <br /><br />
+    </div>
+    <div v-else>
+      <h6 class="more">더보기</h6>
+      <!-- carousel area -->
+      <b-card-group deck class="mb-0 comment_list">
+        <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
+        <i class="ni ni-bold-left arrow"></i>
+        <b-card
+          v-for="(item, index) in currentPageCards"
+          :key="index"
+          class="mr-0 mb-2"
+          tag="article"
+          style="max-width: 20rem"
+        >
+          <i style="font-size: 40px" class="ni ni-circle-08"></i>&nbsp;
+          <b-card-title class="comment_writer">{{ previewReview[index].userName }}</b-card-title>
+          <hr />
+          <b-card-text>{{ previewReview[index].content }}</b-card-text>
+        </b-card>
+        <i class="ni ni-bold-right arrow arrow_right"></i>
+      </b-card-group>
+      <br />
+      <!-- pagination area -->
+      <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
+      <div class="pagination" v-if="cards.length > cardsPerPage">
+        <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+      </div>
     </div>
     <br />
   </div>
@@ -34,6 +40,9 @@
 <script>
 export default {
   name: "Comment",
+  props: {
+    previewReview: Array,
+  },
   data() {
     return {
       cards: [
@@ -54,9 +63,9 @@ export default {
       pageCount: 0,
       cardsPerPage: 4,
       currentPageIndex: 0,
+      review: [],
     };
   },
-
   computed: {
     currentPageCards() {
       this.createPages();

@@ -15,11 +15,13 @@
         style="max-width: 20rem"
       >
         <!-- card content -->
-        공연이름&nbsp;
-        <b-badge class="mr-1" pill variant="light"><b-icon icon="star-fill" scale="0.8"></b-icon> 별점</b-badge>
+        {{ similarRecommend[index].performanceName }}&nbsp;
+        <b-badge class="mr-1" pill variant="light"
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarRecommend[index].starPointAverage }}</b-badge
+        >
         <b-badge pill variant="primary">공연중</b-badge>
         <br />
-        시작일 ~ 종료일
+        {{ similarRecommend[index].lastSeasonStartDate }} ~ {{ similarRecommend[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -33,8 +35,10 @@
 </template>
 
 <script>
+import { getSimilarRecommend } from "@/api/recommend.js";
+
 export default {
-  name: "Show",
+  name: "SimilarShow",
   data() {
     return {
       cards: [
@@ -53,9 +57,22 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 6,
+      cardsPerPage: 4,
       currentPageIndex: 0,
+      similarRecommend: [],
     };
+  },
+  async created() {
+    await getSimilarRecommend(
+      "1",
+      (response) => {
+        this.similarRecommend = response.data.data;
+        // console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
   computed: {
     currentPageCards() {

@@ -3,21 +3,55 @@
     <br /><br />
     <b-card>
       <b-card-text class="my_review">회원님의 리뷰는 5개 입니다</b-card-text>
-      <a target="_blank" class="btn btn-neutral btn-icon review">
+      <a target="_blank" class="btn btn-neutral btn-icon review" @click="setMyReviewListModalStates(true)">
         <span class="nav-link-inner--text">내 리뷰 보기</span>
       </a>
-      <a target="_blank" class="btn btn-neutral btn-icon">
+      
+      <a target="_blank" class="btn btn-neutral btn-icon" @click="setWriteModalStates(true)">
         <span class="nav-link-inner--text">리뷰 작성</span>
       </a>
     </b-card>
     <br />
     <br />
+    <review-list :showModal="modals.listmodal"></review-list>
+    <review-write></review-write>
   </div>
 </template>
 
 <script>
+import ReviewListModalVue from '../review/ReviewListModal.vue';
+import { mapState, mapActions } from "vuex";
+import ReviewWriteModalVue from '../review/ReviewWriteModal.vue';
+
+const reviewStore = "reviewStore";
 export default {
   name: "MyReview",
+  props: {
+    seasonShowName: String,
+    seasonShow: Object,
+  },
+  components :{
+    ReviewList : ReviewListModalVue,
+    ReviewWrite : ReviewWriteModalVue
+  },
+  data(){
+    return {
+      modals : {
+        listmodal : false,
+        writemodal : false
+      },
+    }
+  },
+  methods : {
+    ...mapActions(reviewStore,["setMyReviewListModalState","setWriteReviewModalState"]),
+    setMyReviewListModalStates(status){
+      this.setMyReviewListModalState(status)
+      console.log("리뷰 목록 보여줘요"+status)
+    },
+    setWriteModalStates(status){
+      this.setWriteReviewModalState(status)
+    }
+  }
 };
 </script>
 
