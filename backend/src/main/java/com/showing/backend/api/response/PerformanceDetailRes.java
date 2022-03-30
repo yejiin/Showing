@@ -37,7 +37,10 @@ public class PerformanceDetailRes {
     @ApiModelProperty(name = "공연 리뷰 목록 미리보기")
     List<PreviewReviewByPerformanceRes> previewReviewList;
 
-    public static PerformanceDetailRes of(Performance performance, RankingRes rankingRes, SeasonRes seasonRes, List<PreviewReviewByPerformanceRes> previewReviewList){
+    @ApiModelProperty(name = "비슷한 공연 목록")
+    List<PerformanceRes> similarPerformanceList;
+
+    public static PerformanceDetailRes of(Performance performance, RankingRes rankingRes, SeasonRes seasonRes, List<PreviewReviewByPerformanceRes> previewReviewList, List<PerformanceRes> similarPerformanceList){
         PerformanceDetailRes res = new PerformanceDetailRes();
         res.setPerformanceId(performance.getId());
         res.setPerformanceName(performance.getPerformanceName());
@@ -47,6 +50,7 @@ public class PerformanceDetailRes {
         res.setStarPointAverage(rankingRes.getAverageRating());
         res.setSeasonRes(seasonRes);
         res.setPreviewReviewList(previewReviewList);
+        res.setSimilarPerformanceList(similarPerformanceList);
 
         return res;
     }
