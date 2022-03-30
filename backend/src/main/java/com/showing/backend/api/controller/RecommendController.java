@@ -1,16 +1,18 @@
 package com.showing.backend.api.controller;
 
 import com.showing.backend.api.service.RecommendService;
+import com.showing.backend.common.auth.JwtUtil;
+import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.common.exception.handler.ErrorResponse;
 import com.showing.backend.common.model.BaseResponseBody;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.showing.backend.common.model.ResponseMessage.GET_RECOMMEND;
 
@@ -22,29 +24,21 @@ public class RecommendController {
 
     private final RecommendService recommendService;
 
-    @ApiOperation(value = "비슷한 공연 목록 조회", notes = "한 공연에 대해 비슷한 공연 목록을 15개 조회합니다.")
-    @ApiResponses({@ApiResponse(code = 200, message = GET_RECOMMEND),
-            @ApiResponse(code = 400, message = "Invalid Input 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
-    @GetMapping("/{performanceId}")
-    public ResponseEntity<BaseResponseBody> getRecommendPerformanceList(@PathVariable Long performanceId) {
-        List<Long> performanceIdList = new ArrayList<>();
-        performanceIdList.add(performanceId);
-
-        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RECOMMEND, recommendService.getRecommendPerformanceList(0, performanceIdList)));
-    }
-
-    @ApiOperation(value = "사용자 추천 공연 목록 조회", notes = "사용자가 별점을 4점 이상 평가한 공연들에 대해 비슷한 공연 목록을 15개 조회합니다.")
+    @ApiOperation(value = "사용자 맞춤 추천 공연 목록 조회",
+            notes = "사용자가 선호하는 상위 5명 배우 중 한명의 출연 공연 목록, 별점 4점 이상 평가한 공연과 비슷한 공연들을 조회합니다.")
     @ApiResponses({@ApiResponse(code = 200, message = GET_RECOMMEND),
             @ApiResponse(code = 400, message = "Invalid Input 오류", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
     @GetMapping("/users/{userId}")
-    public ResponseEntity<BaseResponseBody> getRecommendPerformanceListByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RECOMMEND, recommendService.getRecommendPerformanceListByUser(userId, 8)));
+    public ResponseEntity<BaseResponseBody> getRecommendPerformanceList(@PathVariable Long userId) {
+        // userId 유효성 검사
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
+            throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
+        }
+
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RECOMMEND, recommendService.getRecommendList(userId)));
     }
 
 }

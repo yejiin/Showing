@@ -22,6 +22,8 @@ import Argon from "./plugins/argon-kit";
 import "./registerServiceWorker";
 import { BootstrapVue, IconsPlugin, BadgePlugin } from "bootstrap-vue";
 
+import store from "./store/index.js";
+
 Vue.config.productionTip = false;
 Vue.use(Argon);
 Vue.use(BootstrapVue);
@@ -30,5 +32,6 @@ Vue.use(BadgePlugin);
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");
