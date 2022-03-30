@@ -54,7 +54,7 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .join(qSeason).on(qSeason.id.eq(qPerformance.lastSeasonId))
                 .where(qRecommend.performance.id.in(performanceIdList))
                 .where(qSeason.proceedFlag.between(type, 3))
-                .orderBy(qSeason.proceedFlag.desc())
+                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
                 .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(count)
                 .fetch();
