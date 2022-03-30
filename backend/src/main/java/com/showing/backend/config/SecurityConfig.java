@@ -40,7 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/reviews/performances/**")
                 .antMatchers("/api/v1/reviews/seasons/**")
                 .antMatchers("/api/v1/performances/**")
-                .antMatchers("/api/v1/recommend/**")
                 .antMatchers("/api/v1/search/**")
                 .antMatchers("/api/v1/users/{userId}");
     }

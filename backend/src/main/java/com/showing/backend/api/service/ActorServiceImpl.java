@@ -12,7 +12,6 @@ import com.showing.backend.db.repository.recommend.FavoriteActorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -55,5 +54,17 @@ public class ActorServiceImpl implements ActorService {
     @Override
     public List<FavActorRes> getFavoriteActorList(User user) {
         return favoriteActorRepository.getFavActorListByUser(user).orElse(null);
+    }
+
+    /**
+     * 사용자의 선호 배우 top5 중 랜덤으로 한명을 선택해서 반환
+     */
+    @Override
+    public Actor getOneFavoriteActorId(Long userId) {
+        List<Actor> favoriteActorIdList = favoriteActorRepository.findTopCountByUserId(5, userId);
+
+        int index = (int) (Math.random() * favoriteActorIdList.size());
+
+        return favoriteActorIdList.get(index);
     }
 }

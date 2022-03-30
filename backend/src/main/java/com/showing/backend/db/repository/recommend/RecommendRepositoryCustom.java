@@ -11,4 +11,9 @@ public interface RecommendRepositoryCustom {
      */
     List<PerformanceRes> getTopCountRandomRecommendListByPerformanceId(int type, int count, List<Long> performanceIdList);
 
+    /**
+     * 사용자의 top5 선호 배우 중 한명을 랜덤으로 골라 출연 공연 리스트를 조회한다.
+     */
+    List<PerformanceRes> getPerformanceListRandomFavoriteActorId(Long actorId);
+
 }

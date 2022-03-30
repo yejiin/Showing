@@ -2,8 +2,7 @@ package com.showing.backend.db.entity.performance;
 
 
 import com.showing.backend.db.entity.BaseTimeEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "actor")
 public class Actor extends BaseTimeEntity implements Serializable {
 
