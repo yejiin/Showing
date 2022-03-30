@@ -2,7 +2,7 @@
   <div>
     <br /><br />
     <b-card>
-      <b-card-text class="my_review">회원님의 리뷰는 5개 입니다</b-card-text>
+      <b-card-text class="my_review">회원님의 리뷰는 {{ previewReview.length }}개 입니다</b-card-text>
       <a target="_blank" class="btn btn-neutral btn-icon review">
         <span class="nav-link-inner--text">내 리뷰 보기</span>
       </a>
@@ -18,6 +18,11 @@
 <script>
 export default {
   name: "MyReview",
+  props: {
+    seasonShowName: String,
+    seasonShow: Object,
+    previewReview: Array,
+  },
 };
 </script>
 
