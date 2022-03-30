@@ -18,7 +18,7 @@ public class PerformanceRes {
     @ApiModelProperty(name = "공연 이름", example = "절벽")
     String performanceName;
 
-    @ApiModelProperty(name = "공연 종류", example = "0", notes = "0: 뮤지컬, 1: 연극")
+    @ApiModelProperty(name = "공연 종류", example = "0", notes = "1: 뮤지컬, 2: 연극")
     int performanceType;
 
     @ApiModelProperty(name = "공연의 마지막 시즌 Id", example = "1")
