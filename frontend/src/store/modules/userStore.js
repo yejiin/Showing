@@ -100,8 +100,7 @@ const userStore = {
 
             commit("SET_USER_INFO", response.data.data);
             commit("SET_IS_LOGIN", true);
-
-            sessionStorage.setItem("access-token", response.data.accessToken);
+            sessionStorage.setItem("access-token", response.data.data.accessToken);
           }
         },
         (error) => {
