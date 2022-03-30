@@ -13,18 +13,15 @@
         img-top
         tag="article"
         style="max-width: 20rem"
-        @click="detailShow(index)"
       >
         <!-- card content -->
-        {{ mainRecommendList[index].performanceName }}&nbsp;
+        {{ similarRecommend[index].performanceName }}&nbsp;
         <b-badge class="mr-1" pill variant="light"
-          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ mainRecommendList[index].starPointAverage }}</b-badge
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarRecommend[index].starPointAverage }}</b-badge
         >
-        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
-        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
-        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
+        <b-badge pill variant="primary">공연중</b-badge>
         <br />
-        {{ mainRecommendList[index].lastSeasonStartDate }} ~ {{ mainRecommendList[index].lastSeasonEndDate }}
+        {{ similarRecommend[index].lastSeasonStartDate }} ~ {{ similarRecommend[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -38,11 +35,10 @@
 </template>
 
 <script>
+import { getSimilarRecommend } from "@/api/recommend.js";
+
 export default {
-  name: "Show",
-  props: {
-    mainRecommendList: Array,
-  },
+  name: "SimilarShow",
   data() {
     return {
       cards: [
@@ -52,12 +48,31 @@ export default {
         {},
         {},
         {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 6,
+      cardsPerPage: 4,
       currentPageIndex: 0,
+      similarRecommend: [],
     };
+  },
+  async created() {
+    await getSimilarRecommend(
+      "1",
+      (response) => {
+        this.similarRecommend = response.data.data;
+        // console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
   computed: {
     currentPageCards() {
@@ -68,12 +83,6 @@ export default {
   },
 
   methods: {
-    detailShow(index) {
-      this.$router.push({
-        name: "ShowDetail",
-        params: { showId: this.mainRecommendList[index].performanceId },
-      });
-    },
     currentPage(i) {
       return i - 1 === this.currentPageIndex;
     },
