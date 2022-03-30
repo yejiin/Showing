@@ -1,7 +1,7 @@
 <template>
   <div class="header">
-    <show-header :heading="heading"></show-header>
-    <my-review :seasonShowName="seasonShowName" :seasonShow="seasonShow"></my-review>
+    <show-header :heading="heading" :performanceId="performanceId"></show-header>
+    <my-review :seasonShowName="seasonShowName" :seasonShow="seasonShow" :previewReview="previewReview"></my-review>
     <show-info :info="info" :actor="actor" :description="description"></show-info>
     <word-cloud></word-cloud>
     <comment :previewReview="previewReview"></comment>
@@ -47,13 +47,15 @@ export default {
       description: "",
       seasonShowName: "",
       seasonShow: {},
+      performanceId: 0,
     };
   },
   async created() {
     await detailShow(
-      "911",
+      "966",
       (response) => {
         this.heading.performanceId = response.data.data.performanceId;
+        this.performanceId = response.data.data.performanceId;
         this.heading.performanceImage = response.data.data.performanceImage;
         this.heading.performanceName = response.data.data.performanceName;
         this.seasonShowName = response.data.data.performanceName;
