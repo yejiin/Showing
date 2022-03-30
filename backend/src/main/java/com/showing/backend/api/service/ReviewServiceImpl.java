@@ -110,6 +110,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                    .reviewId(review.getId())
                                                    .userId(review.getUser().getId())
                                                    .userName(review.getUser().getNickname())
+                                                   .userImage(review.getUser().getUserImage())
                                                    .content(review.getReviewContent())
                                                    .build();
 
