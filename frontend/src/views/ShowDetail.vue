@@ -1,7 +1,7 @@
 <template>
   <div class="header">
-    <show-header :heading="heading"></show-header>
-    <my-review :seasonShowName="seasonShowName" :seasonShow="seasonShow"></my-review>
+    <show-header :heading="heading" :performanceId="performanceId"></show-header>
+    <my-review :seasonShowName="seasonShowName" :seasonShow="seasonShow" :previewReview="previewReview"></my-review>
     <show-info :info="info" :actor="actor" :description="description"></show-info>
     <word-cloud></word-cloud>
     <comment :previewReview="previewReview"></comment>
@@ -18,6 +18,7 @@ import WordCloud from "@/components/show/WordCloud";
 import Comment from "@/components/show/Comment";
 import SimilarShow from "@/components/recommend/SimilarShow";
 
+import { getRating } from "@/api/rating.js";
 import { detailShow } from "@/api/show.js";
 import { detailSeasonShow } from "@/api/show.js";
 
@@ -40,6 +41,8 @@ export default {
         starPointAverage: 0,
         ratingCount: 0,
         proceedFlag: 0,
+        starId: 0,
+        rating: 0,
       },
       info: {},
       previewReview: [],
@@ -49,9 +52,9 @@ export default {
       seasonShow: {},
     };
   },
-  async created() {
-    await detailShow(
-      "911",
+  created() {
+    detailShow(
+      this.$route.params.showId,
       (response) => {
         this.heading.performanceId = response.data.data.performanceId;
         this.heading.performanceImage = response.data.data.performanceImage;
@@ -66,13 +69,25 @@ export default {
         this.description = response.data.data.seasonRes.description;
 
         this.previewReview = response.data.data.previewReviewList;
+
+        getRating(
+          "1",
+          this.heading.performanceId,
+          (response) => {
+            this.heading.starId = response.data.data.starId;
+            this.heading.rating = response.data.data.rating;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       },
       (error) => {
         console.log(error);
       }
     );
 
-    await detailSeasonShow(
+    detailSeasonShow(
       "1103",
       (response) => {
         this.seasonShow = response.data.data;
