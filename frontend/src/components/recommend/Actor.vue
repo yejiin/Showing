@@ -13,18 +13,17 @@
         img-top
         tag="article"
         style="max-width: 20rem"
-        @click="detailShow(index)"
       >
         <!-- card content -->
-        {{ mainRecommendList[index].performanceName }}&nbsp;
+        {{ musicalList[index].performanceName }}&nbsp;
         <b-badge class="mr-1" pill variant="light"
-          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ mainRecommendList[index].starPointAverage }}</b-badge
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ musicalList[index].starPointAverage }}</b-badge
         >
-        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
-        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
-        <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
+        <b-badge v-if="musicalList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
+        <b-badge v-if="musicalList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
+        <b-badge v-if="musicalList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
         <br />
-        {{ mainRecommendList[index].lastSeasonStartDate }} ~ {{ mainRecommendList[index].lastSeasonEndDate }}
+        {{ musicalList[index].lastSeasonStartDate }} ~ {{ musicalList[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -39,9 +38,10 @@
 
 <script>
 export default {
-  name: "Show",
+  name: "Actor",
   props: {
-    mainRecommendList: Array,
+    musicalList: Array,
+    playList: Array,
   },
   data() {
     return {
@@ -49,6 +49,12 @@ export default {
         {
           //Data in the card as objects
         },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
         {},
         {},
         {},
@@ -68,12 +74,6 @@ export default {
   },
 
   methods: {
-    detailShow(index) {
-      this.$router.push({
-        name: "ShowDetail",
-        params: { showId: this.mainRecommendList[index].performanceId },
-      });
-    },
     currentPage(i) {
       return i - 1 === this.currentPageIndex;
     },
