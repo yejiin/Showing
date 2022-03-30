@@ -9,10 +9,7 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +37,16 @@ public class PerformanceController {
     })
     @GetMapping("/{performanceId}")
     public ResponseEntity<BaseResponseBody> getPerformanceDetail(
-            @PathVariable("performanceId") @ApiParam(value = "확인할 공연의 id", required = true) Long performanceId){
+            @PathVariable("performanceId") @ApiParam(value = "확인할 공연의 id", required = true) Long performanceId, @RequestParam(value = "seasonId", required = false) Long seasonId){
         Performance performance = performanceService.getPerformanceDetail(performanceId);
         RankingRes rankingRes = rankingService.getRankingInfo(performanceId);
-        SeasonRes seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
+        SeasonRes seasonRes;
+        if(seasonId == null){
+            seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
+        }else{
+            seasonRes = seasonService.getSeasonInfo(seasonId);
+        }
+
         List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performanceId);
         List<Long> performanceIdList = new ArrayList<>();
         performanceIdList.add(performanceId);
