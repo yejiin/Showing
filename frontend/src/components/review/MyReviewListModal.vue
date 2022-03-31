@@ -85,7 +85,7 @@
             <b-badge pill variant="primary" v-for="(index, key) in show.reviewActorNameList" :key="key">{{index}}</b-badge>
           </div>
           <div class="right mb-3">
-            <img class="showimage2" :src="show.img" alt="show image"/>
+            <img class="showimage2" :src="show.seasonImage" alt="show image"/>
           </div>
           
           
