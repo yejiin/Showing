@@ -11,7 +11,14 @@ const userStore = {
     isLogin: false,
   },
 
-  getters: {},
+  getters: {
+    userInfo({ userInfo }) {
+      return userInfo;
+    },
+    isLogin({ isLogin }) {
+      return isLogin;
+    },
+  },
 
   mutations: {
     SET_USER_INFO: (state, data) => {
@@ -93,8 +100,7 @@ const userStore = {
 
             commit("SET_USER_INFO", response.data.data);
             commit("SET_IS_LOGIN", true);
-
-            sessionStorage.setItem("access-token", response.data.accessToken);
+            sessionStorage.setItem("access-token", response.data.data.accessToken);
           }
         },
         (error) => {

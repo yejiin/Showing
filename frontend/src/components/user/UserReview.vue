@@ -1,43 +1,36 @@
 <template>
   <div>
-    <h6>캐스팅</h6>
-    <div v-if="actor != null">
-      <!-- carousel area -->
-      <b-card-group deck class="mb-0 comment_list">
-        <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-        <i class="ni ni-bold-left arrow"></i>
-        <b-card
-          v-for="(item, index) in currentPageCards"
-          :key="index"
-          class="mr-0 mb-2"
-          tag="article"
-          style="max-width: 20rem; border: 0px"
-        >
-          <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
-          <br />
-          <b-card-text v-if="actor[index].role != null">{{ actor[index].role }}</b-card-text>
-          <b-card-text v-else><br /></b-card-text>
-          <h5 class="actor_name">{{ actor[index].actorName }}</h5>
-        </b-card>
-        <i class="ni ni-bold-right arrow arrow_right"></i>
-      </b-card-group>
-      <br />
-      <!-- pagination area -->
-      <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-      <div class="pagination" v-if="cards.length > cardsPerPage">
-        <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
-      </div>
-      <br />
+    <h5 class="main_title">내 리뷰</h5>
+    <b-card-group deck class="mb-0">
+      <b-card
+        v-for="(item, index) in currentPageCards"
+        :key="index"
+        class="mr-0 mb-2"
+        img-src="https://picsum.photos/300/400/?image=25"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem"
+      >
+        <!-- card content -->
+        공연 이름&nbsp;기간
+
+        <br />
+      </b-card>
+    </b-card-group>
+    <!-- pagination area -->
+    <!-- <div class="pagination" v-if="cards.length > cardsPerPage">
+      <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+    </div> -->
+    <div>
+      <base-pagination :page-count="10" align="center"></base-pagination>
     </div>
+    <br />
   </div>
 </template>
-
 <script>
 export default {
-  name: "ActorList",
-  props: {
-    actor: Array,
-  },
+  name: "UserReview",
   data() {
     return {
       cards: [
@@ -56,7 +49,7 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 6,
+      cardsPerPage: 5,
       currentPageIndex: 0,
     };
   },
@@ -97,7 +90,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .pagination {
   display: flex;
@@ -118,6 +110,20 @@ export default {
   height: 13px;
 }
 
+.card {
+  border: 0px;
+}
+
+.card-img-top {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.card-body {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .arrow {
   margin-top: 10%;
   color: #9badf6;
@@ -125,15 +131,5 @@ export default {
 
 .arrow_right {
   margin-left: 1%;
-}
-
-.card-text {
-  color: black;
-  text-align: center;
-}
-
-.actor_name {
-  margin-top: 0px;
-  text-align: center;
 }
 </style>
