@@ -77,10 +77,6 @@ const reviewStore = "reviewStore";
 
 export default {
   name: "ShowInfo",
-  components: {
-    ActorList,
-    Story,
-  },
   props: {
     info: Object,
     actor: Array,
@@ -88,7 +84,7 @@ export default {
     seasons: Array,
     seasonShowName: String,
     seasonShow: Object,
-    performanceId : Number,
+    performanceId: Number,
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
@@ -97,6 +93,8 @@ export default {
     }),
   },
   components: {
+    ActorList,
+    Story,
     ReviewList: ReviewListModalVue,
     ReviewWrite: ReviewWriteModalVue,
   },
