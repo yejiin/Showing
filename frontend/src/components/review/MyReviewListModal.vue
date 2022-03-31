@@ -14,14 +14,12 @@
       <br />
       <div>
         <h3 class="inline">{{ seasonShowName }}</h3>
-        <select name="season" id="season" @change="getSeasonReview($event)">
-          <option v-for="i in seasons" :key="i" :value="i.seasonId" :selected="i.seasonId === selectedseason">
-            {{ i.startDate }}~{{ i.endDate }}
-          </option>
-        </select>
       </div>
       <br />
-      <div v-for="review in seasonShow" :key="review.reviewId">
+      <div v-show="reviews.length===0">
+        내 리뷰가 없습니다
+      </div>
+      <div v-for="review in reviews" :key="review.reviewId">
         <div id="reviewHeader" class="review">
           <div class="inreview">
             <div class="left">
@@ -39,14 +37,14 @@
               </a>
             </div>
             <div class="title" style="clear: both">
-              <img :src="review.userImage" alt="profile image" class="profile inline" />
-              <p class="username inline">{{ review.userName }}</p>
+              <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
+              <p class="username inline">{{ userInfo.nickName }}</p>
             </div>
             <div class="mb-2">
               <label for="casing" class="bold rightmargin inline"
                 ><h6 class="bold rightmargin inline">캐스팅</h6></label
               >
-              <b-badge pill variant="primary" v-for="(index, key) in review.castingActorNameList" :key="key">{{
+              <b-badge pill variant="primary" v-for="(index, key) in review.reviewActorNameList" :key="key">{{
                 index
               }}</b-badge>
             </div>
@@ -62,11 +60,12 @@
 
 <script>
 import Modal from "@/components/Modal.vue";
-import { getAllSeasonReview } from "@/api/review.js";
+import { getMyShowReview } from "@/api/review.js";
 import { detailSeasonShow } from "@/api/show.js";
 import { mapState, mapActions } from "vuex";
 
 const reviewStore = "reviewStore";
+const userStore = "userStore";
 
 export default {
   components: {
@@ -78,6 +77,7 @@ export default {
     seasonShowName: String,
     seasonShow: Object,
     previewReview: Array,
+    performanceId : Number
   },
   data() {
     return {
@@ -107,29 +107,19 @@ export default {
   },
   computed: {
     ...mapState(reviewStore, ["modals"]),
+    ...mapState(userStore, ["userInfo"])
   },
   methods: {
     ...mapActions(reviewStore, ["setMyReviewListModalState"]),
   },
   created() {
-    getAllSeasonReview(
-      seasonShow.seasonId,
+    console.log("pid : "+this.performanceId)
+    getMyShowReview(
+      this.performanceId,
+      this.userInfo.id,
       (response) => {
         console.log(response.data);
         this.reviews = response.data.data;
-        this.show.title = response.data.data[0].performanceName;
-        this.show.id = response.data.data[0].performanceId;
-        detailSeasonShow(
-          response.data.data[0].performanceId,
-          (response) => {
-            this.seasons = response.data.data.reverse();
-            console.log(response.data);
-          },
-          (fail) => {
-            console.log(fail);
-          }
-        );
-        console.log(this.seasons);
       },
       (fail) => {
         console.log(fail);
