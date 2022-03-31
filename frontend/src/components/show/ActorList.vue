@@ -13,7 +13,7 @@
           tag="article"
           style="max-width: 20rem; border: 0px"
         >
-          <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
+          <b-img :src="actor[index].actorImage" rounded="circle" height="150px" />
           <br />
           <b-card-text v-if="actor[index].role != null">{{ actor[index].role }}</b-card-text>
           <b-card-text v-else><br /></b-card-text>
