@@ -11,6 +11,7 @@
       :description="description"
       :seasons="seasons"
       :seasonShowName="seasonShowName"
+      :performanceId="heading.performanceId"
     ></show-info>
     <word-cloud></word-cloud>
     <!-- 리뷰 리스트 -->
@@ -43,7 +44,7 @@ export default {
   data() {
     return {
       heading: {
-        performanceId: 0,
+        performanceId: this.$route.params.showId,
         performanceImage: "",
         performanceName: "",
         starPointAverage: 0,
@@ -64,6 +65,7 @@ export default {
   },
   async created() {
     // 공연 상세 정보 가져오기
+    console.log(this.$route.params.showId)
     await detailShow(
       // showId = performanceId
       this.$route.params.showId,
@@ -83,8 +85,9 @@ export default {
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
 
+        console.log(this.heading)
         console.log(this.info);
-        console.log("this.info----------");
+        console.log("this.info----------++");
 
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
