@@ -1,13 +1,13 @@
 <template>
   <div>
     <h5 class="main_title comment_title">다른 사람의 리뷰</h5>
+    <review-list-modal v-if="previewReview != 0" class="float-right"></review-list-modal>
     <br />
     <div v-if="previewReview == 0">
       <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
       <br /><br />
     </div>
     <div v-else>
-      <h6 class="more">더보기</h6>
       <!-- carousel area -->
       <b-card-group deck class="mb-0 comment_list">
         <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
@@ -38,8 +38,12 @@
 </template>
 
 <script>
+import ReviewListModal from "@/components/review/ReviewListModal.vue";
 export default {
   name: "Comment",
+  components: {
+    ReviewListModal,
+  },
   props: {
     previewReview: Array,
   },

@@ -14,12 +14,7 @@
             공연정보
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a
-              @click="otherSeason(index)"
-              v-for="(seasonDate, index) in seasonDates"
-              :key="index"
-              class="dropdown-item"
-            >
+            <a @click="otherSeason(index)" v-for="(seasonDate, index) in seasons" :key="index" class="dropdown-item">
               {{ seasonDate.startDate }} ~ {{ seasonDate.endDate }}
             </a>
           </div>
@@ -65,12 +60,7 @@
             공연정보
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a
-              @click="otherSeason(index)"
-              v-for="(seasonDate, index) in seasonDates"
-              :key="index"
-              class="dropdown-item"
-            >
+            <a @click="otherSeason(index)" v-for="(seasonDate, index) in seasons" :key="index" class="dropdown-item">
               {{ seasonDate.startDate }} ~ {{ seasonDate.endDate }}
             </a>
           </div>
@@ -108,7 +98,6 @@
 import ActorList from "@/components/show/ActorList";
 import Story from "@/components/show/Story";
 
-import { getSeasonShow } from "@/api/show.js";
 import { detailSeasonShow } from "@/api/show.js";
 
 export default {
@@ -121,35 +110,24 @@ export default {
     info: Object,
     actor: Array,
     description: String,
+    seasons: Array,
   },
   data() {
     return {
       showInfo: {},
-      seasonDates: [],
       clickOtherSeason: false,
       otherSeasonInfo: {},
       otherSeasonDescription: "",
       otherSeasonActor: [],
     };
   },
-  async created() {
-    await getSeasonShow(
-      "911",
-      (response) => {
-        this.seasonDates = response.data.data;
-        // console.log(this.seasonDates);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  },
   methods: {
+    // 한 시즌 클릭
     otherSeason(index) {
       this.clickOtherSeason = true;
 
       detailSeasonShow(
-        this.seasonDates[index].seasonId,
+        this.seasons[index].seasonId,
         (response) => {
           this.otherSeasonInfo = response.data.data;
           this.otherSeasonDescription = response.data.data.description;
