@@ -23,4 +23,7 @@ function modifyMyReview(reviewId, review, success, fail) {
   api2.put(`/reviews/${reviewId}`, JSON.stringify(review)).then(success).catch(fail);
 }
 
-export { getAllShowReview, getMyReview, addMyReview, deleteMyReview, modifyMyReview };
+function getAllSeasonReview(seasonId, success, fail){
+  api.get(`/reviews/seasons/${seasonId}`).then(success).catch(fail);
+}
+export { getAllShowReview, getMyReview, addMyReview, deleteMyReview, modifyMyReview, getAllSeasonReview };
