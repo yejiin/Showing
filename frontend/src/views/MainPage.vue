@@ -40,17 +40,17 @@ export default {
     };
   },
   async created() {
+    // 평균 별점 순위 리스트 불러오기
     await getRankingShow(
       (response) => {
         this.musicalList = response.data.data.musicalAvgList;
         this.playList = response.data.data.playAvgList;
-        // console.log(response.data.data);
       },
       (error) => {
         console.log(error);
       }
     );
-
+    // 추천 공연 리스트 불러오기
     await getMainRecommend(
       "1",
       (response) => {

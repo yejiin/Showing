@@ -1,13 +1,16 @@
 <template>
   <div class="header">
+    <!-- 헤더 -->
     <show-header :heading="heading" :performanceId="performanceId"></show-header>
+    <!-- 내 리뷰 -->
     <my-review :seasonShowName="seasonShowName" :seasonShow="seasonShow" :previewReview="previewReview"></my-review>
-    <show-info :info="info" :actor="actor" :description="description"></show-info>
+    <!-- 공연 상세 정보 -->
+    <show-info :info="info" :actor="actor" :description="description" :seasons="seasons"></show-info>
     <word-cloud></word-cloud>
+    <!-- 리뷰 리스트 -->
     <comment :previewReview="previewReview"></comment>
-    <h5 class="main_title">비슷한 공연</h5>
-    <br />
-    <similar-show></similar-show>
+    <!-- 비슷한 공연 -->
+    <similar-show :similarList="similarList"></similar-show>
   </div>
 </template>
 <script>
@@ -19,8 +22,7 @@ import Comment from "@/components/show/Comment";
 import SimilarShow from "@/components/recommend/SimilarShow";
 
 import { getRating } from "@/api/rating.js";
-import { detailShow } from "@/api/show.js";
-import { detailSeasonShow } from "@/api/show.js";
+import { detailShow, getSeasonShow } from "@/api/show.js";
 
 export default {
   name: "ShowDetail",
@@ -50,10 +52,14 @@ export default {
       description: "",
       seasonShowName: "",
       seasonShow: {},
+      similarList: [],
+      seasons: [],
     };
   },
-  created() {
-    detailShow(
+  async created() {
+    // 공연 상세 정보 가져오기
+    await detailShow(
+      // showId = performanceId
       this.$route.params.showId,
       (response) => {
         this.heading.performanceId = response.data.data.performanceId;
@@ -69,28 +75,31 @@ export default {
         this.description = response.data.data.seasonRes.description;
 
         this.previewReview = response.data.data.previewReviewList;
+        this.similarList = response.data.data.similarPerformanceList;
 
-        getRating(
-          "1",
-          this.heading.performanceId,
-          (response) => {
-            this.heading.starId = response.data.data.starId;
-            this.heading.rating = response.data.data.rating;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        // 로그인 시 별점 불러오기
+        if (this.$store.getters["userStore/isLogin"])
+          getRating(
+            this.$store.getters["userStore/userInfo"].id,
+            this.heading.performanceId,
+            (response) => {
+              this.heading.starId = response.data.data.starId;
+              this.heading.rating = response.data.data.rating;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       },
       (error) => {
         console.log(error);
       }
     );
-
-    detailSeasonShow(
-      "1103",
+    // 퍼포먼스 별 시즌 목록 불러오기
+    await getSeasonShow(
+      this.$route.params.showId,
       (response) => {
-        this.seasonShow = response.data.data;
+        this.seasons = response.data.data;
       },
       (error) => {
         console.log(error);

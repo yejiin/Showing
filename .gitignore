@@ -41,6 +41,7 @@ out/
 node_modules
 dist
 package-lock.json
+yarn.lock
 
 # local env files
 .env.local
