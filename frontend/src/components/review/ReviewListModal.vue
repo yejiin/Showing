@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-button size="sm" type="primary" @click="modals.modal1 = true"> 더보기 </base-button>
+    <base-button size="sm" type="primary" class="float-right" @click="modals.modal1 = true"> 더보기 </base-button>
     <modal :show.sync="modals.modal1" modal-classes="modal-dialog modal-lg">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
 
