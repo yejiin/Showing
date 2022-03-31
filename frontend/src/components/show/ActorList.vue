@@ -74,7 +74,6 @@ export default {
   name: "ActorList",
   props: {
     actor: Array,
-    otherSeasonActor: Array,
   },
   data() {
     return {

@@ -1,10 +1,8 @@
 <template>
 <div>
-  <base-button block type="white" class=" mb-3 modalbutton" @click="modals.modal1 = true">
-                리뷰 작성
-            </base-button>
-            <modal :show.sync="modals.modal1">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="modals.modal1 = false">
+
+            <modal :show.sync="modals.writeReview">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="setWriteModalStates(false)">
                     &times;
                   </button>
                 <br/>
@@ -14,8 +12,8 @@
                   <div style="width:100%; position:relative">
                     <div class="showInfo left mb-3">
                       <div>
-                        <h3>{{performance}}</h3>
-                        <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
+                        <h3>{{seasonShowName}}</h3>
+                        <p style = "font-size:8px;">{{seasonShow.startDate}}~{{seasonShow.endDate}}</p>
                       </div>
                       <div class="form-group picker" >
                           <div class="input-group" >
@@ -41,21 +39,21 @@
                                 <input type="time" name="" id="" class="form-control" v-model="review.showTime">
                             </div>
                         </div>
-                      <label for="location" class="bold">관람장소</label><p class="inline" type="input">{{show.location}}</p><br>
+                      <label for="location" class="bold">관람장소</label><p class="inline" type="input">{{seasonShow.location}}</p><br>
                     </div>
                     
                     <div class="right mb-3">
-                      <img class="showimage" :src="show.seasonImage" alt="show image"/>
+                      <img class="showimage" :src="seasonShow.seasonImage" alt="show image"/>
                     </div>
                   </div>
                   <div class="cast">
                         <label class="bold left">캐스팅</label>
                         <label style="font-size:6px;margin-left:10px">관람한 공연의 캐스트를 선택해주세요</label><br>
                       <span  class="badge badge-pill casting badge-primary"
-                               v-for="(index, key) in show.actors" :key="key" :id="index.id"
-                               @click="selectactors(index.id)"
+                               v-for="(index, key) in seasonShow.actorList" :key="key" :id="index.castingId"
+                               @click="selectactors(index.castingId)"
                       >
-                        {{index.name}}
+                        {{index.actorName}}
                       </span>
                     </div>
                   <div class="content">
@@ -67,7 +65,7 @@
                 </div>
                 <template slot="footer">
                     <base-button type="white" @click="addReview">Save</base-button>
-                    <base-button type="link" class="ml-auto" @click="modals.modal1 = false">Cancle
+                    <base-button type="link" class="ml-auto" @click="setWriteModalStates(false)">Cancle
                     </base-button>
                 </template>
             </modal>
@@ -80,7 +78,9 @@
 import Modal from "@/components/Modal.vue";
 import Datepicker from "vuejs-datepicker";
 import {addMyReview} from "@/api/review.js";
-
+import { mapState, mapActions } from "vuex";
+const reviewStore = "reviewStore";
+const userStore = "userStore"
 export default {
   name : 'ReviewWriteModal',
   components: {
@@ -89,34 +89,31 @@ export default {
   },
   props: {
     performance : String,
-    
+    seasonShow : Object,
+    seasonShowName : String
   },
+
   data() {
     return {
-      modals: {
-        modal1: false,
-      },
       review :{
-          seasonId : 1,
+          seasonId : this.seasonShow.seasonId,
           showDate :'',
           showTime :'',
           castingIdList:[],
           reviewContent:'',
-          userId : 1
       },
-      show : {
-        seasonId : '',
-        seasonImage : '',
-          startDate : "",
-          endDate : "",
-          date : '',
-          time : '',
-          location : '',
-          actors : []
-      },
+      // userId : Number(this.userInfo.id),
     }
   },
+  computed:{
+   ...mapState(reviewStore, ['modals']),
+   ...mapState(userStore, ["userInfo"])
+  },
   methods :{
+       ...mapActions(reviewStore, ["setWriteReviewModalState"]),
+       setWriteModalStates(status){
+         this.setWriteReviewModalState(status)
+       },
       // 배우 캐스팅 구하기
       selectactors(id){
         // 클릭된 블록
@@ -146,17 +143,26 @@ export default {
       addReview(){
         this.dateFommatter(this.review.showDate)
         this.timeFommatter(this.review.showTime)
-        this.addMyReview(this.review)
+        var tmp = {
+          seasonId : this.seasonShow.seasonId,
+          showDate :this.review.showDate,
+          showTime :this.review.showTime,
+          castingIdList:this.review.castingIdList,
+          reviewContent:this.review.reviewContent,
+          userId : this.userInfo.id
+        }
+        console.log(tmp)
+        this.addMyReview(tmp)
         this.modals.modal1 = false
         // 이 다음 내용도 clear 해야함!
-        this.review = {
-          seasonId : Number(this.show.seasonId),
-          showDate :'',
-          showTime :'',
-          castingIdList:[],
-          reviewContent:'',
-          userId : Number(this.userId)
-        }
+        // this.review = {
+        //   seasonId : Number(this.show.seasonId),
+        //   showDate :'',
+        //   showTime :'',
+        //   castingIdList:[],
+        //   reviewContent:'',
+        //   userId : Number(this.userId)
+        // }
       },
       // 날짜 포맷 정리
       dateFommatter(date){
@@ -173,6 +179,12 @@ export default {
         this.review.showTime = time
       },
   },
+  created(){
+    console.log(this.seasonShow)
+    console.log(this.review);
+    console.log(this.userInfo)
+    console.log(this.userInfo.id)
+  }
 };
 </script>
 

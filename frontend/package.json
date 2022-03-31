@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
-    "bootstrap-vue": "^2.0.4",
+    "bootstrap-vue": "^2.21.2",
     "chart.js": "^3.0.0",
     "flatpickr": "^4.5.1",
     "nouislider": "^11.1.0",
