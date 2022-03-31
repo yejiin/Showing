@@ -8,7 +8,7 @@
         v-for="(item, index) in currentPageCards"
         :key="index"
         class="mr-0 mb-2"
-        img-src="https://picsum.photos/300/400/?image=25"
+        :img-src="mainRecommendList[index].lastSeasonImage"
         img-alt="Image"
         img-top
         tag="article"
@@ -49,6 +49,8 @@ export default {
         {
           //Data in the card as objects
         },
+        {},
+        {},
         {},
         {},
         {},
