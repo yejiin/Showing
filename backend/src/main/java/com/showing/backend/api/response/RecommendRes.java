@@ -15,7 +15,7 @@ public class RecommendRes {
     @ApiModelProperty(name = "사용자 맞춤 추천 공연 리스트")
     List<PerformanceRes> recommendListByUser;
 
-    @ApiModelProperty(name = "선호 배우의 출연작")
-    PerformanceByActorRes recommendListByActor;
+    @ApiModelProperty(name = "선호 배우 2명의 출연작 리스트")
+    List<RecommendByActorRes> recommendListByActor;
 
 }

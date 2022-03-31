@@ -1,11 +1,7 @@
 <template>
   <div>
-    <h5 class="main_title comment_title">비슷한 공연</h5>
-    <br />
-    <!-- carousel area -->
+    <h5 class="main_title">내 리뷰</h5>
     <b-card-group deck class="mb-0">
-      <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-      <i class="ni ni-bold-left arrow"></i>
       <b-card
         v-for="(item, index) in currentPageCards"
         :key="index"
@@ -15,34 +11,26 @@
         img-top
         tag="article"
         style="max-width: 20rem"
-        @click="detailShow(index)"
       >
         <!-- card content -->
-        {{ similarList[index].performanceName }}&nbsp;
-        <b-badge class="mr-1" pill variant="light"
-          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarList[index].starPointAverage }}</b-badge
-        >
-        <b-badge pill variant="primary">공연중</b-badge>
+        공연 이름&nbsp;기간
+
         <br />
-        {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
       </b-card>
-      <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
     <!-- pagination area -->
-    <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-    <div class="pagination" v-if="cards.length > cardsPerPage">
+    <!-- <div class="pagination" v-if="cards.length > cardsPerPage">
       <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+    </div> -->
+    <div>
+      <base-pagination :page-count="10" align="center"></base-pagination>
     </div>
     <br />
   </div>
 </template>
-
 <script>
 export default {
-  name: "SimilarShow",
-  props: {
-    similarList: Array,
-  },
+  name: "UserReview",
   data() {
     return {
       cards: [
@@ -61,7 +49,7 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 3,
+      cardsPerPage: 5,
       currentPageIndex: 0,
     };
   },
@@ -72,13 +60,8 @@ export default {
       return this.paginatedCards[this.currentPageIndex];
     },
   },
+
   methods: {
-    detailShow(index) {
-      this.$router.push({
-        name: "ShowDetail",
-        params: { showId: this.similarList[index].performanceId },
-      });
-    },
     currentPage(i) {
       return i - 1 === this.currentPageIndex;
     },
@@ -107,7 +90,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .pagination {
   display: flex;
