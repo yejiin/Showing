@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h5 class="main_title comment_title">비슷한 공연</h5>
-    <br />
     <!-- carousel area -->
     <b-card-group deck class="mb-0">
       <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
@@ -9,7 +7,7 @@
       <b-card
         v-for="(item, index) in currentPageCards"
         :key="index"
-        class="mr-0 mb-2"
+        class="mr-0 mb-2 click_img"
         img-src="https://picsum.photos/300/400/?image=25"
         img-alt="Image"
         img-top
@@ -18,13 +16,15 @@
         @click="detailShow(index)"
       >
         <!-- card content -->
-        {{ similarList[index].performanceName }}&nbsp;
+        {{ playList[index].performanceName }}&nbsp;
         <b-badge class="mr-1" pill variant="light"
-          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarList[index].starPointAverage }}</b-badge
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ playList[index].starPointAverage }}</b-badge
         >
-        <b-badge pill variant="primary">공연중</b-badge>
+        <b-badge v-if="playList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
+        <b-badge v-if="playList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
+        <b-badge v-if="playList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
         <br />
-        {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
+        {{ playList[index].lastSeasonStartDate }} ~ {{ playList[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -39,9 +39,9 @@
 
 <script>
 export default {
-  name: "SimilarShow",
+  name: "RatingPlay",
   props: {
-    similarList: Array,
+    playList: Array,
   },
   data() {
     return {
@@ -50,18 +50,10 @@ export default {
           //Data in the card as objects
         },
         {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 3,
+      cardsPerPage: 6,
       currentPageIndex: 0,
     };
   },
@@ -72,13 +64,15 @@ export default {
       return this.paginatedCards[this.currentPageIndex];
     },
   },
+
   methods: {
     detailShow(index) {
       this.$router.push({
         name: "ShowDetail",
-        params: { showId: this.similarList[index].performanceId },
+        params: { showId: this.playList[index].performanceId },
       });
     },
+
     currentPage(i) {
       return i - 1 === this.currentPageIndex;
     },

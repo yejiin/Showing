@@ -3,6 +3,7 @@ import { apiInstance, apiInstance2 } from "./index.js";
 const api = apiInstance();
 const api2 = apiInstance2();
 
+// 공연별 리뷰 미리보기
 function getAllShowReview(performanceId, success, fail) {
   api.get(`/reviews/performances/${performanceId}`).then(success).catch(fail);
 }
@@ -23,4 +24,7 @@ function modifyMyReview(reviewId, review, success, fail) {
   api2.put(`/reviews/${reviewId}`, JSON.stringify(review)).then(success).catch(fail);
 }
 
-export { getAllShowReview, getMyReview, addMyReview, deleteMyReview, modifyMyReview };
+function getAllSeasonReview(seasonId, success, fail){
+  api.get(`/reviews/seasons/${seasonId}`).then(success).catch(fail);
+}
+export { getAllShowReview, getMyReview, addMyReview, deleteMyReview, modifyMyReview, getAllSeasonReview };
