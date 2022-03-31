@@ -14,7 +14,7 @@
       </b-card>
       <br />
       <br />
-      <review-list :seasonShowName="seasonShowName" :seasonShow="info"></review-list>
+      <review-list :seasonShowName="seasonShowName" :seasonShow="info" :performanceId="performanceId"></review-list>
       <review-write :seasonShowName="seasonShowName" :seasonShow="info"></review-write>
     </div>
     <b-card>
@@ -88,6 +88,7 @@ export default {
     seasons: Array,
     seasonShowName: String,
     seasonShow: Object,
+    performanceId : Number,
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
