@@ -76,7 +76,6 @@ export default {
 
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
-        console.log(this.info);
 
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
@@ -101,7 +100,6 @@ export default {
       this.$route.params.showId,
       (response) => {
         this.seasons = response.data.data;
-        console.log(this.seasons);
       },
       (error) => {
         console.log(error);

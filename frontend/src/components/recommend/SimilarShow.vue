@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h5 class="main_title comment_title">비슷한 공연</h5>
+    <br />
     <!-- carousel area -->
     <b-card-group deck class="mb-0">
       <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
@@ -13,15 +15,16 @@
         img-top
         tag="article"
         style="max-width: 20rem"
+        @click="detailShow(index)"
       >
         <!-- card content -->
-        {{ similarRecommend[index].performanceName }}&nbsp;
+        {{ similarList[index].performanceName }}&nbsp;
         <b-badge class="mr-1" pill variant="light"
-          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarRecommend[index].starPointAverage }}</b-badge
+          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarList[index].starPointAverage }}</b-badge
         >
         <b-badge pill variant="primary">공연중</b-badge>
         <br />
-        {{ similarRecommend[index].lastSeasonStartDate }} ~ {{ similarRecommend[index].lastSeasonEndDate }}
+        {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
       </b-card>
       <i class="ni ni-bold-right arrow arrow_right"></i>
     </b-card-group>
@@ -35,10 +38,11 @@
 </template>
 
 <script>
-import { getSimilarRecommend } from "@/api/recommend.js";
-
 export default {
   name: "SimilarShow",
+  props: {
+    similarList: Array,
+  },
   data() {
     return {
       cards: [
@@ -57,22 +61,9 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 4,
+      cardsPerPage: 3,
       currentPageIndex: 0,
-      similarRecommend: [],
     };
-  },
-  async created() {
-    await getSimilarRecommend(
-      "1",
-      (response) => {
-        this.similarRecommend = response.data.data;
-        // console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
   },
   computed: {
     currentPageCards() {
@@ -81,8 +72,13 @@ export default {
       return this.paginatedCards[this.currentPageIndex];
     },
   },
-
   methods: {
+    detailShow(index) {
+      this.$router.push({
+        name: "ShowDetail",
+        params: { showId: this.similarList[index].performanceId },
+      });
+    },
     currentPage(i) {
       return i - 1 === this.currentPageIndex;
     },
