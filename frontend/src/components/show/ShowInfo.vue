@@ -95,6 +95,7 @@
             <b-card-text>공연시간 {{ otherSeasonInfo.runingTime }}</b-card-text></b-col
           ></b-row
         >
+        <h6>캐스팅</h6>
         <actor-list :otherSeasonActor="otherSeasonActor"></actor-list>
       </b-card>
       <br />
