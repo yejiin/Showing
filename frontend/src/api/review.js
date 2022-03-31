@@ -31,4 +31,8 @@ function getAllSeasonReview(seasonId, success, fail){
 function getMyShowReview(performanceId, userId, success, fail){
   api2.get(`/reviews/performances/${performanceId}/${userId}`).then(success).catch(fail);
 }
-export { getAllShowReview, getMyReview, addMyReview, deleteMyReview, modifyMyReview, getAllSeasonReview, getMyShowReview };
+
+function getDetailReview(reviewId, success, fail){
+  api.get(`/reviews/${reviewId}`).then(success).catch(fail);
+}
+export { getAllShowReview, getMyReview, addMyReview, deleteMyReview, modifyMyReview, getAllSeasonReview, getMyShowReview, getDetailReview };
