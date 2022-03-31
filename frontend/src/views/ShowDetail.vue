@@ -3,9 +3,15 @@
     <!-- 헤더 -->
     <show-header :heading="heading" :performanceId="performanceId"></show-header>
     <!-- 내 리뷰 -->
-    <my-review :seasonShowName="seasonShowName" :seasonShow="seasonShow" :previewReview="previewReview"></my-review>
+    <!-- <my-review :seasonShowName="seasonShowName"></my-review> -->
     <!-- 공연 상세 정보 -->
-    <show-info :info="info" :actor="actor" :description="description" :seasons="seasons"></show-info>
+    <show-info
+      :info="info"
+      :actor="actor"
+      :description="description"
+      :seasons="seasons"
+      :seasonShowName="seasonShowName"
+    ></show-info>
     <word-cloud></word-cloud>
     <!-- 리뷰 리스트 -->
     <comment :previewReview="previewReview"></comment>
@@ -76,6 +82,9 @@ export default {
 
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
+
+        console.log(this.info);
+        console.log("this.info----------");
 
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
