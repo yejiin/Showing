@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-if="this.isLogin">
       <br /><br />
       <b-card>
         <b-card-text class="my_review">회원님의 리뷰는 개 입니다</b-card-text>
@@ -89,7 +89,7 @@ export default {
   computed: {
     ...mapState(userStore, ["userInfo"]),
     ...mapGetters({
-      isLogin: "user/isLogin",
+      isLogin: "userStore/isLogin",
     }),
   },
   components: {

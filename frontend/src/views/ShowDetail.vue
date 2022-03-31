@@ -20,7 +20,6 @@
 </template>
 <script>
 import ShowHeader from "@/components/show/ShowHeader";
-import MyReview from "@/components/show/MyReview";
 import ShowInfo from "@/components/show/ShowInfo";
 import WordCloud from "@/components/show/WordCloud";
 import Comment from "@/components/show/Comment";
@@ -33,7 +32,6 @@ export default {
   name: "ShowDetail",
   components: {
     ShowHeader,
-    MyReview,
     ShowInfo,
     WordCloud,
     Comment,
@@ -64,7 +62,7 @@ export default {
   async created() {
     this.heading.performanceId = this.$route.params.showId;
     // 공연 상세 정보 가져오기
-    console.log(this.$route.params.showId)
+    console.log(this.$route.params.showId);
     await detailShow(
       this.$route.params.showId,
       (response) => {
@@ -83,7 +81,7 @@ export default {
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
 
-        console.log(this.heading)
+        console.log(this.heading);
         console.log(this.info);
         console.log("this.info----------++");
 
