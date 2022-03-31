@@ -19,8 +19,8 @@
           tag="article"
           style="max-width: 20rem"
         >
-          <i style="font-size: 40px" class="ni ni-circle-08"></i>&nbsp;
-          <b-card-title class="comment_writer">{{ previewReview[index].userName }}</b-card-title>
+          <b-img :src="previewReview[index].userImage" rounded="circle" height="50px" />
+          <b-card-title class="comment_writer float-right">{{ previewReview[index].userName }}</b-card-title>
           <hr />
           <b-card-text>{{ previewReview[index].content }}</b-card-text>
         </b-card>
