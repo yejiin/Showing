@@ -9,8 +9,8 @@
       <b-card
         v-for="(item, index) in currentPageCards"
         :key="index"
-        class="mr-0 mb-2"
-        img-src="https://picsum.photos/300/400/?image=25"
+        class="mr-0 mb-3"
+        :img-src="similarList[index].lastSeasonImage"
         img-alt="Image"
         img-top
         tag="article"

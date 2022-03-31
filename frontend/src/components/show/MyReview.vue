@@ -20,7 +20,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from "vuex";
-import ReviewListModalVue from "../review/ReviewListModal.vue";
+import ReviewListModalVue from "../review/MyReviewListModal.vue";
 import ReviewWriteModalVue from "../review/ReviewWriteModal.vue";
 
 const userStore = "userStore";
