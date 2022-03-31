@@ -1,9 +1,7 @@
 <template>
   <div class="header">
     <!-- 헤더 -->
-    <show-header :heading="heading" :performanceId="performanceId"></show-header>
-    <!-- 내 리뷰 -->
-    <!-- <my-review :seasonShowName="seasonShowName"></my-review> -->
+    <show-header :heading="heading"></show-header>
     <!-- 공연 상세 정보 -->
     <show-info
       :info="info"
@@ -63,9 +61,9 @@ export default {
     };
   },
   async created() {
+    this.heading.performanceId = this.$route.params.showId;
     // 공연 상세 정보 가져오기
     await detailShow(
-      // showId = performanceId
       this.$route.params.showId,
       (response) => {
         this.heading.performanceId = response.data.data.performanceId;

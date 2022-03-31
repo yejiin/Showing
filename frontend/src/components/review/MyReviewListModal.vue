@@ -77,7 +77,6 @@ export default {
     showModal: Boolean,
     seasonShowName: String,
     seasonShow: Object,
-    previewReview: Array,
   },
   data() {
     return {

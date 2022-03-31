@@ -26,7 +26,6 @@
         :show-rating="false"
         v-model="value"
         :read-only="false"
-        padding="1"
       ></star-rating>
     </div>
   </div>
