@@ -99,7 +99,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<PreviewReviewByPerformanceRes> getPreviewReviewListByPerformanceId(Long performanceId) {
         // performanceId 에 해당하는 모든 시즌
-        List<Season> seasonList = seasonRepository.findByPerformanceId(performanceId);
+        List<Season> seasonList = seasonRepository.findByPerformanceIdOrderByStartDateDesc(performanceId);
         // seasonList 시즌들의 모든 리뷰
         List<Review> reviewList = reviewRepository.findBySeasonInOrderByUpdateDateDesc(seasonList);
         List<PreviewReviewByPerformanceRes> previewReviewList = new ArrayList<>();
@@ -181,6 +181,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                          .performanceId(performance.getId())
                                                          .performanceName(performance.getPerformanceName())
                                                          .seasonId(season.getId())
+                                                         .seasonImage(season.getSeasonImage())
                                                          .startDate(season.getStartDate())
                                                          .endDate(season.getEndDate())
                                                          .viewDate(review.getPerformanceDate().toLocalDate())
