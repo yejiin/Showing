@@ -8,7 +8,7 @@
         v-for="(item, index) in currentPageCards"
         :key="index"
         class="mr-0 mb-2 click_img"
-        img-src="https://picsum.photos/300/400/?image=25"
+        :img-src="musicalList[index].lastSeasonImage"
         img-alt="Image"
         img-top
         tag="article"
@@ -16,9 +16,11 @@
         @click="detailShow(index)"
       >
         <!-- card content -->
-        {{ musicalList[index].performanceName }}&nbsp;
+        <strong>{{ musicalList[index].performanceName }}</strong
+        >&nbsp;
         <b-badge class="mr-1" pill variant="light"
-          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ musicalList[index].starPointAverage }}</b-badge
+          ><b-icon icon="star-fill" scale="0.8"></b-icon>
+          {{ (musicalList[index].starPointAverage / 2).toFixed(2) }}</b-badge
         >
         <b-badge v-if="musicalList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
         <b-badge v-if="musicalList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
@@ -61,7 +63,7 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 6,
+      cardsPerPage: 5,
       currentPageIndex: 0,
     };
   },

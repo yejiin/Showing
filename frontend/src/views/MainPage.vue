@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <h5 class="main_title">00님을 위한 추천 공연</h5>
+    <h5 class="main_title">{{ this.$store.state.userStore.userInfo.nickName }}님을 위한 추천 공연</h5>
     <br />
     <show :mainRecommendList="mainRecommendList"></show>
     <h5 class="main_title">선호 배우 000의 다른 공연</h5>
@@ -36,6 +36,8 @@ export default {
     return {
       musicalList: [],
       playList: [],
+      userRecommendList: [],
+      actorRecommnedList: [],
       mainRecommendList: [],
     };
   },
@@ -52,10 +54,10 @@ export default {
     );
     // 추천 공연 리스트 불러오기
     await getMainRecommend(
-      "1",
+      this.$store.state.userStore.userInfo.id,
       (response) => {
-        this.mainRecommendList = response.data.data;
-        // console.log(response.data.data);
+        console.log(response.data.data);
+        this.mainRecommendList = response.data.data.recommendListByUser;
       },
       (error) => {
         console.log(error);
