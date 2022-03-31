@@ -29,6 +29,9 @@ public class ReviewDetailRes {
     @ApiModelProperty(name = "공연의 시즌 Id", example = "1")
     Long seasonId;
 
+    @ApiModelProperty(name = "공연의 시즌 이미지", example = "1")
+    String seasonImage;
+
     @ApiModelProperty(name = "시즌 시작 일자", example = "2022-01-01")
     LocalDate startDate;
 

@@ -23,7 +23,7 @@ public class SeasonServiceImpl implements SeasonService{
     @Override
     public List<SeasonDateRes> getSeasonList(Long performanceId) {
         // performanceId에 속하는 모든 season 목록
-        List<Season> seasonList = seasonRepository.findByPerformanceId(performanceId);
+        List<Season> seasonList = seasonRepository.findByPerformanceIdOrderByStartDateDesc(performanceId);
         List<SeasonDateRes> seasonDateResList = new ArrayList<>();
 
         // 시즌별로 반복
