@@ -102,9 +102,8 @@ export default {
 .mainbox {
 }
 .title {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 23px;
-  color: black;
 }
 .pagination {
   display: flex;

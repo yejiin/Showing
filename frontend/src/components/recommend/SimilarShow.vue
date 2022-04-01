@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h5 class="main_title comment_title">비슷한 공연</h5>
+    <span class="main_title comment_title">비슷한 공연</span>
     <br />
     <!-- carousel area -->
-    <b-card-group deck class="mb-0">
+    <b-card-group deck class="my-3">
       <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
       <i class="ni ni-bold-left arrow"></i>
       <b-card
@@ -109,6 +109,11 @@ export default {
 </script>
 
 <style scoped>
+.main_title {
+  font-weight: 600;
+  font-size: 23px;
+}
+
 .pagination {
   display: flex;
   align-items: center;

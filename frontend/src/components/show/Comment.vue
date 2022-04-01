@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="main_title comment_title">다른 사람의 리뷰</h5>
+    <span class="main_title">다른 사람의 리뷰</span>
     <review-list-modal v-if="previewReview != 0"></review-list-modal>
     <br />
     <div v-if="previewReview == 0">
@@ -118,6 +118,11 @@ export default {
 </script>
 
 <style scoped>
+.main_title {
+  font-weight: 600;
+  font-size: 23px;
+}
+
 .pagination {
   display: flex;
   align-items: center;

@@ -125,7 +125,6 @@ export default {
 }
 .main_title {
   font-size: 35px;
-  color: black;
 }
 .proceedflag {
   margin-top: 3%;
