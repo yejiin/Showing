@@ -36,9 +36,8 @@ export default {
     return {
       musicalList: [],
       playList: [],
-      userRecommendList: [],
-      actorRecommnedList: [],
       mainRecommendList: [],
+      actorRecommnedList: [],
     };
   },
   async created() {
@@ -56,8 +55,8 @@ export default {
     await getMainRecommend(
       this.$store.state.userStore.userInfo.id,
       (response) => {
-        console.log(response.data.data);
         this.mainRecommendList = response.data.data.recommendListByUser;
+        //console.log(response.data.data.recommendListByUser);
       },
       (error) => {
         console.log(error);
