@@ -50,6 +50,9 @@ public class ReviewDetailRes {
     @ApiModelProperty(name = "리뷰에 입력된 캐스팅 배우 이름 리스트", example = "['홍길동', '고길동']")
     List<String> reviewActorNameList;
 
+    @ApiModelProperty(name = "리뷰에 입력된 캐스팅 배우 캐스팅 아이디 리스트", example = "[1,2,3]")
+    List<Long> reviewCastingIdList;
+
     @ApiModelProperty(name = "리뷰 내용", example = "리뷰입니다.")
     String content;
 
