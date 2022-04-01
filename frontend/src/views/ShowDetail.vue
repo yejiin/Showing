@@ -1,9 +1,7 @@
 <template>
   <div class="header">
     <!-- 헤더 -->
-    <show-header :heading="heading" :performanceId="performanceId"></show-header>
-    <!-- 내 리뷰 -->
-    <!-- <my-review :seasonShowName="seasonShowName"></my-review> -->
+    <show-header :heading="heading"></show-header>
     <!-- 공연 상세 정보 -->
     <show-info
       :info="info"
@@ -22,7 +20,6 @@
 </template>
 <script>
 import ShowHeader from "@/components/show/ShowHeader";
-import MyReview from "@/components/show/MyReview";
 import ShowInfo from "@/components/show/ShowInfo";
 import WordCloud from "@/components/show/WordCloud";
 import Comment from "@/components/show/Comment";
@@ -35,7 +32,6 @@ export default {
   name: "ShowDetail",
   components: {
     ShowHeader,
-    MyReview,
     ShowInfo,
     WordCloud,
     Comment,
@@ -64,10 +60,10 @@ export default {
     };
   },
   async created() {
+    this.heading.performanceId = this.$route.params.showId;
     // 공연 상세 정보 가져오기
-    console.log(this.$route.params.showId)
+    console.log(this.$route.params.showId);
     await detailShow(
-      // showId = performanceId
       this.$route.params.showId,
       (response) => {
         this.heading.performanceId = response.data.data.performanceId;
@@ -85,18 +81,19 @@ export default {
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
 
-        console.log(this.heading)
+        console.log(this.heading);
         console.log(this.info);
         console.log("this.info----------++");
+        console.log(this.$store.getters["userStore/userInfo"].id);
 
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
           getRating(
-            this.$store.getters["userStore/userInfo"].id,
+            this.$store.getters["userStore/userInfo"].userId,
             this.heading.performanceId,
             (response) => {
               this.heading.starId = response.data.data.starId;
-              this.heading.rating = response.data.data.rating;
+              this.heading.rating = response.data.data.rating / 2;
             },
             (error) => {
               console.log(error);
@@ -121,4 +118,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.header {
+  margin-left: 15%;
+  margin-right: 15%;
+}
+</style>
