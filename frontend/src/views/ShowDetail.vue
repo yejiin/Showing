@@ -84,6 +84,7 @@ export default {
         console.log(this.heading);
         console.log(this.info);
         console.log("this.info----------++");
+        console.log(this.$store.getters["userStore/userInfo"].id);
 
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
@@ -92,7 +93,7 @@ export default {
             this.heading.performanceId,
             (response) => {
               this.heading.starId = response.data.data.starId;
-              this.heading.rating = response.data.data.rating;
+              this.heading.rating = response.data.data.rating / 2;
             },
             (error) => {
               console.log(error);
@@ -117,4 +118,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.header {
+  margin-left: 15%;
+  margin-right: 15%;
+}
+</style>
