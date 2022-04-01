@@ -1,18 +1,25 @@
 <template>
   <div class="header">
-    <h5 class="main_title">{{ this.$store.state.userStore.userInfo.nickName }}님을 위한 추천 공연</h5>
-    <br />
-    <show :mainRecommendList="mainRecommendList"></show>
-    <h5 class="main_title">선호 배우 000의 다른 공연</h5>
-    <br />
-    <actor></actor>
-    <br />
-    <h5 class="main_title">뮤지컬 평균 별점 순위</h5>
-    <br />
-    <rating-musical :musicalList="musicalList"></rating-musical>
-    <h5 class="main_title">연극 평균 별점 순위</h5>
-    <br />
-    <rating-play :playList="playList"></rating-play>
+    <div v-if="this.$store.state.userStore.isLogin">
+      <h5 class="main_title">{{ this.$store.state.userStore.userInfo.nickName }}님을 위한 추천 공연</h5>
+      <br />
+      <show :mainRecommendList="mainRecommendList"></show>
+    </div>
+    <div v-if="this.$store.state.userStore.isLogin">
+      <h5 class="main_title">선호 배우 000의 다른 공연</h5>
+      <br />
+      <actor></actor>
+    </div>
+    <div>
+      <h5 class="main_title">뮤지컬 평균 별점 순위</h5>
+      <br />
+      <rating-musical :musicalList="musicalList"></rating-musical>
+    </div>
+    <div>
+      <h5 class="main_title">연극 평균 별점 순위</h5>
+      <br />
+      <rating-play :playList="playList"></rating-play>
+    </div>
   </div>
 </template>
 <script>
