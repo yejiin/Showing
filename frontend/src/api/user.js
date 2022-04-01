@@ -1,9 +1,10 @@
-import { apiInstance } from "./index.js";
+import { apiInstance, apiInstance2 } from "./index.js";
 
 const api = apiInstance();
+const api2 = apiInstance2();
 
-async function getUser(userId, success, fail) {
-  await api.get(`/users/${userId}`).then(success).catch(fail);
+async function getUserInfo(userId, sucess, fail) {
+  await api2.get(`/users/${userId}`).then(sucess).catch(fail);
 }
 
 async function modifyUser(user, success, fail) {
@@ -26,4 +27,4 @@ async function getKakaoUser(kakaoToken, success, fail) {
   await api.get(`/users/kakao/login?accessToken=${kakaoToken}`).then(success).catch(fail);
 }
 
-export { getUser, modifyUser, getNaverToken, getNaverUser, getKakaoToken, getKakaoUser };
+export { getUserInfo, modifyUser, getNaverToken, getNaverUser, getKakaoToken, getKakaoUser };
