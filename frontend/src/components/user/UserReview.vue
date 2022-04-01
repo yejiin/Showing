@@ -3,27 +3,30 @@
     <h5 class="main_title">내 리뷰</h5>
     <b-card-group deck class="mb-0">
       <b-card
-        v-for="(item, index) in currentPageCards"
-        :key="index"
+        id="itemList"
+        v-for="item in createPages()"
+        :key="item.index"
         class="mr-0 mb-2"
-        img-src="https://picsum.photos/300/400/?image=25"
+        :img-src="item.performanceImage"
         img-alt="Image"
         img-top
         tag="article"
         style="max-width: 20rem"
       >
         <!-- card content -->
-        공연 이름&nbsp;기간
-
+        {{ item.performanceName }}&nbsp;{{ item.viewDate }}
         <br />
       </b-card>
     </b-card-group>
     <!-- pagination area -->
-    <!-- <div class="pagination" v-if="cards.length > cardsPerPage">
-      <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
-    </div> -->
     <div>
-      <base-pagination :page-count="10" align="center"></base-pagination>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="itemList"
+        align="center"
+      ></b-pagination>
     </div>
     <br />
   </div>
@@ -33,59 +36,24 @@ export default {
   name: "UserReview",
   data() {
     return {
-      cards: [
-        {
-          //Data in the card as objects
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-      ],
-      paginatedCards: [],
+      currentPage: 1,
       pageCount: 0,
-      cardsPerPage: 5,
-      currentPageIndex: 0,
+      reviewsPerPage: 5,
+      perPage: 5,
     };
   },
+  props: {
+    reviewList: Array,
+  },
   computed: {
-    currentPageCards() {
-      this.createPages();
-
-      return this.paginatedCards[this.currentPageIndex];
+    rows: function () {
+      return this.reviewList.length;
     },
   },
 
   methods: {
-    currentPage(i) {
-      return i - 1 === this.currentPageIndex;
-    },
-
     createPages() {
-      let cardsLength = this.cards.length;
-      let fullPagesCount = Math.floor(cardsLength / this.cardsPerPage);
-
-      if (cardsLength > this.cardsPerPage) {
-        this.pageCount = 0;
-        for (let i = 0; i < fullPagesCount * this.cardsPerPage; i += this.cardsPerPage) {
-          this.paginatedCards[this.pageCount] = this.cards.slice(i, i + this.cardsPerPage);
-          this.pageCount++;
-        }
-
-        this.paginatedCards[this.pageCount] = this.cards.slice(cardsLength - this.cardsPerPage, cardsLength);
-        this.pageCount = this.pageCount + 1;
-      } else {
-        this.paginatedCards[0] = this.cards;
-      }
-    },
-
-    next(i) {
-      this.currentPageIndex = i - 1;
+      return this.reviewList.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
     },
   },
 };
