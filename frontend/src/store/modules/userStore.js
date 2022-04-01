@@ -4,7 +4,7 @@ const userStore = {
   namespaced: true,
   state: {
     userInfo: {
-      id: "",
+      userId: 0,
       nickName: "",
       userImage: "",
     },

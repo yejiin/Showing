@@ -39,7 +39,7 @@ export default new Router({
       component: Callback,
     },
     {
-      path: "/users",
+      path: "/users/:userId",
       name: "MyPage",
       components: {
         header: Header,
