@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RatingService {
 
-    void addRating(AddRatingReq req);
+    Long addRating(AddRatingReq req);
 
     void modifyRating(ModifyRatingReq req);
 
