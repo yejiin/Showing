@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h6>캐스팅</h6>
+  <div class="mainbox mt-4">
+    <span class="title">캐스팅</span>
     <div v-if="actor != null">
       <!-- carousel area -->
       <b-card-group deck class="mb-0 comment_list">
@@ -99,6 +99,13 @@ export default {
 </script>
 
 <style scoped>
+.mainbox {
+}
+.title {
+  font-weight: 600;
+  font-size: 25px;
+  color: black;
+}
 .pagination {
   display: flex;
   align-items: center;

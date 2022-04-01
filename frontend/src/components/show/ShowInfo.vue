@@ -3,12 +3,11 @@
     <div v-if="this.isLogin">
       <br /><br />
       <b-card>
-        <b-card-text class="my_review">회원님의 리뷰는 개 입니다</b-card-text>
-        <a target="_blank" class="btn btn-neutral btn-icon review" @click="setMyReviewListModalStates(true)">
+        <span class="my_review">회원님의 리뷰는 개 입니다</span>
+        <a target="_blank" class="btn btn-neutral btn-icon review button" @click="setMyReviewListModalStates(true)">
           <span class="nav-link-inner--text">내 리뷰 보기</span>
         </a>
-
-        <a target="_blank" class="btn btn-neutral btn-icon" @click="setWriteModalStates(true)">
+        <a target="_blank" class="btn btn-neutral btn-icon button mr-2" @click="setWriteModalStates(true)">
           <span class="nav-link-inner--text">리뷰 작성</span>
         </a>
       </b-card>
@@ -20,14 +19,14 @@
     <b-card>
       <div class="dropdown">
         <button
-          class="btn p-0 btn-white dropdown-toggle"
+          class="btn p-0 btn-white dropdown-toggle subTitle"
           type="button"
           id="dropdownMenuButton"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
         >
-          공연정보
+          공연정보&nbsp;&nbsp;
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a @click="otherSeason(index)" v-for="(seasonDate, index) in seasons" :key="index" class="dropdown-item">
@@ -35,26 +34,22 @@
           </a>
         </div>
       </div>
-      <br />
-      <br />
-
-      <span class="badge badge-pill badge-success">{{ info.detailType }}</span
+      <span class="badge badge-pill badge-success ml-4">{{ info.detailType }}</span
       >&nbsp;
       <span class="badge badge-pill badge-warning">{{ info.performanceAge }} 관람가</span>
       <br /><br />
       <b-row
-        ><b-col
-          ><b-card-text>일정 {{ info.startDate }} ~ {{ info.endDate }}</b-card-text></b-col
-        ></b-row
-      >
+        ><b-col class="ml-2 my-2" cols="3">일정 </b-col>
+        <b-col cols="6">{{ info.startDate }} ~ {{ info.endDate }}</b-col>
+      </b-row>
       <b-row
-        ><b-col cols="6"
-          ><b-card-text class="location">장소 {{ info.location }}</b-card-text></b-col
-        >
-        <b-col cols="6">
-          <b-card-text>공연시간 {{ info.runingTime }}</b-card-text></b-col
-        ></b-row
-      >
+        ><b-col class="ml-2 my-2" cols="3">장소 </b-col>
+        <b-col>{{ info.location }}</b-col>
+      </b-row>
+      <b-row>
+        <b-col class="ml-2 my-2" cols="3"> 공연시간 </b-col>
+        <b-col>{{ info.runingTime }}</b-col>
+      </b-row>
       <actor-list :actor="actor"></actor-list>
     </b-card>
     <br />
@@ -119,7 +114,6 @@ export default {
           this.info = response.data.data;
           this.description = response.data.data.description;
           this.actor = response.data.data.actorList;
-          console.log(this.actor);
         },
         (error) => {
           console.log(error);
@@ -139,6 +133,9 @@ export default {
 </script>
 
 <style scoped>
+.my_review {
+  vertical-align: middle;
+}
 .card-text {
   margin-bottom: 0px;
   color: black;
@@ -161,5 +158,13 @@ export default {
 .btn-white:hover {
   -webkit-box-shadow: 0 0px 0px, 0 0px 0px;
   box-shadow: 0 0px 0px, 0 0px 0px;
+}
+
+.button {
+  float: right;
+}
+
+.subTitle {
+  font-size: 23px;
 }
 </style>
