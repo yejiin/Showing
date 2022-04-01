@@ -24,7 +24,7 @@
         :increment="0.5"
         :star-size="45"
         :show-rating="false"
-        v-model="this.heading.rating"
+        v-model="ratingCount"
         :read-only="false"
         clearable
       ></star-rating>
@@ -33,11 +33,12 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import StarRating from "vue-star-rating";
 import { addRating, deleteRating, modifyRating } from "@/api/rating.js";
 
 const userStore = "userStore";
+const ratingStore = "ratingStore";
 
 export default {
   name: "ShowHeader",
@@ -47,33 +48,45 @@ export default {
   props: {
     heading: Object,
   },
+  created() {
+    this.ratingCount = this.rating;
+    this.storeValue = this.rating;
+    console.log(this.storeValue);
+  },
   data() {
     return {
-      // starId: 0,
-      storeValue: this.heading.rating,
-      // ratingCount: 0,
+      ratingCount: 0,
+      storeValue: 0,
     };
+  },
+  methods: {
+    ...mapActions(ratingStore, ["setMyStarIdState", "setMyRatingState"]),
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
     ...mapGetters({
       isLogin: "userStore/isLogin",
       userInfo: "userStore/userInfo",
+      rating: "ratingStore/rating",
+      starId: "ratingStore/starId",
     }),
   },
   watch: {
     ratingCount: function () {
+      console.log(this.ratingCount);
+      console.log(this.storeValue);
       if (this.storeValue == 0) {
         // add
         var req = {
           performanceId: this.heading.performanceId,
-          rating: this.heading.rating * 2,
+          rating: this.ratingCount * 2,
           userId: this.userInfo.userId,
         };
         addRating(
           req,
           (response) => {
-            this.heading.starId = response.data.data;
+            console.log(response);
+            this.setMyStarIdState(response.data.data);
           },
           (error) => {
             console.log(error);
@@ -83,9 +96,11 @@ export default {
         if (this.ratingCount == 0) {
           // delete
           deleteRating(
-            this.heading.starId,
+            this.starId,
             (response) => {
               console.log(response);
+              this.setMyStarIdState(0);
+              this.setMyRatingState(0);
             },
             (error) => {
               console.log(error);
@@ -94,14 +109,15 @@ export default {
         } else {
           // modify
           var req = {
-            starId: this.heading.starId,
-            rating: this.heading.rating * 2,
+            starId: this.starId,
+            rating: this.ratingCount * 2,
             userId: this.userInfo.userId,
           };
           modifyRating(
             req,
             (response) => {
               console.log(response);
+              this.setMyRatingState(this.ratingCount);
             },
             (error) => {
               console.log(error);
@@ -109,7 +125,7 @@ export default {
           );
         }
       }
-      this.storeValue = this.heading.rating;
+      this.storeValue = this.ratingCount;
     },
   },
 };
