@@ -35,6 +35,7 @@
           </a>
         </div>
       </div>
+
       <br />
       <br />
 
@@ -55,7 +56,8 @@
           <b-card-text>공연시간 {{ info.runingTime }}</b-card-text></b-col
         ></b-row
       >
-      <actor-list :actor="actor"></actor-list>
+      <h6>캐스팅</h6>
+      <actor-list :otherSeasonActor="otherSeasonActor"></actor-list>
     </b-card>
     <br />
     <br />
@@ -88,7 +90,7 @@ export default {
     seasons: Array,
     seasonShowName: String,
     seasonShow: Object,
-    performanceId : Number,
+    performanceId: Number,
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
