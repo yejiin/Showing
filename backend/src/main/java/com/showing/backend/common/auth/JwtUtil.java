@@ -14,7 +14,7 @@ import java.util.Optional;
 public class JwtUtil {
 
     // 현재 접속해 있는 사용자의 아이디를 반환하는 메소드
-    public static Optional<Long> getCurrentId(){
+    public static Long getCurrentId(){
         // Security Context에 Authentication 객체가 저장되는 시점은
         // JwtFilter의 doFilter메소드에서 Request가 들어올 때 SecurityContext에 Authentication 객체를 저장해서 사용
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -27,6 +27,6 @@ public class JwtUtil {
             id = (Long) authentication.getPrincipal();
         }
 
-        return Optional.ofNullable(id);
+        return id;
     }
 }
