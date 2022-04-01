@@ -4,8 +4,10 @@
       <h5 class="main_title">선호태그</h5>
       <word-cloud></word-cloud>
       <hr />
-      <h5 class="main_title">선호배우</h5>
-      <actor-list></actor-list>
+      <div>
+        <h5 class="main_title">선호배우</h5>
+        <actor-list :actor="actor"></actor-list>
+      </div>
     </b-card>
   </div>
 </template>
@@ -17,6 +19,14 @@ export default {
   components: {
     ActorList,
     WordCloud,
+  },
+  props: {
+    favoriteActor: Array,
+  },
+  computed: {
+    actor: function () {
+      return this.favoriteActor;
+    },
   },
 };
 </script>
