@@ -1,16 +1,17 @@
 <template>
   <div>
-    <br /><br />
-    <b-card>
+    <div class="row">
       <b-card-text class="my_review">회원님의 리뷰는 {{ previewReview.length }}개 입니다</b-card-text>
-      <a target="_blank" class="btn btn-neutral btn-icon review" @click="setMyReviewListModalStates(true)">
-        <span class="nav-link-inner--text">내 리뷰 보기</span>
+    </div>
+    <div class="col">
+      <a target="_blank" class="btn btn-neutral btn-icon review button" @click="setMyReviewListModalStates(true)">
+        <span class="nav-link-inner--text">리뷰 보기</span>
       </a>
 
-      <a target="_blank" class="btn btn-neutral btn-icon" @click="setWriteModalStates(true)">
+      <a target="_blank" class="btn btn-neutral btn-icon button" @click="setWriteModalStates(true)">
         <span class="nav-link-inner--text">리뷰 작성</span>
       </a>
-    </b-card>
+    </div>
     <br />
     <br />
     <review-list :seasonShowName="seasonShowName" :seasonShow="seasonShow" :previewReview="previewReview"></review-list>
@@ -20,7 +21,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from "vuex";
-import ReviewListModalVue from "../review/ReviewListModal.vue";
+import ReviewListModalVue from "../review/MyReviewListModal.vue";
 import ReviewWriteModalVue from "../review/ReviewWriteModal.vue";
 
 const userStore = "userStore";
@@ -77,5 +78,9 @@ export default {
 
 .review {
   margin-right: 1%;
+}
+
+.button {
+  float: right;
 }
 </style>
