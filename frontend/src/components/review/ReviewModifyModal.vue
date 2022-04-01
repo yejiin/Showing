@@ -131,15 +131,15 @@ export default {
           // 다시 primary로 변경하고 선택된 actors에서 뺌
           cur.className = "badge badge-pill casting badge-primary"
           for(var i = 0; i<this.review.reviewActorNameList.length;i++){
-            if(this.review.reviewActorNameList[i]===id){
-              this.review.reviewActorNameList.splice(i, 1)
+            if(this.review.reviewCastingIdList[i]===id){
+              this.review.reviewCastingIdList.splice(i, 1)
               i--
             }
           }
         }
         else { // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
           cur.className = "badge badge-pill casting badge-warning"
-          this.review.reviewActorNameList.push(id)
+          this.review.reviewCastingIdList.push(id)
         }
         console.log(this.review)
         
@@ -155,14 +155,14 @@ export default {
           seasonId : this.seasonShow.seasonId,
           showDate :this.review.viewDate,
           showTime :this.review.viewTime,
-          castingIdList:this.review.reviewActorNameList,
+          castingIdList:this.review.reviewCastingIdList,
           reviewContent:this.review.content,
           userId : this.userInfo.userId
         }
         console.log(tmp)
-        this.modifyMyReview(tmp)
-        this.modals.modal1 = false
-        this.review.castingIdList.forEach(element=>{
+        this.modifyMyReview(this.review.reviewId, tmp)
+        this.setModifyReviewModalState(false)
+        this.review.reviewCastingIdList.forEach(element=>{
           let el = document.getElementById(element)
           el.className = "badge badge-pill casting badge-primary"
         })
@@ -203,6 +203,17 @@ export default {
         }, fail =>{
           console.log(fail)
         });
+  },
+  updated(){
+    this.$nextTick(()=>{
+      console.log("으아아아앙")
+      this.review.reviewCastingIdList.forEach(element=>{
+        let cur = document.getElementById(element)
+        console.log("오이오이")
+        console.log(cur)
+        cur.className = "badge badge-pill casting badge-warning"
+      })
+    });
   }
 };
 </script>
@@ -288,7 +299,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   width : 20%;
 
 }
-
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
 </style>
 
 <style>
