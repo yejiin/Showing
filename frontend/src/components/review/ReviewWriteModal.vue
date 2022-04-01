@@ -102,7 +102,6 @@ export default {
           castingIdList:[],
           reviewContent:'',
       },
-      // userId : Number(this.userInfo.id),
     }
   },
   computed:{
@@ -149,20 +148,23 @@ export default {
           showTime :this.review.showTime,
           castingIdList:this.review.castingIdList,
           reviewContent:this.review.reviewContent,
-          userId : this.userInfo.id
+          userId : this.userInfo.userId
         }
         console.log(tmp)
         this.addMyReview(tmp)
         this.modals.modal1 = false
-        // 이 다음 내용도 clear 해야함!
-        // this.review = {
-        //   seasonId : Number(this.show.seasonId),
-        //   showDate :'',
-        //   showTime :'',
-        //   castingIdList:[],
-        //   reviewContent:'',
-        //   userId : Number(this.userId)
-        // }
+        this.review.castingIdList.forEach(element=>{
+          let el = document.getElementById(element)
+          el.className = "badge badge-pill casting badge-primary"
+        })
+        this.review = {
+          seasonId : this.seasonShow.seasonId,
+          showDate :'',
+          showTime :'',
+          castingIdList:[],
+          reviewContent:'',
+        }
+        this.$emit("setwrite", true)
       },
       // 날짜 포맷 정리
       dateFommatter(date){
@@ -183,7 +185,7 @@ export default {
     console.log(this.seasonShow)
     console.log(this.review);
     console.log(this.userInfo)
-    console.log(this.userInfo.id)
+    console.log(this.userInfo.userId)
   }
 };
 </script>
