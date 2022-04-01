@@ -85,8 +85,8 @@ export default {
         addRating(
           req,
           (response) => {
-            console.log(response);
             this.setMyStarIdState(response.data.data);
+            this.setMyRatingState(this.ratingCount);
           },
           (error) => {
             console.log(error);
@@ -116,7 +116,6 @@ export default {
           modifyRating(
             req,
             (response) => {
-              console.log(response);
               this.setMyRatingState(this.ratingCount);
             },
             (error) => {
