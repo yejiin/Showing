@@ -170,7 +170,9 @@ public class ReviewServiceImpl implements ReviewService {
 
         // 리뷰에 작성되어있는 캐스팅 정보에서 배우 이름을 추출한다.
         List<String> reviewActorNameList = new ArrayList<>();
+        List<Long> reviewCastingIdList = new ArrayList<>();
         for (ReviewActor reviewActor : reviewActorList) {
+            reviewCastingIdList.add(reviewActor.getCasting().getId());
             reviewActorNameList.add(reviewActor.getCasting().getActor().getActorName());
         }
 
@@ -187,6 +189,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                          .viewDate(review.getPerformanceDate().toLocalDate())
                                                          .viewTime(review.getPerformanceDate().toLocalTime())
                                                          .location(season.getLocation()).reviewActorNameList(reviewActorNameList)
+                                                         .reviewCastingIdList(reviewCastingIdList)
                                                          .content(review.getReviewContent())
                                                          .reviewCreateDate(review.getCreateDate())
                                                          .build();
