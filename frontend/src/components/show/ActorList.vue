@@ -13,9 +13,17 @@
           tag="article"
           style="max-width: 20rem; border: 0px"
         >
-          <b-img :src="actor[index].actorImage" rounded="circle" height="150px" />
+          <!-- <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i> -->
+          <div class="profile-image">
+            <div class="image-box" style="background: #bdbdbd">
+              <img class="image" :src="actor[index].actorImage" />
+            </div>
+          </div>
+
           <br />
-          <b-card-text v-if="actor[index].role != null">{{ actor[index].role }}</b-card-text>
+          <b-card-text v-if="actor[index].role != undefined || actor[index].role != null">{{
+            actor[index].role
+          }}</b-card-text>
           <b-card-text v-else><br /></b-card-text>
           <h5 class="actor_name">{{ actor[index].actorName }}</h5>
         </b-card>
@@ -56,7 +64,7 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 6,
+      cardsPerPage: 5,
       currentPageIndex: 0,
     };
   },
@@ -74,7 +82,7 @@ export default {
     },
 
     createPages() {
-      let cardsLength = this.cards.length;
+      let cardsLength = this.actor.length;
       let fullPagesCount = Math.floor(cardsLength / this.cardsPerPage);
 
       if (cardsLength > this.cardsPerPage) {
@@ -87,7 +95,7 @@ export default {
         this.paginatedCards[this.pageCount] = this.cards.slice(cardsLength - this.cardsPerPage, cardsLength);
         this.pageCount = this.pageCount + 1;
       } else {
-        this.paginatedCards[0] = this.cards;
+        this.paginatedCards[0] = this.actor;
       }
     },
 
@@ -141,5 +149,24 @@ export default {
 .actor_name {
   margin-top: 0px;
   text-align: center;
+}
+
+.profile-image {
+  height: 50%;
+  width: 100%;
+}
+
+.image-box {
+  width: 150px;
+  height: 150px;
+  border-radius: 70%;
+  overflow: hidden;
+  background-color: wheat;
+  margin-left: 60px;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
