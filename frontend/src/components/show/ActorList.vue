@@ -1,6 +1,5 @@
 <template>
   <div class="mainbox mt-4">
-    <span class="title">캐스팅</span>
     <div v-if="actor != null">
       <!-- carousel area -->
       <b-card-group deck class="mb-0 comment_list">

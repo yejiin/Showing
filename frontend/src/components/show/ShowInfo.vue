@@ -11,11 +11,10 @@
           <span class="nav-link-inner--text">리뷰 작성</span>
         </a>
       </b-card>
-      <br />
-      <br />
       <review-list :seasonShowName="seasonShowName" :seasonShow="info" :performanceId="performanceId"></review-list>
       <review-write :seasonShowName="seasonShowName" :seasonShow="info"></review-write>
     </div>
+    <br /><br />
     <b-card>
       <div class="dropdown">
         <button
@@ -50,6 +49,8 @@
         <b-col class="ml-2 my-2" cols="3"> 공연시간 </b-col>
         <b-col>{{ info.runingTime }}</b-col>
       </b-row>
+      <br />
+      <span class="subTitle mt-2">캐스팅</span>
       <actor-list :actor="actor"></actor-list>
     </b-card>
     <br />
@@ -165,6 +166,7 @@ export default {
 }
 
 .subTitle {
+  font-weight: 600;
   color: #525f7f;
   font-size: 23px;
 }
