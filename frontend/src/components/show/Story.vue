@@ -2,7 +2,6 @@
   <div>
     <b-card>
       <span class="main_title">작품설명</span>
-      <!-- <h5 class="main_title">작품설명</h5> -->
       <read-more
         class="my-3 script"
         more-str="더보기"

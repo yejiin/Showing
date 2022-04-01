@@ -165,6 +165,7 @@ export default {
 }
 
 .subTitle {
+  color: #525f7f;
   font-size: 23px;
 }
 </style>
