@@ -25,8 +25,12 @@ import WordCloud from "@/components/show/WordCloud";
 import Comment from "@/components/show/Comment";
 import SimilarShow from "@/components/recommend/SimilarShow";
 
+import { mapActions } from "vuex";
+
 import { getRating } from "@/api/rating.js";
 import { detailShow, getSeasonShow } from "@/api/show.js";
+
+const ratingStore = "ratingStore";
 
 export default {
   name: "ShowDetail",
@@ -59,10 +63,12 @@ export default {
       seasons: [],
     };
   },
+  methods: {
+    ...mapActions(ratingStore, ["setMyStarIdState", "setMyRatingState"]),
+  },
   async created() {
     this.heading.performanceId = this.$route.params.showId;
     // 공연 상세 정보 가져오기
-    console.log(this.$route.params.showId);
     await detailShow(
       this.$route.params.showId,
       (response) => {
@@ -81,19 +87,14 @@ export default {
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
 
-        console.log(this.heading);
-        console.log(this.info);
-        console.log("this.info----------++");
-        console.log(this.$store.getters["userStore/userInfo"].id);
-
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
           getRating(
             this.$store.getters["userStore/userInfo"].userId,
             this.heading.performanceId,
             (response) => {
-              this.heading.starId = response.data.data.starId;
-              this.heading.rating = response.data.data.rating / 2;
+              this.setMyStarIdState(response.data.data.starId);
+              this.setMyRatingState(response.data.data.rating / 2);
             },
             (error) => {
               console.log(error);

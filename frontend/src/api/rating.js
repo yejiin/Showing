@@ -4,6 +4,7 @@ const api2 = apiInstance2();
 
 // 별점 조회
 function getRating(userId, performanceId, success, fail) {
+  console.log("getRating");
   api2.get(`/rating/${userId}?performanceId=${performanceId}`).then(success).catch(fail);
 }
 

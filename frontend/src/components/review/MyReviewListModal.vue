@@ -149,7 +149,6 @@ export default {
       this.modal1 = false;
       this.modal2 = true;
       getDetailReview(id, (response) => {
-        console.log(response.data);
         this.show = response.data.data;
       });
     },
@@ -158,7 +157,6 @@ export default {
         this.performanceId,
         this.userInfo.id,
         (response) => {
-          console.log(response.data);
           this.reviews = response.data.data;
         },
         (fail) => {
@@ -167,35 +165,28 @@ export default {
       );
     },
     deleteReview(id) {
-      console.log("deleteReview");
       deleteMyReview(
         id,
         (response) => {
           alert("게시물이 삭제되었습니다");
-          console.log("success : " + response);
         },
         (fail) => {
-          console.log("fail 온 거임");
           console.log(fail);
         }
       );
     },
   },
   created() {
-    console.log("pid : " + this.performanceId);
     getMyShowReview(
       this.performanceId,
       this.userInfo.userId,
       (response) => {
-        console.log(response.data);
         this.reviews = response.data.data;
       },
       (fail) => {
         console.log(fail);
       }
     );
-    console.log("이거슨 저장된 리뷰");
-    console.log(this.reviews);
   },
 };
 </script>

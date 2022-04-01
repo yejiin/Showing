@@ -3,40 +3,31 @@ import { getNaverToken, getNaverUser, getKakaoToken, getKakaoUser } from "@/api/
 const reviewStore = {
   namespaced: true,
   state: {
-      modals:{
-          myReviewList : false,
-          writeReview : false,
-          OtherReviews : false,
-          reviewDetail : false
-      }
+    modals: {
+      myReviewList: false,
+      writeReview: false,
+      OtherReviews: false,
+      reviewDetail: false,
+    },
   },
 
-  getters: {
-      
-  },
+  getters: {},
 
   mutations: {
-    SET_MY_REVIEW_LIST_STATE : (state, status) => {
-        state.modals.myReviewList = status
-        console.log("mutations "+status)
-        console.log(state.modals.myReviewList)
+    SET_MY_REVIEW_LIST_STATE: (state, status) => {
+      state.modals.myReviewList = status;
     },
-    SET_WRITE_REVIEW_STATE : (state, status) =>{
-      state.modals.writeReview = status
-      console.log("mutations "+status)
-      console.log(state.modals.writeReview)
-    }
-
+    SET_WRITE_REVIEW_STATE: (state, status) => {
+      state.modals.writeReview = status;
+    },
   },
 
   actions: {
-    setMyReviewListModalState({ commit }, status){
-        console.log("actions도 옴" + status)
-        commit("SET_MY_REVIEW_LIST_STATE", status);
+    setMyReviewListModalState({ commit }, status) {
+      commit("SET_MY_REVIEW_LIST_STATE", status);
     },
-    setWriteReviewModalState({commit}, status){
-      console.log("actions도 옴" + status)
-        commit("SET_WRITE_REVIEW_STATE", status);
+    setWriteReviewModalState({ commit }, status) {
+      commit("SET_WRITE_REVIEW_STATE", status);
     },
     async findNaverToken({ dispatch }, code, state) {
       await getNaverToken(
@@ -45,8 +36,6 @@ const reviewStore = {
         (response) => {
           if (response.data.statusCode == 200) {
             console.log("네이버 Access Token 생성 성공");
-            console.log(response);
-
             dispatch("findNaverUser", response.data.data);
           }
         },
@@ -56,7 +45,6 @@ const reviewStore = {
         }
       );
     },
-
   },
 };
 
