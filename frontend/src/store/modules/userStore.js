@@ -4,7 +4,7 @@ const userStore = {
   namespaced: true,
   state: {
     userInfo: {
-      id: "",
+      userId: 0,
       nickName: "",
       userImage: "",
     },
@@ -22,7 +22,7 @@ const userStore = {
 
   mutations: {
     SET_USER_INFO: (state, data) => {
-      state.userInfo.id = data.id;
+      state.userInfo.userId = data.id;
       state.userInfo.nickName = data.nickName;
       state.userInfo.userImage = data.userImage;
     },
