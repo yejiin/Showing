@@ -26,12 +26,12 @@
                 <h5 class="bold mb-1" @click="showDetailModal(review.reviewId)">{{ review.viewDate }}</h5>
               </div>
               <div>
-                <a href="" class="udpatedelete" @click.prevent="modifyModal(review.reviewId)">
+                <a href="" class="udpatedelete" @click="modifyModal(review.reviewId)">
                   <i class="fa fa-pencil"></i>
                   수정
                 </a>
 
-                <a href="" class="udpatedelete" @click.prevent="deleteReview(review.reviewId)">
+                <a href="" class="udpatedelete" @click="deleteReview(review.reviewId)">
                   <i class="fa fa-trash"></i>
                   삭제 &nbsp;| &nbsp;
                 </a>
