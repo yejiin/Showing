@@ -7,7 +7,7 @@
     <b-collapse id="nav-collapse" is-nav>
       <search></search>
       <login style="margin-right: 15%"></login>
-      <p v-if="userInfo.id">{{ userInfo.nickName }}님이 로그인하셨습니다.</p>
+      <p v-if="userInfo.userId">{{ userInfo.nickName }}님이 로그인하셨습니다.</p>
     </b-collapse>
   </b-navbar>
 </template>

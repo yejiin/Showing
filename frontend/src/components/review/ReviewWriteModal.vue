@@ -102,7 +102,6 @@ export default {
           castingIdList:[],
           reviewContent:'',
       },
-      // userId : Number(this.userInfo.id),
     }
   },
   computed:{
@@ -149,7 +148,7 @@ export default {
           showTime :this.review.showTime,
           castingIdList:this.review.castingIdList,
           reviewContent:this.review.reviewContent,
-          userId : this.userInfo.id
+          userId : this.userInfo.userId
         }
         console.log(tmp)
         this.addMyReview(tmp)
@@ -186,7 +185,7 @@ export default {
     console.log(this.seasonShow)
     console.log(this.review);
     console.log(this.userInfo)
-    console.log(this.userInfo.id)
+    console.log(this.userInfo.userId)
   }
 };
 </script>
