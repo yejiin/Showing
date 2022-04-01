@@ -39,7 +39,7 @@ public class RatingServiceImpl implements RatingService {
      * 별점 추가
      */
     @Override
-    public void addRating(AddRatingReq req) {
+    public Long addRating(AddRatingReq req) {
         User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         Performance performance = performanceRepository.findById(req.getPerformanceId())
@@ -71,6 +71,8 @@ public class RatingServiceImpl implements RatingService {
                 .rating(rating)
                 .build();
         starPointRepository.save(starPoint);
+
+        return starPoint.getId();
     }
 
     /*

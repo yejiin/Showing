@@ -159,7 +159,7 @@ public class UserController {
     @PutMapping(value = "")
     public ResponseEntity<BaseResponseBody> modifyUserInfo(@RequestBody ModifyUserInfoReq req) {
         // userId 유효성 체크
-        if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
+        if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId()))
             throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         userService.modifyUserInfo(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK,MODIFY_USER_INFO));
