@@ -1,8 +1,8 @@
 <template>
 <div>
 
-        <modal :show.sync="modals.writeReview">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="setWriteModalStates(false)">
+        <modal :show.sync="modals.modifyReview">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="setModifyReviewModalState(false)">
           &times;
         </button>
       <br/>
@@ -24,7 +24,7 @@
                     </div>
                     <datepicker class="form-control"
                                 input-class="smaller"
-                                v-model="review.showDate"
+                                v-model="review.viewDate"
                                 
                     >
                     </datepicker>
@@ -36,7 +36,7 @@
                       <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                       </div>
-                      <input type="time" name="" id="" class="form-control" v-model="review.showTime">
+                      <input type="time" name="" id="" class="form-control" v-model="review.viewTime">
                   </div>
               </div>
             <label for="location" class="bold">관람장소</label><p class="inline" type="input">{{seasonShow.location}}</p><br>
@@ -58,7 +58,7 @@
           </div>
         <div class="content">
             <p style="margin:8%;" >
-                <b-textarea  v-model="review.reviewContent" id="showcontent"></b-textarea>
+                <b-textarea  v-model="review.content" id="showcontent"></b-textarea>
                 
             </p>
         </div>
@@ -77,12 +77,12 @@
 
 import Modal from "@/components/Modal.vue";
 import Datepicker from "vuejs-datepicker";
-import {addMyReview} from "@/api/review.js";
+import {getDetailReview, modifyMyReview} from "@/api/review.js";
 import { mapState, mapActions } from "vuex";
 const reviewStore = "reviewStore";
 const userStore = "userStore"
 export default {
-  name : 'ReviewWriteModal',
+  name : 'ReviewModifyModal',
   components: {
     Modal,
     Datepicker,
@@ -102,17 +102,26 @@ export default {
           castingIdList:[],
           reviewContent:'',
       },
+      show:{}
     }
   },
   computed:{
-   ...mapState(reviewStore, ['modals']),
+   ...mapState(reviewStore, ['modals', 'reviewInfo']),
    ...mapState(userStore, ["userInfo"])
   },
   methods :{
-       ...mapActions(reviewStore, ["setWriteReviewModalState"]),
+       ...mapActions(reviewStore, ["setWriteReviewModalState", "setModifyReviewModalState"]),
        setWriteModalStates(status){
          this.setWriteReviewModalState(status)
        },
+      showDetailModal(id) {
+        this.selectedreviewid = id;
+        getDetailReview(id, (response) => {
+          console.log(response.data);
+          this.review = response.data.data;
+          this.review.viewTime = response.data.data.viewTime.substring(0,5);
+        });
+      },
       // 배우 캐스팅 구하기
       selectactors(id){
         // 클릭된 블록
@@ -121,16 +130,16 @@ export default {
         if(cur.className=="badge badge-pill casting badge-warning"){
           // 다시 primary로 변경하고 선택된 actors에서 뺌
           cur.className = "badge badge-pill casting badge-primary"
-          for(var i = 0; i<this.review.castingIdList.length;i++){
-            if(this.review.castingIdList[i]===id){
-              this.review.castingIdList.splice(i, 1)
+          for(var i = 0; i<this.review.reviewActorNameList.length;i++){
+            if(this.review.reviewActorNameList[i]===id){
+              this.review.reviewActorNameList.splice(i, 1)
               i--
             }
           }
         }
         else { // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
           cur.className = "badge badge-pill casting badge-warning"
-          this.review.castingIdList.push(id)
+          this.review.reviewActorNameList.push(id)
         }
         console.log(this.review)
         
@@ -138,20 +147,20 @@ export default {
         
       },
       // Review 추가하기
-      addMyReview,
+      modifyMyReview,
       addReview(){
-        this.dateFommatter(this.review.showDate)
-        this.timeFommatter(this.review.showTime)
+        this.dateFommatter(this.review.viewDate)
+        this.timeFommatter(this.review.viewTime)
         var tmp = {
           seasonId : this.seasonShow.seasonId,
-          showDate :this.review.showDate,
-          showTime :this.review.showTime,
-          castingIdList:this.review.castingIdList,
-          reviewContent:this.review.reviewContent,
+          showDate :this.review.viewDate,
+          showTime :this.review.viewTime,
+          castingIdList:this.review.reviewActorNameList,
+          reviewContent:this.review.content,
           userId : this.userInfo.userId
         }
         console.log(tmp)
-        this.addMyReview(tmp)
+        this.modifyMyReview(tmp)
         this.modals.modal1 = false
         this.review.castingIdList.forEach(element=>{
           let el = document.getElementById(element)
@@ -186,6 +195,14 @@ export default {
     console.log(this.review);
     console.log(this.userInfo)
     console.log(this.userInfo.userId)
+    getDetailReview(this.reviewInfo.reviewId, (response) => {
+          console.log(response.data);
+          this.review = response.data.data;
+          // this.review.viewTime = response.data.data.viewTime.substring(0,5);
+
+        }, fail =>{
+          console.log(fail)
+        });
   }
 };
 </script>
