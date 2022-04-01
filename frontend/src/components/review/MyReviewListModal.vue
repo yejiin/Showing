@@ -2,30 +2,28 @@
   <div>
     <modal :show.sync="modals.myReviewList" modal-classes="modal-dialog" id="modal">
       <div id="list" v-show="modal1">
-      <button
-        type="button"
-        class="close"
-        data-dismiss="modal"
-        aria-label="Close"
-        @click="setMyReviewListModalState(false)"
-      >
-        &times;
-      </button>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          @click="setMyReviewListModalState(false)"
+        >
+          &times;
+        </button>
 
-      <br />
-      
+        <br />
+
         <div>
           <h3 class="inline">{{ seasonShowName }}</h3>
         </div>
         <br />
-        <div v-show="reviews.length===0">
-          내 리뷰가 없습니다
-        </div>
-        <div v-for="review in reviews" :key="review.reviewId" @click="showDetailModal(review.reviewId)">
+        <div v-show="reviews.length === 0">내 리뷰가 없습니다</div>
+        <div v-for="review in reviews" :key="review.reviewId">
           <div id="reviewHeader" class="review">
             <div class="inreview">
               <div class="left">
-                <h5 class="bold mb-1" >{{ review.viewDate }}</h5>
+                <h5 class="bold mb-1" @click="showDetailModal(review.reviewId)">{{ review.viewDate }}</h5>
               </div>
               <div>
                 <a href="" class="udpatedelete">
@@ -33,12 +31,12 @@
                   수정
                 </a>
 
-                <a href="" class="udpatedelete">
+                <a href="" class="udpatedelete" @click.prevent="deleteReview(review.reviewId)">
                   <i class="fa fa-trash"></i>
-                  삭제 | &nbsp;
+                  삭제 &nbsp;| &nbsp;
                 </a>
               </div>
-              <div class="title" style="clear: both">
+              <div class="title" style="clear: both" @click="showDetailModal(review.reviewId)">
                 <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
                 <p class="username inline">{{ userInfo.nickName }}</p>
               </div>
@@ -59,39 +57,47 @@
       </div>
       <div id="detail" v-show="modal2">
         <button
-        type="button"
-        class="close"
-        data-dismiss="modal"
-        aria-label="Close"
-        @click="modal1=true;modal2=false;"
-      >
-        &times;
-      </button>
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          @click="
+            modal1 = true;
+            modal2 = false;
+          "
+        >
+          &times;
+        </button>
         <div class="modalHeader title2">
-          <img :src="userInfo.userImage" alt="profile image" class="profile2"/>
-          <h6 class="inline2 title2">{{userInfo.nickName}}</h6>
+          <img :src="userInfo.userImage" alt="profile image" class="profile2" />
+          <h6 class="inline2 title2">{{ userInfo.nickName }}</h6>
         </div>
-        <div style="width:100%; position:relative">
-          
+        <div style="width: 100%; position: relative">
           <div class="showInfo2 left mb-3">
             <div>
-              <h3>{{show.performanceName}}</h3>
-              <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
+              <h3>{{ show.performanceName }}</h3>
+              <p style="font-size: 8px">{{ show.startDate }}~{{ show.endDate }}</p>
             </div>
-            <label for="date">관람일정</label><p class="inline2 right2" type="input">{{show.viewDate}}</p><br>
-            <label for="time">관람시간</label><p class="inline2" type="input">{{show.viewTime}}</p><br>
-            <label for="location">관람장소</label><p class="inline2" type="input">{{show.location}}</p><br>
-            <label for="castingboard left2">캐스팅보드</label><br>
-            <b-badge pill variant="primary" v-for="(index, key) in show.reviewActorNameList" :key="key">{{index}}</b-badge>
+            <label for="date">관람일정</label>
+            <p class="inline2 right2" type="input">{{ show.viewDate }}</p>
+            <br />
+            <label for="time">관람시간</label>
+            <p class="inline2" type="input">{{ show.viewTime }}</p>
+            <br />
+            <label for="location">관람장소</label>
+            <p class="inline2" type="input">{{ show.location }}</p>
+            <br />
+            <label for="castingboard left2">캐스팅보드</label><br />
+            <b-badge pill variant="primary" v-for="(index, key) in show.reviewActorNameList" :key="key">{{
+              index
+            }}</b-badge>
           </div>
           <div class="right mb-3">
-            <img class="showimage2" :src="show.seasonImage" alt="show image"/>
+            <img class="showimage2" :src="show.seasonImage" alt="show image" />
           </div>
-          
-          
         </div>
         <div class="content2">
-            <p style="margin:8%;">{{show.content}}</p>
+          <p style="margin: 8%">{{ show.content }}</p>
         </div>
       </div>
     </modal>
@@ -100,11 +106,11 @@
 
 <script>
 import Modal from "@/components/Modal.vue";
-import { getMyShowReview } from "@/api/review.js";
+import { getMyShowReview, deleteMyReview } from "@/api/review.js";
 import { detailSeasonShow } from "@/api/show.js";
 import { mapState, mapActions } from "vuex";
-import ReviewModal from "@/components/review/ReviewModal.vue"
-import { getDetailReview } from '@/api/review.js'
+import ReviewModal from "@/components/review/ReviewModal.vue";
+import { getDetailReview } from "@/api/review.js";
 
 const reviewStore = "reviewStore";
 const userStore = "userStore";
@@ -112,7 +118,7 @@ const userStore = "userStore";
 export default {
   components: {
     Modal,
-    ReviewModal
+    ReviewModal,
   },
   props: {
     type: String,
@@ -120,14 +126,13 @@ export default {
     seasonShowName: String,
     seasonShow: Object,
     previewReview: Array,
-    performanceId : Number
+    performanceId: Number,
   },
   data() {
     return {
-      modal1 : true,
-      modal2 : false,
-      show: {
-      },
+      modal1: true,
+      modal2: false,
+      show: {},
       reviews: [],
       selectedseason: 1,
       selectedreviewid: 0,
@@ -135,23 +140,49 @@ export default {
   },
   computed: {
     ...mapState(reviewStore, ["modals"]),
-    ...mapState(userStore, ["userInfo"])
+    ...mapState(userStore, ["userInfo"]),
   },
   methods: {
     ...mapActions(reviewStore, ["setMyReviewListModalState"]),
-    showDetailModal(id){
+    showDetailModal(id) {
       this.selectedreviewid = id;
       this.modal1 = false;
       this.modal2 = true;
-      getDetailReview(id, response=>{
-      console.log(response.data)
-      this.show = response.data.data
-    })
+      getDetailReview(id, (response) => {
+        console.log(response.data);
+        this.show = response.data.data;
+      });
     },
-
+    getNewMyShowReview() {
+      getMyShowReview(
+        this.performanceId,
+        this.userInfo.id,
+        (response) => {
+          console.log(response.data);
+          this.reviews = response.data.data;
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+    deleteReview(id) {
+      console.log("deleteReview");
+      deleteMyReview(
+        id,
+        (response) => {
+          alert("게시물이 삭제되었습니다");
+          console.log("success : " + response);
+        },
+        (fail) => {
+          console.log("fail 온 거임");
+          console.log(fail);
+        }
+      );
+    },
   },
   created() {
-    console.log("pid : "+this.performanceId)
+    console.log("pid : " + this.performanceId);
     getMyShowReview(
       this.performanceId,
       this.userInfo.id,
@@ -264,19 +295,19 @@ select#season {
 }
 div.left {
   width: 60%;
-  float : left;
+  float: left;
   box-sizing: border-box;
   /* margin-left: 5%; */
 }
 div.right {
   width: 40%;
-  float : right;
+  float: right;
   box-sizing: border-box;
 }
 .content {
   clear: both;
   height: 70%;
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
   border-radius: 5%;
 }
 .backArrow {
@@ -287,9 +318,10 @@ div.right {
   border: 0;
 }
 .backArrow:not(:disabled):not(.disabled) {
-    cursor: pointer;
+  cursor: pointer;
 }
-label, h3 {
+label,
+h3 {
   font-weight: bold;
 }
 .inline2 {
@@ -313,19 +345,19 @@ label, h3 {
 }
 div.left2 {
   width: 60%;
-  float : left;
+  float: left;
   box-sizing: border-box;
   /* margin-left: 5%; */
 }
 div.right2 {
   width: 40%;
-  float : right;
+  float: right;
   box-sizing: border-box;
 }
 .content2 {
   clear: both;
   height: 70%;
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
   border-radius: 5%;
 }
 .backArrow2 {
@@ -336,9 +368,10 @@ div.right2 {
   border: 0;
 }
 .backArrow2:not(:disabled):not(.disabled) {
-    cursor: pointer;
+  cursor: pointer;
 }
-label, h3 {
+label,
+h3 {
   font-weight: bold;
 }
 </style>
