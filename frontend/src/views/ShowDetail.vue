@@ -89,7 +89,7 @@ export default {
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
           getRating(
-            this.$store.getters["userStore/userInfo"].id,
+            this.$store.getters["userStore/userInfo"].userId,
             this.heading.performanceId,
             (response) => {
               this.heading.starId = response.data.data.starId;

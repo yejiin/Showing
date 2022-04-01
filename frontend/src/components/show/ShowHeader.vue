@@ -68,7 +68,7 @@ export default {
         var req = {
           performanceId: this.heading.performanceId,
           rating: this.heading.rating * 2,
-          userId: this.userInfo.id,
+          userId: this.userInfo.userId,
         };
         addRating(
           req,
@@ -96,7 +96,7 @@ export default {
           var req = {
             starId: this.heading.starId,
             rating: this.heading.rating * 2,
-            userId: this.userInfo.id,
+            userId: this.userInfo.userId,
           };
           modifyRating(
             req,
