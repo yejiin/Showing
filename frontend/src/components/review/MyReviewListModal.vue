@@ -151,6 +151,7 @@ export default {
       getDetailReview(id, (response) => {
         console.log(response.data);
         this.show = response.data.data;
+        this.show.viewTime = response.data.data.viewTime.substring(0,5);
       });
     },
     getNewMyShowReview() {
