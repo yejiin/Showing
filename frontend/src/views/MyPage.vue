@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <profile :profile="profile"></profile>
-    <!-- <user-rating :rating-info="ratingInfo"></user-rating> -->
+    <user-rating :rating-info="ratingInfo"></user-rating>
     <user-favorite :favorite-actor="favoriteActorList"></user-favorite>
     <user-review :review-list="reviewList"></user-review>
   </div>
