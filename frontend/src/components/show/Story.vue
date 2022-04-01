@@ -1,9 +1,15 @@
 <template>
   <div>
     <b-card>
-      <h5 class="main_title">작품설명</h5>
-      <b-card-text>{{ description }}</b-card-text>
-      <h6 class="more">더보기</h6>
+      <span class="main_title">작품설명</span>
+      <read-more
+        class="my-3 script"
+        more-str="더보기"
+        :text="description"
+        link="#"
+        less-str="접기"
+        :max-chars="250"
+      ></read-more>
     </b-card>
     <br />
     <br />
@@ -20,6 +26,14 @@ export default {
 </script>
 
 <style scoped>
+.main_title {
+  font-size: 23px;
+}
+
+.script {
+  color: black;
+}
+
 .card-text {
   margin-bottom: 0px;
   color: black;

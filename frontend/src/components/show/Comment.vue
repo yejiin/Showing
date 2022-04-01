@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="main_title comment_title">다른 사람의 리뷰</h5>
+    <span class="main_title">다른 사람의 리뷰</span>
     <review-list-modal v-if="previewReview != 0"></review-list-modal>
     <br />
     <div v-if="previewReview == 0">
@@ -19,8 +19,8 @@
           tag="article"
           style="max-width: 20rem"
         >
-          <i style="font-size: 40px" class="ni ni-circle-08"></i>&nbsp;
-          <b-card-title class="comment_writer">{{ previewReview[index].userName }}</b-card-title>
+          <b-img :src="previewReview[index].userImage" rounded="circle" height="50px" />
+          <b-card-title class="comment_writer float-right">{{ previewReview[index].userName }}</b-card-title>
           <hr />
           <b-card-text>{{ previewReview[index].content }}</b-card-text>
         </b-card>
@@ -118,6 +118,11 @@ export default {
 </script>
 
 <style scoped>
+.main_title {
+  font-weight: 600;
+  font-size: 23px;
+}
+
 .pagination {
   display: flex;
   align-items: center;
