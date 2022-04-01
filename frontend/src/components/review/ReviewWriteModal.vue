@@ -50,7 +50,7 @@
               <label class="bold left">캐스팅</label>
               <label style="font-size:6px;margin-left:10px">관람한 공연의 캐스트를 선택해주세요</label><br>
             <span  class="badge badge-pill casting badge-primary"
-                      v-for="(index, key) in seasonShow.actorList" :key="key" :id="index.castingId"
+                      v-for="(index, key) in seasonShow.actorList" :key="key" :id="`write`+index.castingId"
                       @click="selectactors(index.castingId)"
             >
               {{index.actorName}}
@@ -116,7 +116,8 @@ export default {
       // 배우 캐스팅 구하기
       selectactors(id){
         // 클릭된 블록
-        let cur = document.getElementById(id)
+        let cur = document.getElementById(`write`+id)
+        console.log(cur)
         // 해당 블록이 이미 선택되었으면(warning으로 변해 있으면)
         if(cur.className=="badge badge-pill casting badge-warning"){
           // 다시 primary로 변경하고 선택된 actors에서 뺌
@@ -130,7 +131,9 @@ export default {
         }
         else { // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
           cur.className = "badge badge-pill casting badge-warning"
+          console.log(cur.className)
           this.review.castingIdList.push(id)
+          console.log("warning으로 변경해")
         }
         console.log(this.review)
         
@@ -186,6 +189,7 @@ export default {
     console.log(this.review);
     console.log(this.userInfo)
     console.log(this.userInfo.userId)
+    console.log(this.seasonShow.actorList)
   }
 };
 </script>
