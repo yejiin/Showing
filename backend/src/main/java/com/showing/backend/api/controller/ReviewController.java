@@ -96,7 +96,7 @@ public class ReviewController {
     public ResponseEntity<BaseResponseBody> addReview(@RequestBody ReviewReq req) {
         // userId 유효성 검사
         Long userId = req.getUserId();
-        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId())) {
             throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 
@@ -114,7 +114,7 @@ public class ReviewController {
     public ResponseEntity<BaseResponseBody> modifyReview(@PathVariable Long reviewId, @RequestBody ReviewReq req) {
         // userId 유효성 검사
         Long userId = req.getUserId();
-        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId())) {
             throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 
