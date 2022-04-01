@@ -21,11 +21,13 @@ import router from "./router";
 import Argon from "./plugins/argon-kit";
 import "./registerServiceWorker";
 import { BootstrapVue, IconsPlugin, BadgePlugin } from "bootstrap-vue";
+import ReadMore from "vue-read-more";
 
 import store from "./store/index.js";
 
 Vue.config.productionTip = false;
 Vue.use(Argon);
+Vue.use(ReadMore);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(BadgePlugin);
