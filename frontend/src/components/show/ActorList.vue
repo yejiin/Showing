@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h6>캐스팅</h6>
+  <div class="mainbox mt-4">
     <div v-if="actor != null">
       <!-- carousel area -->
       <b-card-group deck class="mb-0 comment_list">
@@ -13,40 +12,19 @@
           tag="article"
           style="max-width: 20rem; border: 0px"
         >
-          <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
+          <!-- <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i> -->
+          <div class="profile-image">
+            <div class="image-box" style="background: #bdbdbd">
+              <img class="image" :src="actor[index].actorImage" />
+            </div>
+          </div>
+
           <br />
-          <b-card-text v-if="actor[index].role != null">{{ actor[index].role }}</b-card-text>
+          <b-card-text v-if="actor[index].role != undefined || actor[index].role != null">{{
+            actor[index].role
+          }}</b-card-text>
           <b-card-text v-else><br /></b-card-text>
           <h5 class="actor_name">{{ actor[index].actorName }}</h5>
-        </b-card>
-        <i class="ni ni-bold-right arrow arrow_right"></i>
-      </b-card-group>
-      <br />
-      <!-- pagination area -->
-      <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-      <div class="pagination" v-if="cards.length > cardsPerPage">
-        <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
-      </div>
-      <br />
-    </div>
-
-    <div v-if="otherSeasonActor != null">
-      <!-- carousel area -->
-      <b-card-group deck class="mb-0 comment_list">
-        <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-        <i class="ni ni-bold-left arrow"></i>
-        <b-card
-          v-for="(item, index) in currentPageCards"
-          :key="index"
-          class="mr-0 mb-2"
-          tag="article"
-          style="max-width: 20rem; border: 0px"
-        >
-          <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i>
-          <br />
-          <b-card-text v-if="otherSeasonActor[index].role != null">{{ otherSeasonActor[index].role }}</b-card-text>
-          <b-card-text v-else><br /></b-card-text>
-          <h5 class="actor_name">{{ otherSeasonActor[index].actorName }}</h5>
         </b-card>
         <i class="ni ni-bold-right arrow arrow_right"></i>
       </b-card-group>
@@ -66,7 +44,6 @@ export default {
   name: "ActorList",
   props: {
     actor: Array,
-    otherSeasonActor: Array,
   },
   data() {
     return {
@@ -86,7 +63,7 @@ export default {
       ],
       paginatedCards: [],
       pageCount: 0,
-      cardsPerPage: 6,
+      cardsPerPage: 5,
       currentPageIndex: 0,
     };
   },
@@ -104,7 +81,7 @@ export default {
     },
 
     createPages() {
-      let cardsLength = this.cards.length;
+      let cardsLength = this.actor.length;
       let fullPagesCount = Math.floor(cardsLength / this.cardsPerPage);
 
       if (cardsLength > this.cardsPerPage) {
@@ -117,7 +94,7 @@ export default {
         this.paginatedCards[this.pageCount] = this.cards.slice(cardsLength - this.cardsPerPage, cardsLength);
         this.pageCount = this.pageCount + 1;
       } else {
-        this.paginatedCards[0] = this.cards;
+        this.paginatedCards[0] = this.actor;
       }
     },
 
@@ -129,6 +106,12 @@ export default {
 </script>
 
 <style scoped>
+.mainbox {
+}
+.title {
+  font-weight: 700;
+  font-size: 23px;
+}
 .pagination {
   display: flex;
   align-items: center;
@@ -165,5 +148,24 @@ export default {
 .actor_name {
   margin-top: 0px;
   text-align: center;
+}
+
+.profile-image {
+  height: 50%;
+  width: 100%;
+}
+
+.image-box {
+  width: 150px;
+  height: 150px;
+  border-radius: 70%;
+  overflow: hidden;
+  background-color: wheat;
+  margin-left: 60px;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

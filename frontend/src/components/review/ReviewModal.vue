@@ -1,56 +1,58 @@
 <template>
 <div>
-  <base-button block type="primary" class=" mb-3" @click="modals.modal1 = true">
-                리뷰 상세
-            </base-button>
-            <modal :show.sync="modals.modal1">
-                <!-- <div class="backArrow"> -->
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!-- <i class="ni ni-bold-left"></i> -->
-                    &times;
-                  </button>
-                <!-- </div> -->
-                <div>
-                  <div class="modalHeader title">
-                    <img :src="user.img" alt="profile image" class="profile"/>
-                    <h6 class="inline title">{{user.nickname}}</h6>
-                  </div>
-                  <div style="width:100%; position:relative">
-                    
-                    <div class="showInfo left mb-3">
-                      <div>
-                        <h3>{{show.title}}</h3>
-                        <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
-                      </div>
-                      <label for="date">관람일정</label><p class="inline right" type="input">{{show.date}}</p><br>
-                      <label for="time">관람시간</label><p class="inline" type="input">{{show.time}}</p><br>
-                      <label for="location">관람장소</label><p class="inline" type="input">{{show.location}}</p><br>
-                      <label for="castingboard left">캐스팅보드</label><br>
-                      <b-badge pill variant="primary" v-for="(index, key) in show.actors" :key="key">{{index}}</b-badge>
-                    </div>
-                    <div class="right mb-3">
-                      <img class="showimage" :src="show.img" alt="show image"/>
-                    </div>
-                    
-                    
-                  </div>
-                  <div class="content">
-                      <p style="margin:8%;">{{show.content}}</p>
-                  </div>
-                </div>
-                
-            </modal>
+
+  <modal :show.sync="showModal">
+      <!-- <div class="backArrow"> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <!-- <i class="ni ni-bold-left"></i> -->
+          &times;
+        </button>
+      <!-- </div> -->
+      <div>
+        <div class="modalHeader title">
+          <img :src="user.img" alt="profile image" class="profile"/>
+          <h6 class="inline title">{{user.nickname}}</h6>
+        </div>
+        <div style="width:100%; position:relative">
+          
+          <div class="showInfo left mb-3">
+            <div>
+              <h3>{{show.title}}</h3>
+              <p style = "font-size:8px;">{{show.startDate}}~{{show.endDate}}</p>
+            </div>
+            <label for="date">관람일정</label><p class="inline right" type="input">{{show.date}}</p><br>
+            <label for="time">관람시간</label><p class="inline" type="input">{{show.time}}</p><br>
+            <label for="location">관람장소</label><p class="inline" type="input">{{show.location}}</p><br>
+            <label for="castingboard left">캐스팅보드</label><br>
+            <b-badge pill variant="primary" v-for="(index, key) in show.actors" :key="key">{{index}}</b-badge>
+          </div>
+          <div class="right mb-3">
+            <img class="showimage" :src="show.img" alt="show image"/>
+          </div>
+          
+          
+        </div>
+        <div class="content">
+            <p style="margin:8%;">{{show.content}}</p>
+        </div>
+      </div>
+      
+  </modal>
 </div>
 </template>
 
 <script>
 import Modal from "@/components/Modal.vue";
+import { getDetailReview } from '@/api/review.js'
 export default {
+  name : "ReviewModal",
   components: {
     Modal
   },
   props: {
     type: String,
+    reviewId : Number,
+    showModal : Boolean
   },
   data() {
     return {
@@ -75,6 +77,12 @@ export default {
         content : '가을이 차고 내 마음도 차고 이대로 담아두기엔 너무 안타까워 너를 향해 가는데... 놓침... 지금 이순간이 바로 그 순간이야~ 제일 맘에 드는 옷을 입고 노란 꽃 한 송이를 손에 들고 널 바라보다 그만 나도모르게 웃어버렸네 이게 아닌데 내 맘은 이게 아닌데~~~ 술이 차고 밤공기도 차고 두 눈을 감아야만 네 모습이 보여'
       }
     };
+  },
+  created(){
+    getDetailReview(20, response=>{
+      console.log(response.data)
+      this.show = response.data.data
+    })
   }
 };
 </script>
