@@ -38,8 +38,6 @@ public class RatingController {
     @PostMapping(value="")
     public ResponseEntity<BaseResponseBody> addRating(@RequestBody AddRatingReq req) {
         // userId 유효성 체크
-        System.out.println(JwtUtil.getCurrentId());
-        System.out.println(req.getUserId());
         if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId()))
             throw new InvalidException(ErrorCode.ACCESS_DENIED);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED, ADD_RATING,ratingService.addRating(req)));
