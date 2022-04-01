@@ -51,7 +51,6 @@ export default {
   created() {
     this.ratingCount = this.rating;
     this.storeValue = this.rating;
-    console.log(this.storeValue);
   },
   data() {
     return {

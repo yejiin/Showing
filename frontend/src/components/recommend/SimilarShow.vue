@@ -3,41 +3,34 @@
     <span class="main_title comment_title">비슷한 공연</span>
     <br />
     <!-- carousel area -->
-    <b-card-group deck class="my-3">
-      <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-      <i class="ni ni-bold-left arrow"></i>
-      <b-card
-        v-for="(item, index) in currentPageCards"
-        :key="index"
-        class="mr-0 mb-3"
-        :img-src="similarList[index].lastSeasonImage"
-        img-alt="Image"
-        img-top
-        tag="article"
-        style="max-width: 20rem"
-        @click="detailShow(index)"
-      >
-        <!-- card content -->
-        {{ similarList[index].performanceName }}&nbsp;
-        <b-badge class="mr-1" pill variant="light"
-          ><b-icon icon="star-fill" scale="0.8"></b-icon> {{ similarList[index].starPointAverage }}</b-badge
-        >
-        <b-badge pill variant="primary">공연중</b-badge>
-        <br />
-        {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
-      </b-card>
-      <i class="ni ni-bold-right arrow arrow_right"></i>
-    </b-card-group>
-    <!-- pagination area -->
-    <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-    <div class="pagination" v-if="cards.length > cardsPerPage">
-      <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
-    </div>
+    <carousel :perPage="4">
+      <slide class="p-1 mt-3" v-for="(item, index) in similarList" :key="index">
+        <b-card class="mr-0 mb-2 rounded" @click="detailShow(index)" style="cursor: pointer">
+          <!-- card content -->
+          <img :src="similarList[index].lastSeasonImage" class="mb-3 mr-3 rounded" />
+          <div class="name">
+            <strong>{{ similarList[index].performanceName }}</strong>
+          </div>
+          <div class="tags">
+            <b-badge class="mr-1" pill variant="light"
+              ><b-icon icon="star-fill" scale="0.8"></b-icon>
+              {{ (similarList[index].starPointAverage / 2).toFixed(2) }}</b-badge
+            >&nbsp;
+            <b-badge v-if="similarList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
+            <b-badge v-if="similarList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
+            <b-badge v-if="similarList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
+          </div>
+          {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
+        </b-card>
+      </slide>
+    </carousel>
     <br />
   </div>
 </template>
 
 <script>
+import { Carousel, Slide } from "vue-carousel";
+
 export default {
   name: "SimilarShow",
   props: {
@@ -64,6 +57,10 @@ export default {
       cardsPerPage: 3,
       currentPageIndex: 0,
     };
+  },
+  components: {
+    Carousel,
+    Slide,
   },
   computed: {
     currentPageCards() {
