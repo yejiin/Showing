@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="main_title">내 리뷰</h5>
+    <h4 class="main_title">내 리뷰</h4>
     <b-card-group deck class="mb-0">
       <b-card
         id="itemList"
@@ -16,7 +16,10 @@
         <a @click="setReviewModal(true)">
           <review-modal></review-modal>
           <!-- card content -->
-          {{ item.performanceName }}&nbsp;{{ item.viewDate }}
+          <div>
+            <h5 class="review-name">{{ item.performanceName }}</h5>
+            <div class="review-date">{{ item.viewDate }}</div>
+          </div>
           <br />
         </a>
       </b-card>
@@ -29,6 +32,8 @@
         :per-page="perPage"
         aria-controls="itemList"
         align="center"
+        first-number
+        last-number
       ></b-pagination>
     </div>
     <br />
@@ -83,23 +88,11 @@ export default {
 };
 </script>
 <style scoped>
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-}
-
 .index {
   margin-left: 10px;
   width: 10px;
   height: 10px;
   background: #9badf6;
-}
-
-.active {
-  width: 13px;
-  height: 13px;
 }
 
 .card {
@@ -116,12 +109,11 @@ export default {
   padding-right: 0px;
 }
 
-.arrow {
-  margin-top: 10%;
-  color: #9badf6;
+.review-name {
+  float: left;
 }
 
-.arrow_right {
-  margin-left: 1%;
+.review-date {
+  float: right;
 }
 </style>
