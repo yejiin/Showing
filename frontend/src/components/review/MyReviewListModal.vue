@@ -185,7 +185,7 @@ export default {
     console.log("pid : " + this.performanceId);
     getMyShowReview(
       this.performanceId,
-      this.userInfo.id,
+      this.userInfo.userId,
       (response) => {
         console.log(response.data);
         this.reviews = response.data.data;
