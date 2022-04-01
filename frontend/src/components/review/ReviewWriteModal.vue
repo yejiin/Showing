@@ -157,7 +157,7 @@ export default {
         this.addMyReview(tmp)
         this.modals.modal1 = false
         this.review.castingIdList.forEach(element=>{
-          let el = document.getElementById(element)
+          let el = document.getElementById(`write`+element)
           el.className = "badge badge-pill casting badge-primary"
         })
         this.review = {
