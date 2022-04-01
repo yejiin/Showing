@@ -102,12 +102,21 @@ export default {
           castingIdList:[],
           reviewContent:'',
       },
-      show:{}
+      changeDate : false,
+      changeTime : false,
     }
   },
   computed:{
    ...mapState(reviewStore, ['modals', 'reviewInfo']),
    ...mapState(userStore, ["userInfo"])
+  },
+  watch:{
+    viewDate : function(){
+      this.changeDate = true;
+    },
+    viewTime : function(){
+      this.changeTime = true;
+    }
   },
   methods :{
        ...mapActions(reviewStore, ["setWriteReviewModalState", "setModifyReviewModalState"]),
@@ -149,8 +158,8 @@ export default {
       // Review 추가하기
       modifyMyReview,
       addReview(){
-        this.dateFommatter(this.review.viewDate)
-        this.timeFommatter(this.review.viewTime)
+        if(this.changeDate) this.dateFommatter(this.review.viewDate)
+        if(this.changeTime) this.timeFommatter(this.review.viewTime)
         var tmp = {
           seasonId : this.seasonShow.seasonId,
           showDate :this.review.viewDate,
