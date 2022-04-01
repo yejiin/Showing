@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.*;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -33,20 +34,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/h2-console/**", "/error", "/swagger-resources/**", "/swagger-ui/**",
-                        "/api/v1/users/kakao/**","/api/v1/users/naver/**",
-                        "/v2/api-docs")
-                .antMatchers(HttpMethod.GET,"/api/v1/reviews/**")
-                .antMatchers("/api/v1/reviews/performances/**")
-                .antMatchers("/api/v1/reviews/seasons/**")
-                .antMatchers("/api/v1/performances/**")
-                .antMatchers("/api/v1/search/**")
-                .antMatchers("/api/v1/users/{userId}");
+           .antMatchers(
+                    "/h2-console/**",
+                    "/error",
+                    "/swagger-resources/**",
+                    "/swagger-ui/**",
+                    "/api/v1/users/kakao/**",
+                    "/api/v1/users/naver/**",
+                    "/v2/api-docs",
+                    "/api/v1/reviews/performances/**",
+                    "/api/v1/reviews/seasons/**",
+                    "/api/v1/performances/**",
+                    "/api/v1/search/**",
+                    "/api/v1/users/{userId}"
+           )
+           .antMatchers(HttpMethod.GET,"/api/v1/reviews/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
+        http
+                .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf()
                 .disable()
@@ -65,6 +73,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:8080");
+        configuration.addAllowedOrigin("http://localhost");
+        configuration.addAllowedOrigin("http://j6a301.p.ssafy.io");
+        configuration.addAllowedOrigin("https://j6a301.p.ssafy.io");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }
