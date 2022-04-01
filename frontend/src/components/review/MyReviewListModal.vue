@@ -21,11 +21,11 @@
         <div v-show="reviews.length===0">
           내 리뷰가 없습니다
         </div>
-        <div v-for="review in reviews" :key="review.reviewId" @click="showDetailModal(review.reviewId)">
+        <div v-for="review in reviews" :key="review.reviewId">
           <div id="reviewHeader" class="review">
             <div class="inreview">
               <div class="left">
-                <h5 class="bold mb-1" >{{ review.viewDate }}</h5>
+                <h5 class="bold mb-1" @click="showDetailModal(review.reviewId)">{{ review.viewDate }}</h5>
               </div>
               <div>
                 <a href="" class="udpatedelete">
@@ -33,12 +33,12 @@
                   수정
                 </a>
 
-                <a href="" class="udpatedelete">
+                <a href="" class="udpatedelete" @click.prevent="deleteReview(review.reviewId)">
                   <i class="fa fa-trash"></i>
-                  삭제 | &nbsp;
+                  삭제 &nbsp;| &nbsp;
                 </a>
               </div>
-              <div class="title" style="clear: both">
+              <div class="title" style="clear: both" @click="showDetailModal(review.reviewId)">
                 <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
                 <p class="username inline">{{ userInfo.nickName }}</p>
               </div>
@@ -100,7 +100,7 @@
 
 <script>
 import Modal from "@/components/Modal.vue";
-import { getMyShowReview } from "@/api/review.js";
+import { getMyShowReview, deleteMyReview } from "@/api/review.js";
 import { detailSeasonShow } from "@/api/show.js";
 import { mapState, mapActions } from "vuex";
 import ReviewModal from "@/components/review/ReviewModal.vue"
@@ -135,7 +135,7 @@ export default {
   },
   computed: {
     ...mapState(reviewStore, ["modals"]),
-    ...mapState(userStore, ["userInfo"])
+    ...mapState(userStore, ["userInfo"]),
   },
   methods: {
     ...mapActions(reviewStore, ["setMyReviewListModalState"]),
@@ -148,7 +148,32 @@ export default {
       this.show = response.data.data
     })
     },
-
+    getNewMyShowReview(){
+      getMyShowReview(
+      this.performanceId,
+      this.userInfo.id,
+      (response) => {
+        console.log(response.data);
+        this.reviews = response.data.data;
+      },
+      (fail) => {
+        console.log(fail);
+      }
+    );
+    },
+    deleteReview(id){
+      console.log('deleteReview')
+      deleteMyReview(id, 
+      response=>{
+        alert("게시물이 삭제되었습니다")
+        console.log("success : "+response);
+      },
+      fail =>{
+        console.log("fail 온 거임")
+        console.log(fail)
+        })
+    }
+    
   },
   created() {
     console.log("pid : "+this.performanceId)
