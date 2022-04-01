@@ -103,7 +103,7 @@ export default {
 }
 .title {
   font-weight: 600;
-  font-size: 25px;
+  font-size: 23px;
   color: black;
 }
 .pagination {
