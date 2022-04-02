@@ -35,7 +35,7 @@ public class PerformanceDetailRes {
     SeasonRes seasonRes;
 
     @ApiModelProperty(name = "리뷰 워드클라우드 정보")
-    List<WordcloudRes> wordcloudList;
+    List<WordCloudRes> wordcloudList;
 
     @ApiModelProperty(name = "공연 리뷰 목록 미리보기")
     List<PreviewReviewByPerformanceRes> previewReviewList;
@@ -43,7 +43,7 @@ public class PerformanceDetailRes {
     @ApiModelProperty(name = "비슷한 공연 목록")
     List<PerformanceRes> similarPerformanceList;
 
-    public static PerformanceDetailRes of(Performance performance, RankingRes rankingRes, SeasonRes seasonRes, List<WordcloudRes> wordcloudList, List<PreviewReviewByPerformanceRes> previewReviewList, List<PerformanceRes> similarPerformanceList) {
+    public static PerformanceDetailRes of(Performance performance, RankingRes rankingRes, SeasonRes seasonRes, List<WordCloudRes> wordcloudList, List<PreviewReviewByPerformanceRes> previewReviewList, List<PerformanceRes> similarPerformanceList) {
         PerformanceDetailRes res = new PerformanceDetailRes();
         res.setPerformanceId(performance.getId());
         res.setPerformanceName(performance.getPerformanceName());
