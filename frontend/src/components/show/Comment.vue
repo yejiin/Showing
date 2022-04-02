@@ -1,7 +1,7 @@
 <template>
   <div>
     <span class="main_title float-left">다른 사람의 리뷰</span>
-    <review-list-modal v-if="previewReview != 0"></review-list-modal>
+    <review-list-modal :info="info" :seasons="seasons" v-if="previewReview != 0"></review-list-modal>
     <br />
     <div class="my-2" v-if="previewReview == 0">
       <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
@@ -54,20 +54,14 @@ export default {
   },
   props: {
     previewReview: Array,
+    info: Object,
+    seasons: Array,
   },
   data() {
     return {
       review: [],
     };
   },
-  computed: {
-    currentPageCards() {
-      this.createPages();
-
-      return this.paginatedCards[this.currentPageIndex];
-    },
-  },
-
   methods: {
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
     setMyReviewListModalStates(status) {
@@ -79,7 +73,6 @@ export default {
         name: "MyPage",
         params: { userId: id },
       });
-      console.log(id);
     },
   },
 };
