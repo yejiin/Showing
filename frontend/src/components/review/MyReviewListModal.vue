@@ -255,7 +255,7 @@ select#season {
   margin-right: 5%;
   border-radius: 5%;
 }
-.udpatedelete {
+.updatedelete {
   float: right;
   color: #626262;
   font-size: 10px;
