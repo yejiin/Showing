@@ -16,7 +16,6 @@
           </div>
         </slide>
       </carousel>
-      <!-- pagination area -->
       <br />
     </div>
   </div>
@@ -34,69 +33,10 @@ export default {
     Carousel,
     Slide,
   },
-  data() {
-    return {
-      cards: [
-        {
-          //Data in the card as objects
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-      ],
-      paginatedCards: [],
-      pageCount: 0,
-      cardsPerPage: 5,
-      currentPageIndex: 0,
-    };
-  },
-  computed: {
-    currentPageCards() {
-      this.createPages();
-
-      return this.paginatedCards[this.currentPageIndex];
-    },
-  },
-
-  methods: {
-    currentPage(i) {
-      return i - 1 === this.currentPageIndex;
-    },
-
-    createPages() {
-      let cardsLength = this.actor.length;
-      let fullPagesCount = Math.floor(cardsLength / this.cardsPerPage);
-
-      if (cardsLength > this.cardsPerPage) {
-        this.pageCount = 0;
-        for (let i = 0; i < fullPagesCount * this.cardsPerPage; i += this.cardsPerPage) {
-          this.paginatedCards[this.pageCount] = this.cards.slice(i, i + this.cardsPerPage);
-          this.pageCount++;
-        }
-
-        this.paginatedCards[this.pageCount] = this.cards.slice(cardsLength - this.cardsPerPage, cardsLength);
-        this.pageCount = this.pageCount + 1;
-      } else {
-        this.paginatedCards[0] = this.actor;
-      }
-    },
-
-    next(i) {
-      this.currentPageIndex = i - 1;
-    },
-  },
 };
 </script>
 
 <style scoped>
-.mainbox {
-}
 .title {
   font-weight: 700;
   font-size: 23px;
