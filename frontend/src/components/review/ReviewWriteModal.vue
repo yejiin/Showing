@@ -155,18 +155,7 @@ export default {
         }
         console.log(tmp)
         this.addMyReview(tmp)
-        this.modals.modal1 = false
-        this.review.castingIdList.forEach(element=>{
-          let el = document.getElementById(`write`+element)
-          el.className = "badge badge-pill casting badge-primary"
-        })
-        this.review = {
-          seasonId : this.seasonShow.seasonId,
-          showDate :'',
-          showTime :'',
-          castingIdList:[],
-          reviewContent:'',
-        }
+        location.reload();
         this.$emit("setwrite", true)
       },
       // 날짜 포맷 정리
