@@ -21,7 +21,7 @@
         </div>
         <br />
       </b-card>
-      <review-modal :detail-review="detailReview"></review-modal>
+      <review-modal :detail-review="detailReview" :user-id="userId"></review-modal>
     </b-card-group>
     <!-- pagination area -->
     <div>
@@ -63,6 +63,7 @@ export default {
   },
   props: {
     reviewList: Array,
+    userId: Number,
   },
   computed: {
     ...mapState(reviewStore, ["modals"]),
