@@ -48,11 +48,12 @@ public class PerformanceController {
         }
 
         List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performanceId);
+        List<WordCloudRes> wordCloudList = reviewService.getWordCloud(performanceId);
         List<Long> performanceIdList = new ArrayList<>();
         performanceIdList.add(performanceId);
         List<PerformanceRes> similarPerformanceList = recommendService.getRecommendPerformanceList(performance.getPerformanceType(), performanceIdList);
 
-        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE, PerformanceDetailRes.of(performance, rankingRes, seasonRes, previewReviewList, similarPerformanceList)));
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE, PerformanceDetailRes.of(performance, rankingRes, seasonRes, wordCloudList, previewReviewList, similarPerformanceList)));
     }
 
     @ApiOperation(value = "퍼포먼스 별 시즌 목록", notes = "시즌의 목록을 보여준다.")
