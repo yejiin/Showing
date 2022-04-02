@@ -19,8 +19,10 @@
           tag="article"
           style="max-width: 20rem"
         >
-          <b-img :src="previewReview[index].userImage" rounded="circle" height="50px" />
-          <b-card-title class="comment_writer float-right">{{ previewReview[index].userName }}</b-card-title>
+          <div @click="detailUser(previewReview[index].userId)" style="cursor: pointer">
+            <b-img :src="previewReview[index].userImage" rounded="circle" height="50px" />
+            <b-card-title class="comment_writer float-right">{{ previewReview[index].userName }}</b-card-title>
+          </div>
           <hr />
           <b-card-text>{{ previewReview[index].content }}</b-card-text>
         </b-card>
@@ -87,6 +89,14 @@ export default {
     setMyReviewListModalStates(status) {
       this.setMyReviewListModalState(status);
       console.log("리뷰 목록 보여줘요" + status);
+    },
+
+    detailUser(id) {
+      this.$router.push({
+        name: "MyPage",
+        params: { userId: id },
+      });
+      console.log(id);
     },
     currentPage(i) {
       return i - 1 === this.currentPageIndex;

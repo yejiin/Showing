@@ -26,12 +26,12 @@
                 <h5 class="bold mb-1" @click="showDetailModal(review.reviewId)">{{ review.viewDate }}</h5>
               </div>
               <div>
-                <a href="" class="udpatedelete">
+                <a href="" class="updatedelete" @click="modifyModal(review.reviewId)">
                   <i class="fa fa-pencil"></i>
                   수정
                 </a>
 
-                <a href="" class="udpatedelete" @click.prevent="deleteReview(review.reviewId)">
+                <a href="" class="updatedelete" @click="deleteReview(review.reviewId)">
                   <i class="fa fa-trash"></i>
                   삭제 &nbsp;| &nbsp;
                 </a>
@@ -101,6 +101,7 @@
         </div>
       </div>
     </modal>
+    <review-modify-modal :seasonShowName="seasonShowName" :seasonShow="seasonShow"></review-modify-modal>
   </div>
 </template>
 
@@ -110,6 +111,7 @@ import { getMyShowReview, deleteMyReview } from "@/api/review.js";
 import { detailSeasonShow } from "@/api/show.js";
 import { mapState, mapActions } from "vuex";
 import ReviewModal from "@/components/review/ReviewModal.vue";
+import ReviewModifyModal from '@/components/review/ReviewModifyModal.vue';
 import { getDetailReview } from "@/api/review.js";
 
 const reviewStore = "reviewStore";
@@ -119,6 +121,7 @@ export default {
   components: {
     Modal,
     ReviewModal,
+    ReviewModifyModal,
   },
   props: {
     type: String,
@@ -143,7 +146,7 @@ export default {
     ...mapState(userStore, ["userInfo"]),
   },
   methods: {
-    ...mapActions(reviewStore, ["setMyReviewListModalState"]),
+    ...mapActions(reviewStore, ["setMyReviewListModalState", "setReviewId", "setModifyReviewModalState"]),
     showDetailModal(id) {
       this.selectedreviewid = id;
       this.modal1 = false;
@@ -151,6 +154,7 @@ export default {
       getDetailReview(id, (response) => {
         console.log(response.data);
         this.show = response.data.data;
+        this.show.viewTime = response.data.data.viewTime.substring(0,5);
       });
     },
     getNewMyShowReview() {
@@ -180,6 +184,11 @@ export default {
         }
       );
     },
+    modifyModal(id){
+      this.setMyReviewListModalState(false);
+      this.setModifyReviewModalState(true);
+      this.setReviewId(id)
+    }
   },
   created() {
     console.log("pid : " + this.performanceId);
@@ -246,7 +255,7 @@ select#season {
   margin-right: 5%;
   border-radius: 5%;
 }
-.udpatedelete {
+.updatedelete {
   float: right;
   color: #626262;
   font-size: 10px;

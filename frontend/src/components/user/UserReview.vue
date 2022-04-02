@@ -13,9 +13,12 @@
         tag="article"
         style="max-width: 20rem"
       >
-        <!-- card content -->
-        {{ item.performanceName }}&nbsp;{{ item.viewDate }}
-        <br />
+        <a @click="setReviewModal(true)">
+          <review-modal></review-modal>
+          <!-- card content -->
+          {{ item.performanceName }}&nbsp;{{ item.viewDate }}
+          <br />
+        </a>
       </b-card>
     </b-card-group>
     <!-- pagination area -->
@@ -32,8 +35,17 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
+import ReviewModal from "../review/ReviewModal.vue";
+
+const reviewStore = "reviewStore";
+
 export default {
   name: "UserReview",
+  components: {
+    ReviewModal,
+  },
+
   data() {
     return {
       currentPage: 1,
@@ -52,6 +64,18 @@ export default {
   },
 
   methods: {
+    ...mapActions(reviewStore, ["setReviewModalState"]),
+    setReviewModal(status) {
+      console.log(status);
+      this.setReviewModalState(status);
+    },
+
+    detailReview(index) {
+      this.$router.push({
+        name: "ShowDetail",
+        params: { showId: this.musicalList[index].performanceId },
+      });
+    },
     createPages() {
       return this.reviewList.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
     },
