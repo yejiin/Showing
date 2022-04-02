@@ -3,7 +3,7 @@
     <div v-if="this.isLogin">
       <br /><br />
       <b-card>
-        <span class="my_review">회원님의 리뷰는 개 입니다</span>
+        <span class="my_review">{{ userInfo.nickName }}님의 리뷰는 개 입니다</span>
         <a target="_blank" class="btn btn-neutral btn-icon review button" @click="setMyReviewListModalStates(true)">
           <span class="nav-link-inner--text">내 리뷰 보기</span>
         </a>

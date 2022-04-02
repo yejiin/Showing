@@ -13,7 +13,7 @@
     ></show-info>
     <word-cloud></word-cloud>
     <!-- 리뷰 리스트 -->
-    <comment :previewReview="previewReview"></comment>
+    <comment :previewReview="previewReview" :info="info" :seasons="seasons"></comment>
     <!-- 비슷한 공연 -->
     <similar-show :similarList="similarList"></similar-show>
   </div>
