@@ -124,7 +124,6 @@ export default {
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
     setMyReviewListModalStates(status) {
       this.setMyReviewListModalState(status);
-      console.log("리뷰 목록 보여줘요" + status);
     },
     setWriteModalStates(status) {
       this.setWriteReviewModalState(status);

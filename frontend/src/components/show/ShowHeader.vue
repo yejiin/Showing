@@ -72,8 +72,6 @@ export default {
   },
   watch: {
     ratingCount: function () {
-      console.log(this.ratingCount);
-      console.log(this.storeValue);
       if (this.storeValue == 0) {
         // add
         var req = {
@@ -97,7 +95,6 @@ export default {
           deleteRating(
             this.starId,
             (response) => {
-              console.log(response);
               this.setMyStarIdState(0);
               this.setMyRatingState(0);
             },

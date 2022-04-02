@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <!-- 헤더 -->
-    <show-header :heading="heading"></show-header>
+    <show-header :heading="heading" :key="headerKey"></show-header>
     <!-- 공연 상세 정보 -->
     <show-info
       :info="info"
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       heading: {
-        performanceId: this.$route.params.showId,
+        performanceId: 0,
         performanceImage: "",
         performanceName: "",
         starPointAverage: 0,
@@ -61,13 +61,17 @@ export default {
       seasonShow: {},
       similarList: [],
       seasons: [],
+      headerKey: 0,
     };
   },
   methods: {
     ...mapActions(ratingStore, ["setMyStarIdState", "setMyRatingState"]),
+    ratingReload() {
+      this.headerKey += 1;
+    },
   },
   async created() {
-    this.heading.performanceId = this.$route.params.showId;
+    this.heading.performanceId = Number(this.$route.params.showId);
     // 공연 상세 정보 가져오기
     await detailShow(
       this.$route.params.showId,
@@ -95,6 +99,7 @@ export default {
             (response) => {
               this.setMyStarIdState(response.data.data.starId);
               this.setMyRatingState(response.data.data.rating / 2);
+              this.ratingReload();
             },
             (error) => {
               console.log(error);
