@@ -53,13 +53,20 @@ export default {
 
         this.ratingInfo.musicalCnt = response.data.data.muscialCnt;
         this.ratingInfo.playCnt = response.data.data.playCnt;
+
         this.ratingInfo.ratingAvg = response.data.data.ratingAvg.toFixed(1);
         this.ratingInfo.ratingCnt = this.ratingInfo.musicalCnt + this.ratingInfo.playCnt;
 
         this.ratingInfo.ratingCntList = response.data.data.ratingCntList;
 
         let cntLsit = this.ratingInfo.ratingCntList;
-        this.ratingInfo.ratingMax = (cntLsit.indexOf(Math.max.apply(null, cntLsit)) + 1) / 2;
+
+        let max = Math.max.apply(null, cntLsit);
+        let index = cntLsit.indexOf(max);
+
+        if (max === 0) index = -1;
+
+        this.ratingInfo.ratingMax = ((index + 1) / 2).toFixed(1);
 
         this.favoriteActorList = response.data.data.favoriteActorList;
 

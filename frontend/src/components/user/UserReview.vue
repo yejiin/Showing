@@ -12,17 +12,16 @@
         img-top
         tag="article"
         style="max-width: 20rem"
+        @click="setReviewModal(true, item.reviewId)"
       >
-        <a @click="setReviewModal(true)">
-          <review-modal></review-modal>
-          <!-- card content -->
-          <div>
-            <h5 class="review-name">{{ item.performanceName }}</h5>
-            <div class="review-date">{{ item.viewDate }}</div>
-          </div>
-          <br />
-        </a>
+        <!-- card content -->
+        <div>
+          <h5 class="review-name">{{ item.performanceName }}</h5>
+          <div class="review-date">{{ item.viewDate }}</div>
+        </div>
+        <br />
       </b-card>
+      <review-modal :detail-review="detailReview"></review-modal>
     </b-card-group>
     <!-- pagination area -->
     <div>
@@ -40,7 +39,9 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
+import { getDetailReview } from "@/api/review.js";
+
 import ReviewModal from "../review/ReviewModal.vue";
 
 const reviewStore = "reviewStore";
@@ -57,12 +58,15 @@ export default {
       pageCount: 0,
       reviewsPerPage: 5,
       perPage: 5,
+      detailReview: {},
     };
   },
   props: {
     reviewList: Array,
   },
   computed: {
+    ...mapState(reviewStore, ["modals"]),
+
     rows: function () {
       return this.reviewList.length;
     },
@@ -70,17 +74,22 @@ export default {
 
   methods: {
     ...mapActions(reviewStore, ["setReviewModalState"]),
-    setReviewModal(status) {
-      console.log(status);
-      this.setReviewModalState(status);
+
+    setReviewModal(status, reviewId) {
+      this.reviewId = reviewId;
+      this.setReviewModalState({ status, reviewId });
+
+      getDetailReview(
+        this.modals.myReview.reviewId,
+        (response) => {
+          this.detailReview = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
 
-    detailReview(index) {
-      this.$router.push({
-        name: "ShowDetail",
-        params: { showId: this.musicalList[index].performanceId },
-      });
-    },
     createPages() {
       return this.reviewList.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
     },

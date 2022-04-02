@@ -14,7 +14,6 @@
       <h4 class="main_title">별점 분포</h4>
       <div class="rating-chart">
         <bar-chart id="chart" :chart-data="chartData"></bar-chart>
-        <!-- <bar-chart id="chart" :rating-data="ratingData"></bar-chart> -->
       </div>
       <div class="rating-el">
         <h2>{{ ratingInfo.ratingAvg }}</h2>
