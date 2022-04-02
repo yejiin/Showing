@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       profile: {
+        userId: 0,
         nickName: "",
         email: "",
         introduce: "",
@@ -46,6 +47,7 @@ export default {
     await getUserInfo(
       this.$route.params.userId,
       (response) => {
+        this.profile.userId = response.data.data.userId;
         this.profile.nickName = response.data.data.nickName;
         this.profile.email = response.data.data.email;
         this.profile.introduce = response.data.data.introduce;
