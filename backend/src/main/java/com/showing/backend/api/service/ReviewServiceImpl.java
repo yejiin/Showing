@@ -9,9 +9,7 @@ import com.showing.backend.db.entity.performance.*;
 import com.showing.backend.db.entity.review.Review;
 import com.showing.backend.db.entity.review.ReviewActor;
 import com.showing.backend.db.repository.UserRepository;
-import com.showing.backend.db.repository.performance.CastingRepository;
-import com.showing.backend.db.repository.performance.PerformanceRepository;
-import com.showing.backend.db.repository.performance.SeasonRepository;
+import com.showing.backend.db.repository.performance.*;
 import com.showing.backend.db.repository.review.ReviewActorRepository;
 import com.showing.backend.db.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.showing.backend.common.exception.handler.ErrorCode.PERFORMANCE_NOT_FOUND;
 
@@ -35,6 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final SeasonRepository seasonRepository;
     private final CastingRepository castingRepository;
     private final ReviewActorRepository reviewActorRepository;
+    private final WordCloudRepository wordCloudRepository;
 
     private final ActorService actorService;
 
@@ -157,6 +155,18 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         return reviewResList;
+    }
+
+    @Override
+    public List<WordCloudRes> getWordCloud(Long performanceId) {
+        List<WordCloud> wordCloudList = wordCloudRepository.findTop15ByPerformanceIdOrderByWeightDesc(performanceId);
+        List<WordCloudRes> wordCloudResList = new LinkedList<>();
+
+        for (WordCloud wordCloud : wordCloudList) {
+            wordCloudResList.add(new WordCloudRes(wordCloud.getWord(), wordCloud.getWeight()));
+        }
+
+        return wordCloudResList;
     }
 
     @Override
