@@ -7,9 +7,13 @@
         </div>
       </div>
       <div class="profile-introduce">
-        <b-card-text class="profile-el"><b-icon-person-circle></b-icon-person-circle>{{ profile.nickName }}</b-card-text>
-        <b-card-text class="profile-el"><b-icon-envelope></b-icon-envelope>{{ profile.email }}</b-card-text>
-        <b-card-text class="profile-el"><b-icon-tag></b-icon-tag>{{ profile.introduce }}</b-card-text>
+        <b-card-text class="profile-el"
+          ><b-icon-person-circle class="mr-3"></b-icon-person-circle> {{ profile.nickName }}</b-card-text
+        >
+        <b-card-text class="profile-el"
+          ><b-icon-envelope class="mr-3"></b-icon-envelope>{{ profile.email }}</b-card-text
+        >
+        <b-card-text class="profile-el"><b-icon-tag class="mr-3"></b-icon-tag>{{ profile.introduce }}</b-card-text>
       </div>
     </b-card>
 
@@ -35,7 +39,7 @@ export default {
 }
 
 .profile {
-  height: 200px;
+  height: 260px;
   background: #dce4fd;
 }
 
@@ -46,12 +50,13 @@ export default {
 }
 
 .image-box {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 70%;
   overflow: hidden;
   float: right;
   margin-right: 20px;
+  margin-top: 8px;
 }
 .image {
   width: 100%;
@@ -63,8 +68,10 @@ export default {
   height: 100%;
   vertical-align: middle;
   padding-top: 25px;
+  margin-left: 20px;
 }
 .profile-el {
-  margin: 8px;
+  margin: 10px;
+  font-size: 25px;
 }
 </style>

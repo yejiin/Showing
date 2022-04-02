@@ -1,13 +1,13 @@
 <template>
   <div>
     <b-card>
-      <h4 class="main_title">평가 수</h4>
+      <h2 class="main_title">평가 수</h2>
       <div class="rating-musical">
-        <h5>{{ ratingInfo.musicalCnt }}</h5>
+        <h2>{{ ratingInfo.musicalCnt }}</h2>
         <div>뮤지컬</div>
       </div>
       <div class="rating-theather">
-        <h5>{{ ratingInfo.playCnt }}</h5>
+        <h2>{{ ratingInfo.playCnt }}</h2>
         <div>연극</div>
       </div>
       <hr />
