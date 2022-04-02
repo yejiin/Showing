@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-card>
-      <h5 class="main_title">선호태그</h5>
+      <h4 class="main_title">선호태그</h4>
       <word-cloud></word-cloud>
       <hr />
       <div>
-        <h5 class="main_title">선호배우</h5>
+        <h4 class="main_title">선호배우</h4>
         <actor-list :actor="actor"></actor-list>
       </div>
     </b-card>
