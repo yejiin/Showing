@@ -41,7 +41,7 @@
         ><b-col class="ml-2 my-2" cols="3">일정 </b-col>
         <b-col cols="6">{{ info.startDate }} ~ {{ info.endDate }}</b-col>
       </b-row>
-      <b-row
+      <b-row v-if="info.location != null"
         ><b-col class="ml-2 my-2" cols="3">장소 </b-col>
         <b-col>{{ info.location }}</b-col>
       </b-row>
@@ -49,8 +49,6 @@
         <b-col class="ml-2 my-2" cols="3"> 공연시간 </b-col>
         <b-col>{{ info.runingTime }}</b-col>
       </b-row>
-      <br />
-      <span class="subTitle mt-2">캐스팅</span>
       <actor-list :actor="actor"></actor-list>
     </b-card>
     <br />

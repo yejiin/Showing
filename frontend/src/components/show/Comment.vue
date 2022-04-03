@@ -3,7 +3,7 @@
     <span class="main_title float-left">다른 사람의 리뷰</span>
     <review-list-modal :info="info" :seasons="seasons" v-if="previewReview != 0"></review-list-modal>
     <br />
-    <div class="my-2" v-if="previewReview == 0">
+    <div class="my-5 mx-auto" style="text-align: center" v-if="previewReview == 0">
       <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
       <br /><br />
     </div>
