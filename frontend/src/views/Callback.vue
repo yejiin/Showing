@@ -35,25 +35,33 @@ export default {
       this.state.kakaoCode = this.$route.query.code;
       this.kakaoLogin(this.state.kakaoCode);
     }
-
-    this.moveMain();
   },
 
   methods: {
-    ...mapActions(userStore, ["findNaverToken", "findKakaoToken"]),
+    ...mapActions(userStore, ["findNaverToken", "findNaverUser", "findKakaoToken", "findKakaoUser"]),
 
     /* 네이버 로그인  */
     async naverLogin(code, state) {
-      await this.findNaverToken(code, state);
+      try {
+        let token = await this.findNaverToken(code, state);
+        await this.findNaverUser(token);
+
+        await this.$router.go(-1);
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /* 카카오 로그인 */
     async kakaoLogin(code) {
-      await this.findKakaoToken(code);
-    },
+      try {
+        let token = await this.findKakaoToken(code);
+        await this.findKakaoUser(token);
 
-    moveMain() {
-      this.$router.go("-1");
+        await this.$router.go(-1);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
