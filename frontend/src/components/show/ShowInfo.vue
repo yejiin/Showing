@@ -134,6 +134,10 @@ export default {
       this.setWriteReviewModalState(status);
     },
   },
+  mounted() {
+    this.setMyReviewListModalState(false);
+    this.setWriteReviewModalState(false);
+  }
 };
 </script>
 
