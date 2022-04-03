@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="description.length > 1">
     <b-card>
       <span class="main_title">작품설명</span>
       <read-more
