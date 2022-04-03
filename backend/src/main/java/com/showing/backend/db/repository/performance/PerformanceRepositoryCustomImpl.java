@@ -1,8 +1,10 @@
 package com.showing.backend.db.repository.performance;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.showing.backend.api.response.PerformanceRes;
+import com.showing.backend.api.response.SearchRes;
 import com.showing.backend.db.entity.QRanking;
 import com.showing.backend.db.entity.performance.QPerformance;
 import com.showing.backend.db.entity.performance.QSeason;
@@ -48,6 +50,21 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
                 .on(qPerformance.lastSeasonId.eq(qSeason.id))
                 .where(qPerformance.performanceType.eq(performanceType))
                 .orderBy(qRanking.averageRating.desc()).limit(15)
+                .fetch();
+    }
+
+    /**
+     * performance name에 keyword가 포함된 모든 공연을 조회한다.
+     */
+    @Override
+    public List<SearchRes> findByPerformanceNameContaining(String keyword) {
+        return jpaQueryFactory.select(Projections.constructor(SearchRes.class,
+                        qPerformance.id, qPerformance.performanceName, qPerformance.performanceType, qPerformance.lastSeasonId,
+                        qPerformance.performanceImage, qSeason.startDate, qSeason.endDate))
+                .from(qPerformance).join(qSeason)
+                .on(qPerformance.lastSeasonId.eq(qSeason.id))
+                .where(qPerformance.performanceName.contains(keyword))
+                .orderBy(Expressions.stringTemplate("DATE_FORMAT({0},{1})",qSeason.startDate, "%Y-%m-%d").desc())
                 .fetch();
     }
 }
