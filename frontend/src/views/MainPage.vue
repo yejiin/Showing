@@ -24,10 +24,6 @@
 </template>
 <script>
 import RecommendList from "@/components/recommend/RecommendList";
-import Actor from "@/components/recommend/Actor";
-import Show from "@/components/recommend/Show";
-import RatingMusical from "@/components/recommend/RatingMusical";
-import RatingPlay from "@/components/recommend/RatingPlay";
 
 import { getMainRecommend } from "@/api/recommend.js";
 import { getRankingShow } from "@/api/show.js";
@@ -35,10 +31,6 @@ import { getRankingShow } from "@/api/show.js";
 export default {
   name: "MainPage",
   components: {
-    Show,
-    Actor,
-    RatingMusical,
-    RatingPlay,
     RecommendList,
   },
   data() {
