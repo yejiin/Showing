@@ -11,7 +11,7 @@
                 img-alt="Image"
                 img-top
                 tag="article"
-                @click="detailShow(index)"
+                @click="detailShow(item)"
                 style="cursor: pointer"
               >
                 <!-- card content -->
@@ -60,10 +60,10 @@ export default {
   computed: {},
 
   methods: {
-    detailShow(index) {
+    detailShow(item) {
       this.$router.push({
         name: "ShowDetail",
-        params: { showId: this.item.performanceId },
+        params: { showId: item.performanceId },
       });
     },
     onSlideStart(slide) {
