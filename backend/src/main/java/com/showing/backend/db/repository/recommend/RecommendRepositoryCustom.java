@@ -1,6 +1,5 @@
 package com.showing.backend.db.repository.recommend;
 
-import com.showing.backend.api.response.PerformanceByActorRes;
 import com.showing.backend.api.response.PerformanceRes;
 
 import java.util.List;
@@ -15,6 +14,6 @@ public interface RecommendRepositoryCustom {
     /**
      * 사용자의 top5 선호 배우 중 한명을 랜덤으로 골라 출연 공연 리스트를 조회한다.
      */
-    List<PerformanceByActorRes> getPerformanceListRandomFavoriteActorId(Long actorId);
+    List<PerformanceRes> getPerformanceListRandomFavoriteActorId(Long actorId);
 
 }

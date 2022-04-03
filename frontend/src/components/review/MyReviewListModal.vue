@@ -7,7 +7,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
-          @click="setMyReviewListModalState(false);page=5;"
+          @click="setMyReviewListModalState(false);page=Math.min(5, reviews.length);"
         >
           &times;
         </button>
@@ -26,10 +26,10 @@
                 <h5 class="bold mb-1" @click="showDetailModal(reviews[index].reviewId)">{{ reviews[index].viewDate }}</h5>
               </div>
               <div>
-                <a href="" class="updatedelete" @click="modifyModal(reviews[index].reviewId)">
+                <span href="" class="updatedelete" @click="modifyModal(reviews[index].reviewId)">
                   <i class="fa fa-pencil"></i>
                   수정
-                </a>
+                </span>
 
                 <a href="" class="updatedelete" @click="deleteReview(reviews[index].reviewId)">
                   <i class="fa fa-trash"></i>
@@ -103,7 +103,7 @@
         </div>
       </div>
     </modal>
-    <review-modify-modal :seasonShowName="seasonShowName" :seasonShow="seasonShow"></review-modify-modal>
+    <review-modify-modal :key="modireview" :seasonShowName="seasonShowName" :seasonShow="seasonShow"></review-modify-modal>
   </div>
 </template>
 
@@ -144,11 +144,12 @@ export default {
       page : 5,
       hasMore : false,
       infinitedId : +new Date(),
+      modireview : 0,
 
     };
   },
   computed: {
-    ...mapState(reviewStore, ["modals"]),
+    ...mapState(reviewStore, ["modals", "reviewInfo"]),
     ...mapState(userStore, ["userInfo"]),
   },
   methods: {
@@ -186,9 +187,10 @@ export default {
       );
     },
     modifyModal(id){
+      this.setReviewId(id)
+      this.modireview = id
       this.setMyReviewListModalState(false);
       this.setModifyReviewModalState(true);
-      this.setReviewId(id)
     },
     onScroll($state){
       console.log('onScroll')
@@ -203,7 +205,9 @@ export default {
       this.userInfo.userId,
       (response) => {
         this.reviews = response.data.data;
-        this.hasMore = response.data.data.length > 0 ? true : false
+        this.hasMore = response.data.data.length > 0 ? true : false;
+        this.page = Math.min(this.page, response.data.data.length)
+        console.log(response.data.data);
       },
       (fail) => {
         console.log(fail);
