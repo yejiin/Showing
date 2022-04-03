@@ -4,9 +4,9 @@
       class="searchInput"
       placeholder="공연을 검색해보세요"
       addon-left-icon="ni ni-zoom-split-in"
-      v-model="content"
+      v-model="keyword"
       @input="searchData"
-      @change="detailShow($event)"
+      @enter="detailShow($event)"
       list="showList"
     >
     </base-input>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { getContentsList } from "@/api/search.js";
 
 export default {
   name: "Search",
@@ -27,7 +27,7 @@ export default {
 
   data() {
     return {
-      content: "",
+      keyword: "",
       contentId: "",
       performanceList: [],
       performancdIndex: null,
@@ -36,16 +36,19 @@ export default {
   },
   methods: {
     searchData() {
-      axios
-        .get("https://j6a301.p.ssafy.io/api/v1/search?keyword=" + this.content)
-        .then((res) => {
-          this.performanceList = res.data.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      console.log(this.performanceList);
+      getContentsList(
+        this.keyword,
+        (response) => {
+          console.log(this.keyword);
+          this.performanceList = response.data.data;
+          console.log(response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
+
     detailShow(event) {
       console.log("이거어떻게?");
       console.log(event.target.value);
