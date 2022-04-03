@@ -28,7 +28,13 @@
           공연정보&nbsp;&nbsp;
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a @click="otherSeason(index)" v-for="(seasonDate, index) in seasons" :key="index" class="dropdown-item">
+          <a
+            @click="otherSeason(index)"
+            v-for="(seasonDate, index) in seasons"
+            :key="index"
+            class="dropdown-item"
+            style="cursor: pointer"
+          >
             {{ seasonDate.startDate }} ~ {{ seasonDate.endDate }}
           </a>
         </div>
