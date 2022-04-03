@@ -160,7 +160,6 @@ export default {
       this.modals.modal1 = false;
       this.modals.modal2 = true;
       getDetailReview(id, (response) => {
-        console.log(response.data.data);
         this.review = response.data.data;
       });
     },
