@@ -124,9 +124,6 @@ export default {
       review: Object,
     };
   },
-  computed: {
-    ...mapState(reviewStore, ["modals"]),
-  },
   created() {
     this.seasonId = this.info.seasonId;
     getAllSeasonReview(
