@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 class="main_title">내 리뷰</h4>
+    <h4 class="main_title mt-5">내 리뷰</h4>
     <b-card-group deck class="mb-0">
       <b-card
         id="itemList"
