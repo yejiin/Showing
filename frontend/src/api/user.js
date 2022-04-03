@@ -8,7 +8,7 @@ async function getUserInfo(userId, sucess, fail) {
 }
 
 async function modifyUser(user, success, fail) {
-  await api.put(`/users`, JSON.stringify(user)).then(success).catch(fail);
+  await api2.put(`/users`, JSON.stringify(user)).then(success).catch(fail);
 }
 
 async function getNaverToken(code, state, success, fail) {
