@@ -30,6 +30,7 @@
               </b-card>
             </slide>
           </carousel>
+          <br />
         </b-col>
       </b-row>
     </b-container>
