@@ -173,6 +173,7 @@ export default {
             reviewContent: "",
           };
           this.$emit("setWrite", this.setwrite + 1);
+          this.$emit("myReviewList");
         },
         (fail) => {
           console.log(fail);
