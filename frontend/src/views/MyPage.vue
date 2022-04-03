@@ -2,7 +2,7 @@
   <div class="header">
     <profile :profile="profile"></profile>
     <user-rating :rating-info="ratingInfo"></user-rating>
-    <user-favorite :favorite-actor="favoriteActorList"></user-favorite>
+    <user-favorite :favorite-actor="favoriteActorList" :tag-wordcount="tagWordcount"></user-favorite>
     <user-review :review-list="reviewList" :user-id="profile.userId"></user-review>
   </div>
 </template>
@@ -41,6 +41,7 @@ export default {
       },
       favoriteActorList: [],
       reviewList: [],
+      tagWordcount: [],
     };
   },
   async created() {
@@ -73,6 +74,8 @@ export default {
         this.favoriteActorList = response.data.data.favoriteActorList;
 
         this.reviewList = response.data.data.reviewList;
+
+        this.tagWordcount = response.data.data.favoriteTagList;
       },
       (error) => {
         console.log(error);
