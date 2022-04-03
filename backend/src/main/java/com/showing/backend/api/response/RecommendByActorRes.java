@@ -19,6 +19,6 @@ public class RecommendByActorRes {
     String actorName;
 
     @ApiModelProperty(name = "공연 정보")
-    List<PerformanceByActorRes> performanceInfoList;
+    List<PerformanceRes> performanceInfoList;
 
 }
