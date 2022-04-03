@@ -33,9 +33,9 @@ export default {
       // Red
       // myColors: ["#fca5a5", "#f87171", "#ef4444", "#dc2626", "#b91c1c"],
       // Orange
-      // myColors: ["#fdba74", "#fb923c", "#f97316", "#ea580c", "#c2410c"],
+      myColors: ["#fdba74", "#fb923c", "#f97316", "#ea580c", "#c2410c"],
       // Amber
-      myColors: ["#fcd34d", "#fbbf24", "#f59e0b", "#d97706", "#b45309"],
+      // myColors: ["#fcd34d", "#fbbf24", "#f59e0b", "#d97706", "#b45309"],
       // Purple
       // myColors: ["#d8b4fe", "#c084fc", "#a855f7", "#9333ea", "#7e22ce"],
     };

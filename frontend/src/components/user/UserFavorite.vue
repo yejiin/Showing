@@ -2,7 +2,7 @@
   <div>
     <b-card>
       <h4 class="main_title">선호태그</h4>
-      <word-cloud></word-cloud>
+      <word-cloud :wordcount="wordcount"></word-cloud>
       <hr />
       <div>
         <h4 class="main_title">선호배우</h4>
@@ -22,10 +22,14 @@ export default {
   },
   props: {
     favoriteActor: Array,
+    tagWordcount: Array,
   },
   computed: {
     actor: function () {
       return this.favoriteActor;
+    },
+    wordcount: function () {
+      return this.tagWordcount;
     },
   },
 };
