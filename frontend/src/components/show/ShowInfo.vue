@@ -11,8 +11,8 @@
           <span class="nav-link-inner--text">리뷰 작성</span>
         </a>
       </b-card>
-      <review-list :seasonShowName="seasonShowName" :seasonShow="info" :performanceId="performanceId"></review-list>
-      <review-write :seasonShowName="seasonShowName" :seasonShow="info"></review-write>
+      <review-list :key="setReview" :seasonShowName="seasonShowName" :seasonShow="info" :performanceId="performanceId"></review-list>
+      <review-write @setWrite="setReviewCount" :setwrite="setReview" :seasonShowName="seasonShowName" :seasonShow="info"></review-write>
     </div>
     <br /><br />
     <b-card>
@@ -107,6 +107,7 @@ export default {
         listmodal: false,
         writemodal: false,
       },
+      setReview: 0,
     };
   },
   methods: {
@@ -133,7 +134,15 @@ export default {
     setWriteModalStates(status) {
       this.setWriteReviewModalState(status);
     },
+    setReviewCount(value){
+      this.setReview = value;
+    },
   },
+  mounted() {
+    this.setMyReviewListModalState(false);
+    this.setWriteReviewModalState(false);
+  },
+
 };
 </script>
 
