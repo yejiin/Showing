@@ -54,7 +54,8 @@
             </div>
           </div>
         </div>
-        <button class="moreReview" v-if="page!==reviews.length" @click="onScroll"><img class="moreReviewImg" src=".\assets\pngwing.png" alt="더보기"></button>
+        <button class="moreReview" v-if="page!==reviews.length" @click="onScroll"><img class="moreReviewImg" src="./assets/pngwing.png" alt="더보기"></button>
+        <!-- <infinite-loading v-if="hasMore" :identifier="infiniteId" @infinite="onScroll"></infinite-loading> -->
       </div>
       <div id="detail" v-show="modal2">
         <button
@@ -123,7 +124,6 @@ export default {
     Modal,
     ReviewModal,
     ReviewModifyModal,
-    InfiniteLoading
   },
   props: {
     type: String,
