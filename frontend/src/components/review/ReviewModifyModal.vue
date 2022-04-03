@@ -162,19 +162,10 @@ export default {
         reviewContent: this.review.content,
         userId: this.userInfo.userId,
       };
-      this.modifyMyReview(this.review.reviewId, tmp);
-      this.setModifyReviewModalState(false);
-      this.review.reviewCastingIdList.forEach((element) => {
-        let el = document.getElementById(element);
-        el.className = "badge badge-pill casting badge-primary";
+      this.modifyMyReview(this.review.reviewId, tmp, response=>{
+        this.setModifyReviewModalState(false);
+        location.reload();
       });
-      this.review = {
-        seasonId: this.seasonShow.seasonId,
-        showDate: "",
-        showTime: "",
-        castingIdList: [],
-        reviewContent: "",
-      };
       this.$emit("setwrite", true);
     },
     // 날짜 포맷 정리
@@ -206,10 +197,12 @@ export default {
   },
   updated() {
     this.$nextTick(() => {
-      this.review.reviewCastingIdList.forEach((element) => {
-        let cur = document.getElementById(element);
-        cur.className = "badge badge-pill casting badge-warning";
-      });
+      if(this.review.reviewCastingIdList){
+        this.review.reviewCastingIdList.forEach((element) => {
+          let cur = document.getElementById(element);
+          cur.className = "badge badge-pill casting badge-warning";
+        });
+      }
     });
   },
 };
