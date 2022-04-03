@@ -12,7 +12,7 @@ import MyPage from "./views/MyPage.vue";
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
+  mode: "hash",
   linkExactActiveClass: "active",
   routes: [
     {
