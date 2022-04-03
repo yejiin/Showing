@@ -290,6 +290,7 @@ select#season {
   float: right;
   color: #626262;
   font-size: 10px;
+  cursor: pointer;
 }
 .title {
   margin-bottom: 1%;
