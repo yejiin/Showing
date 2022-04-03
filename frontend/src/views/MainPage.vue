@@ -67,4 +67,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.main_title {
+  font-size: 1.5em;
+  margin-left: 0.5em;
+}
+</style>
