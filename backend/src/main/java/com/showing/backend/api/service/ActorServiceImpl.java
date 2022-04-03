@@ -53,7 +53,7 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public List<FavActorRes> getFavoriteActorList(User user) {
-        return favoriteActorRepository.getFavActorListByUser(user).orElse(null);
+        return favoriteActorRepository.findTopCountFavActorListByUser(12, user).orElse(null);
     }
 
     /**
