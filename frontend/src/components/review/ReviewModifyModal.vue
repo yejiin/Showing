@@ -34,7 +34,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                 </div>
-                <input type="time" name="" id="" class="form-control" v-model="review.viewTime" />
+                <input type="time" class="form-control" v-model="review.viewTime" />
               </div>
             </div>
             <label for="location" class="bold">관람장소</label>
@@ -53,7 +53,7 @@
             class="badge badge-pill casting badge-primary"
             v-for="(index, key) in seasonShow.actorList"
             :key="key"
-            :id="index.castingId"
+            :id="`modify`+index.castingId"
             @click="selectactors(index.castingId)"
           >
             {{ index.actorName }}
@@ -132,7 +132,7 @@ export default {
     // 배우 캐스팅 구하기
     selectactors(id) {
       // 클릭된 블록
-      let cur = document.getElementById(id);
+      let cur = document.getElementById(`modify`+id);
       // 해당 블록이 이미 선택되었으면(warning으로 변해 있으면)
       if (cur.className == "badge badge-pill casting badge-warning") {
         // 다시 primary로 변경하고 선택된 actors에서 뺌
@@ -214,14 +214,12 @@ export default {
     );
   },
   updated() {
-    this.$nextTick(() => {
-      if (this.review.reviewCastingIdList) {
-        this.review.reviewCastingIdList.forEach((element) => {
-          let cur = document.getElementById(element);
-          cur.className = "badge badge-pill casting badge-warning";
-        });
-      }
-    });
+    if (this.review.reviewCastingIdList) {
+      this.review.reviewCastingIdList.forEach((element) => {
+        let cur = document.getElementById(`modify`+element);
+        cur.className = "badge badge-pill casting badge-warning";
+      });
+    }
   },
 };
 </script>
