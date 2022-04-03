@@ -1,6 +1,8 @@
 package com.showing.backend.db.repository.performance;
 
 import com.showing.backend.api.response.PerformanceRes;
+import com.showing.backend.api.response.SearchRes;
+
 import java.util.List;
 
 public interface PerformanceRepositoryCustom {
@@ -9,4 +11,5 @@ public interface PerformanceRepositoryCustom {
 
     List<PerformanceRes> findByTypeAndStarPointAvg(int performanceType);
 
+    List<SearchRes> findByPerformanceNameContaining(String keyword);
 }
