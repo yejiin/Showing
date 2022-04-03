@@ -10,13 +10,13 @@
       <div class="dropdown">
         <p v-if="userInfo.userId"><img class="profile" :src="userInfo.userImage" alt=""></p>
         <div class="dropdown-content">
-          <p @click="HandleLogout">로그아웃</p>
-          <p @click="goToMyPage">마이페이지</p>
+          <p @click="goToMyPage" class="dropdownbox"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;마이페이지</p>
+          <p @click="HandleLogout" class="dropdownbox"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;로그아웃</p>
         </div>
       </div>
     </b-collapse>
   </b-navbar>
-</template>
+</template> 
 
 <script>
 import { mapActions, mapState } from "vuex";
@@ -82,12 +82,17 @@ export default {
 .dropdown-content {
   display: none;
   position: absolute;
-  margin-left: 20%;
-  width: 160px;
-  /* background-color: #F9F9F9;
-  min-width: 160px;
+  /* margin-left: 20%; */
+  width: 150px;
+  background-color: #F9F9F9;
+  /* min-width: 160px;
   padding: 8px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
 }
 .dropdown:hover .dropdown-content { display: block; }
+.dropdownbox {
+  margin-left: 20%;
+  margin-top: 10%;
+  /* border-top: solid 1px #2C3093; */
+}
 </style>
