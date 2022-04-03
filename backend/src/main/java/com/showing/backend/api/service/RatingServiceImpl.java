@@ -181,7 +181,8 @@ public class RatingServiceImpl implements RatingService {
      * 별점 평균
      */
     public Double getRatingAvg(User user) {
-        return starPointRepository.getRatingAvgByUser(user);
+        double ratingAvg = starPointRepository.getRatingAvgByUser(user);
+        return ratingAvg / 2;
     }
 
 }
