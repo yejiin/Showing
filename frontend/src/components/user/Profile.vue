@@ -44,6 +44,25 @@
         <div class="profile-edit" @click="editProfile(false)">save</div>
       </div>
     </b-card>
+    <b-card class="profile" v-else>
+      <div>
+        <div class="profile-image">
+          <div class="image-box" style="background: #bdbdbd">
+            <img class="image" :src="profile.userImage" />
+          </div>
+        </div>
+        <div class="profile-introduce">
+          <b-card-text class="profile-el"
+            ><b-icon-person-circle class="mr-3"></b-icon-person-circle> {{ profile.nickName }}</b-card-text
+          >
+          <b-card-text class="profile-el"
+            ><b-icon-envelope class="mr-3"></b-icon-envelope>{{ profile.email }}</b-card-text
+          >
+
+          <b-card-text class="profile-el"><b-icon-tag class="mr-3"></b-icon-tag>{{ profile.introduce }}</b-card-text>
+        </div>
+      </div>
+    </b-card>
     <br />
     <br />
   </div>
