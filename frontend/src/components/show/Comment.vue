@@ -11,15 +11,15 @@
       <!-- carousel area -->
       <carousel :perPage="5" class="list">
         <slide class="p-1 mt-3" v-for="(item, index) in previewReview" :key="index">
-          <div>
+          <div style="width:170px">
             <b-card rounded class="card" style="margin: 0px">
-              <div @click="detailUser(previewReview[index].userId)" style="cursor: pointer">
+              <div @click="detailUser(previewReview[index].userId)" style="cursor: pointer;">
                 <b-container>
                   <b-row>
-                    <b-col class="cols">
+                    <b-col class="cols col-5">
                       <b-img :src="previewReview[index].userImage" rounded="circle" height="35px" />
                     </b-col>
-                    <b-col class="cols">
+                    <b-col class="cols col-7 mt-1 rt-0">
                       <span class="comment_writer float-right">{{ previewReview[index].userName }}</span>
                     </b-col>
                   </b-row>
@@ -137,6 +137,10 @@ export default {
   margin-top: 0px;
   margin-bottom: 0px;
   font-size: 110%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .card-text {
