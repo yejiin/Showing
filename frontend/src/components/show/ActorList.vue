@@ -1,113 +1,43 @@
 <template>
   <div class="mainbox mt-4">
-    <div v-if="actor != null">
+    <div v-if="actor.length > 1">
+      <span class="subTitle mt-2">캐스팅</span>
       <!-- carousel area -->
-      <b-card-group deck class="mb-0 comment_list">
-        <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-        <i class="ni ni-bold-left arrow"></i>
-        <b-card
-          v-for="(item, index) in currentPageCards"
-          :key="index"
-          class="mr-0 mb-2"
-          tag="article"
-          style="max-width: 20rem; border: 0px"
-        >
-          <!-- <i style="font-size: 90px; margin-left: 20%" class="ni ni-circle-08"></i> -->
-          <div class="profile-image">
-            <div class="image-box" style="background: #bdbdbd">
-              <img class="image" :src="actor[index].actorImage" />
+      <carousel :perPage="4">
+        <slide class="p-1 mt-3" v-for="(item, index) in actor" :key="index">
+          <div class="rounded">
+            <!-- card content -->
+            <div>
+              <b-img class="image-box" :src="actor[index].actorImage" center />
             </div>
+            <h6 class="actor_name" v-if="actor[index].role != undefined || actor[index].role != null">
+              {{ actor[index].role }}
+            </h6>
+            <h5 class="actor_name">{{ actor[index].actorName }}</h5>
           </div>
-
-          <br />
-          <b-card-text v-if="actor[index].role != undefined || actor[index].role != null">{{
-            actor[index].role
-          }}</b-card-text>
-          <b-card-text v-else><br /></b-card-text>
-          <h5 class="actor_name">{{ actor[index].actorName }}</h5>
-        </b-card>
-        <i class="ni ni-bold-right arrow arrow_right"></i>
-      </b-card-group>
-      <br />
-      <!-- pagination area -->
-      <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-      <div class="pagination" v-if="cards.length > cardsPerPage">
-        <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
-      </div>
+        </slide>
+      </carousel>
       <br />
     </div>
   </div>
 </template>
 
 <script>
+import { Carousel, Slide } from "vue-carousel";
+
 export default {
   name: "ActorList",
   props: {
     actor: Array,
   },
-  data() {
-    return {
-      cards: [
-        {
-          //Data in the card as objects
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-      ],
-      paginatedCards: [],
-      pageCount: 0,
-      cardsPerPage: 5,
-      currentPageIndex: 0,
-    };
-  },
-  computed: {
-    currentPageCards() {
-      this.createPages();
-
-      return this.paginatedCards[this.currentPageIndex];
-    },
-  },
-
-  methods: {
-    currentPage(i) {
-      return i - 1 === this.currentPageIndex;
-    },
-
-    createPages() {
-      let cardsLength = this.actor.length;
-      let fullPagesCount = Math.floor(cardsLength / this.cardsPerPage);
-
-      if (cardsLength > this.cardsPerPage) {
-        this.pageCount = 0;
-        for (let i = 0; i < fullPagesCount * this.cardsPerPage; i += this.cardsPerPage) {
-          this.paginatedCards[this.pageCount] = this.cards.slice(i, i + this.cardsPerPage);
-          this.pageCount++;
-        }
-
-        this.paginatedCards[this.pageCount] = this.cards.slice(cardsLength - this.cardsPerPage, cardsLength);
-        this.pageCount = this.pageCount + 1;
-      } else {
-        this.paginatedCards[0] = this.actor;
-      }
-    },
-
-    next(i) {
-      this.currentPageIndex = i - 1;
-    },
+  components: {
+    Carousel,
+    Slide,
   },
 };
 </script>
 
 <style scoped>
-.mainbox {
-}
 .title {
   font-weight: 700;
   font-size: 23px;
@@ -156,16 +86,23 @@ export default {
 }
 
 .image-box {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border-radius: 70%;
   overflow: hidden;
+  object-fit: cover;
   background-color: wheat;
-  margin-left: 60px;
 }
+
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.subTitle {
+  font-weight: 600;
+  color: #525f7f;
+  font-size: 23px;
 }
 </style>

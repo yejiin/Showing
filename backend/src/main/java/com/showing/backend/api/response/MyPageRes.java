@@ -17,6 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 public class MyPageRes {
 
+    @ApiModelProperty(name = "유저 아이디", example = "1")
+    private Long userId;
+
     @ApiModelProperty(name = "유저 닉네임", example = "김싸피")
     private String nickName;
 
