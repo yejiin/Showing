@@ -2,13 +2,12 @@
   <div class="header">
     <div v-if="this.$store.state.userStore.isLogin">
       <h5 class="main_title">{{ this.$store.state.userStore.userInfo.nickName }}님을 위한 추천 공연</h5>
-      <br />
       <recommend-list :performance-list="mainRecommendList"></recommend-list>
-    </div>
-    <div v-for="(item, index) in actorRecommnedList" :key="index">
-      <h5 class="main_title">선호 배우 {{ item.actorName }}의 다른 공연</h5>
-      <br />
-      <recommend-list :performance-list="item.performanceInfoList"></recommend-list>
+      <div v-for="(item, index) in actorRecommnedList" :key="index">
+        <h5 class="main_title">선호 배우 {{ item.actorName }}의 다른 공연</h5>
+        <br />
+        <recommend-list :performance-list="item.performanceInfoList"></recommend-list>
+      </div>
     </div>
     <div>
       <h5 class="main_title">뮤지컬 평균 별점 순위</h5>
