@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card>
+    <b-card v-if="wordcount.length != 0">
       <wordcloud
         :rotate="{ from: 0, to: 0, numOfOrientation: 0 }"
         :data="wordcount"
@@ -8,6 +8,7 @@
         valueKey="value"
         :showTooltip="false"
         :color="myColors"
+        :fontSize="[30, 100]"
       >
       </wordcloud>
     </b-card>
