@@ -22,39 +22,41 @@
         </div>
         <br />
         <div v-show="reviews.length === 0">내 리뷰가 없습니다</div>
-        <div v-for="(n, index) in page" :key="index">
-          <div id="reviewHeader" class="review">
-            <div class="inreview">
-              <div class="left">
-                <h5 class="bold mb-1" @click="showDetailModal(reviews[index].reviewId)">
-                  {{ reviews[index].viewDate }}
-                </h5>
-              </div>
-              <div>
-                <span href="" class="updatedelete" @click="modifyModal(reviews[index].reviewId)">
-                  <i class="fa fa-pencil"></i>
-                  수정
-                </span>
+        <div v-if="reviews.length !== 0">
+          <div v-for="(n, index) in page" :key="index">
+            <div id="reviewHeader" class="review">
+              <div class="inreview">
+                <div class="left">
+                  <h5 class="bold mb-1" @click="showDetailModal(reviews[index].reviewId)">
+                    {{ reviews[index].viewDate }}
+                  </h5>
+                </div>
+                <div>
+                  <span href="" class="updatedelete" @click="modifyModal(reviews[index].reviewId)">
+                    <i class="fa fa-pencil"></i>
+                    수정
+                  </span>
 
-                <span href="" class="updatedelete" @click="deleteReview(reviews[index].reviewId)">
-                  <i class="fa fa-trash"></i>
-                  삭제 &nbsp;| &nbsp;
-                </span>
-              </div>
-              <div class="title" style="clear: both" @click="showDetailModal(reviews[index].reviewId)">
-                <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
-                <p class="username inline">{{ userInfo.nickName }}</p>
-              </div>
-              <div class="mb-2">
-                <label for="casing" class="bold rightmargin inline"
-                  ><h6 class="bold rightmargin inline">캐스팅</h6></label
-                >
-                <b-badge pill variant="primary" v-for="(index, key) in reviews[index].reviewActorNameList" :key="key">{{
-                  index
-                }}</b-badge>
-              </div>
-              <div class="">
-                <p class="content">{{ reviews[index].content }}</p>
+                  <span href="" class="updatedelete" @click="deleteReview(reviews[index].reviewId)">
+                    <i class="fa fa-trash"></i>
+                    삭제 &nbsp;| &nbsp;
+                  </span>
+                </div>
+                <div class="title" style="clear: both" @click="showDetailModal(reviews[index].reviewId)">
+                  <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
+                  <p class="username inline">{{ userInfo.nickName }}</p>
+                </div>
+                <div class="mb-2">
+                  <label for="casing" class="bold rightmargin inline"
+                    ><h6 class="bold rightmargin inline">캐스팅</h6></label
+                  >
+                  <b-badge pill variant="primary" v-for="(index, key) in reviews[index].reviewActorNameList" :key="key">{{
+                    index
+                  }}</b-badge>
+                </div>
+                <div class="">
+                  <p class="content">{{ reviews[index].content }}</p>
+                </div>
               </div>
             </div>
           </div>
