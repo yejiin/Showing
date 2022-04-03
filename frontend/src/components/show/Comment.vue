@@ -69,7 +69,7 @@ export default {
     detailUser(id) {
       this.$router.push({
         name: "MyPage",
-        params: { userId: id },
+        params: { userId: id, key: "aaa" },
       });
     },
   },

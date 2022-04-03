@@ -5,19 +5,10 @@
         <b-col cols="12">
           <carousel :perPage="6">
             <slide class="p-1" v-for="(item, index) in performanceList" :key="index">
-              <b-card
-                class="mr-0 mb-2"
-                :img-src="performanceList[index].lastSeasonImage"
-                img-alt="Image"
-                img-top
-                tag="article"
-                @click="detailShow(index)"
-                style="cursor: pointer"
-              >
+              <b-card class="mr-0 mb-2" @click="detailShow(index)" style="cursor: pointer">
                 <!-- card content -->
-                <div class="name">
-                  <strong>{{ performanceList[index].performanceName }}</strong>
-                </div>
+                <img :src="performanceList[index].lastSeasonImage" class="mb-3 mr-3 rounded shadow" />
+                <strong>{{ performanceList[index].performanceName }}</strong>
                 <div class="tags">
                   <b-badge class="mr-1" pill variant="light"
                     ><b-icon icon="star-fill" scale="0.8"></b-icon>
