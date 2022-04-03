@@ -27,6 +27,8 @@ export default {
   },
 
   mounted() {
+    this.moveMain();
+
     if (this.$route.query.state) {
       this.state.naverCode = this.$route.query.code;
       this.state.naverState = this.$route.query.state;
@@ -35,8 +37,6 @@ export default {
       this.state.kakaoCode = this.$route.query.code;
       this.kakaoLogin(this.state.kakaoCode);
     }
-
-    this.moveMain();
   },
 
   methods: {
@@ -44,6 +44,7 @@ export default {
 
     /* 네이버 로그인  */
     async naverLogin(code, state) {
+      console.log(code, state);
       await this.findNaverToken(code, state);
     },
 
@@ -52,8 +53,8 @@ export default {
       await this.findKakaoToken(code);
     },
 
-    moveMain() {
-      this.$router.go("-1");
+    async moveMain() {
+      await this.$router.go(-1);
     },
   },
 };
