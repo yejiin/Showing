@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <!-- 헤더 -->
-    <show-header :heading="heading"></show-header>
+    <show-header :heading="heading" :key="headerKey"></show-header>
     <!-- 공연 상세 정보 -->
     <show-info
       :info="info"
@@ -13,7 +13,7 @@
     ></show-info>
     <word-cloud></word-cloud>
     <!-- 리뷰 리스트 -->
-    <comment :previewReview="previewReview"></comment>
+    <comment :previewReview="previewReview" :info="info" :seasons="seasons"></comment>
     <!-- 비슷한 공연 -->
     <similar-show :similarList="similarList"></similar-show>
   </div>
@@ -25,8 +25,12 @@ import WordCloud from "@/components/show/WordCloud";
 import Comment from "@/components/show/Comment";
 import SimilarShow from "@/components/recommend/SimilarShow";
 
+import { mapActions } from "vuex";
+
 import { getRating } from "@/api/rating.js";
 import { detailShow, getSeasonShow } from "@/api/show.js";
+
+const ratingStore = "ratingStore";
 
 export default {
   name: "ShowDetail",
@@ -40,7 +44,7 @@ export default {
   data() {
     return {
       heading: {
-        performanceId: this.$route.params.showId,
+        performanceId: 0,
         performanceImage: "",
         performanceName: "",
         starPointAverage: 0,
@@ -57,12 +61,18 @@ export default {
       seasonShow: {},
       similarList: [],
       seasons: [],
+      headerKey: 0,
     };
   },
+  methods: {
+    ...mapActions(ratingStore, ["setMyStarIdState", "setMyRatingState"]),
+    ratingReload() {
+      this.headerKey += 1;
+    },
+  },
   async created() {
-    this.heading.performanceId = this.$route.params.showId;
+    this.heading.performanceId = Number(this.$route.params.showId);
     // 공연 상세 정보 가져오기
-    console.log(this.$route.params.showId);
     await detailShow(
       this.$route.params.showId,
       (response) => {
@@ -81,19 +91,15 @@ export default {
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
 
-        console.log(this.heading);
-        console.log(this.info);
-        console.log("this.info----------++");
-        console.log(this.$store.getters["userStore/userInfo"].id);
-
         // 로그인 시 별점 불러오기
         if (this.$store.getters["userStore/isLogin"])
           getRating(
             this.$store.getters["userStore/userInfo"].userId,
             this.heading.performanceId,
             (response) => {
-              this.heading.starId = response.data.data.starId;
-              this.heading.rating = response.data.data.rating / 2;
+              this.setMyStarIdState(response.data.data.starId);
+              this.setMyRatingState(response.data.data.rating / 2);
+              this.ratingReload();
             },
             (error) => {
               console.log(error);

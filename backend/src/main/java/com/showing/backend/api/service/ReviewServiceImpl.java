@@ -190,6 +190,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                          .reviewId(reviewId)
                                                          .userId(review.getUser().getId())
                                                          .userName(review.getUser().getNickname())
+                                                         .userImage(review.getUser().getUserImage())
                                                          .performanceId(performance.getId())
                                                          .performanceName(performance.getPerformanceName())
                                                          .seasonId(season.getId())
