@@ -6,7 +6,7 @@
         id="itemList"
         v-for="item in createPages()"
         :key="item.index"
-        class="mr-0 mb-2"
+        class="review mr-0 mb-2"
         :img-src="item.performanceImage"
         img-alt="Image"
         img-top
@@ -16,7 +16,7 @@
       >
         <!-- card content -->
         <div>
-          <h5 class="review-name">{{ item.performanceName }}</h5>
+          <h6 class="review-name">{{ item.performanceName }}</h6>
           <div class="review-date">{{ item.viewDate }}</div>
         </div>
         <br />
@@ -142,12 +142,15 @@ export default {
 }
 
 .review-name {
-  float: left;
-  font-weight: 500;
+  /* float: left; */
+  font-weight: 600;
 }
 
 .review-date {
-  float: right;
+  /* float: right; */
   font-size: 10px;
+}
+.review {
+  cursor: pointer;
 }
 </style>
