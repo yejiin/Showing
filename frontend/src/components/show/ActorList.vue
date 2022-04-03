@@ -1,7 +1,6 @@
 <template>
   <div class="mainbox mt-4">
     <div v-if="actor.length > 1">
-      <!-- <span class="subTitle mt-2">캐스팅</span> -->
       <!-- carousel area -->
       <carousel :perPage="4">
         <slide class="p-1 mt-3" v-for="(item, index) in actor" :key="index">
@@ -86,8 +85,8 @@ export default {
 }
 
 .image-box {
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   border-radius: 70%;
   overflow: hidden;
   object-fit: cover;
