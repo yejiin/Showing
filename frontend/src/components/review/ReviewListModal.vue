@@ -3,13 +3,11 @@
     <base-button size="sm" type="primary" class="float-right" @click="[(modals.modal = true), (modals.modal1 = true)]">
       더보기
     </base-button>
-    <modal :show.sync="modals.modal" modal-classes="modal-dialog modal-lg">
+    <modal :show.sync="modals.modal" modal-classes="modal-dialog">
       <div v-show="modals.modal1">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="modals.modal = false">
           &times;
         </button>
-
-        <br />
         <div>
           <h3 class="inline">{{ info.performanceName }}</h3>
           <select v-model="seasonId" name="season" id="season" @change="getReviews()">
@@ -20,21 +18,21 @@
         </div>
         <br />
         <div>
-          <div v-show="reviews.length === 0">리뷰가 없습니다</div>
+          <div v-show="reviews.length === 0" class="mb-5" style="text-align: center">
+            리뷰가 없습니다
+            <br />
+          </div>
           <div v-for="review in reviews" :key="review.reviewId">
-            <div id="reviewHeader" class="review" @click="showDetailModal(review.reviewId)">
+            <div id="reviewHeader" class="review mb-4" @click="showDetailModal(review.reviewId)">
               <div class="inreview">
-                <div class="left">
-                  <h5 class="bold mb-1">{{ review.viewDate }}</h5>
-                </div>
-                <div class="title" style="clear: both" @click="detailUser(review.userId)">
+                <div class="title float-left mt-1" @click="detailUser(review.userId)">
                   <img :src="review.userImage" alt="profile image" class="profile inline" />
-                  <p class="username inline">{{ review.userName }}</p>
+                  <span class="username inline bold">{{ review.userName }}</span>
+                  <span class="username inline">{{ review.viewDate }}</span>
+                  <hr style="margin-top: 10px; width: 100% margin-bottom: 0px" />
                 </div>
-                <div class="mb-2">
-                  <label for="casing" class="bold rightmargin inline"
-                    ><h6 class="bold rightmargin inline">캐스팅</h6></label
-                  >
+
+                <div class="mb-3">
                   <b-badge pill variant="primary" v-for="(index, key) in review.castingActorNameList" :key="key">{{
                     index
                   }}</b-badge>
@@ -202,8 +200,10 @@ select#season {
 }
 .profile {
   clear: both;
-  width: 4%;
-  height: 4%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  width: 6%;
+  height: 6%;
   object-fit: cover;
   border-radius: 70%;
 }
@@ -245,10 +245,10 @@ select#season {
   white-space: nowrap;
 }
 .username {
-  font-size: 12px;
+  font-size: 15px;
 }
 .inreview {
-  margin-top: 2%;
+  margin-top: 4%;
   margin-left: 4%;
   margin-right: 4%;
   margin-bottom: 1%;

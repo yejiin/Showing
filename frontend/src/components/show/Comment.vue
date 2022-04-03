@@ -12,23 +12,21 @@
       <carousel :perPage="5" class="list">
         <slide class="p-1 mt-3" v-for="(item, index) in previewReview" :key="index">
           <div>
-            <b-card rounded class="card">
+            <b-card rounded class="card" style="margin: 0px">
               <div @click="detailUser(previewReview[index].userId)" style="cursor: pointer">
                 <b-container>
                   <b-row>
-                    <b-col>
-                      <b-img :src="previewReview[index].userImage" rounded="circle" height="40px" />
+                    <b-col class="cols">
+                      <b-img :src="previewReview[index].userImage" rounded="circle" height="35px" />
                     </b-col>
-                    <b-col>
-                      <span class="comment_writer float-right" style="vertical-align: middle">{{
-                        previewReview[index].userName
-                      }}</span>
+                    <b-col class="cols">
+                      <span class="comment_writer float-right">{{ previewReview[index].userName }}</span>
                     </b-col>
                   </b-row>
                 </b-container>
               </div>
               <hr class="hr" />
-              <b-card-text class="card-text">{{ previewReview[index].content.substring(0, 20) }} ...</b-card-text>
+              <b-card-text class="card-text">{{ previewReview[index].content.substring(0, 15) }}</b-card-text>
             </b-card>
           </div>
         </slide>
@@ -86,6 +84,10 @@ export default {
 
 .list {
   width: 100%;
+}
+
+.cols {
+  padding: 0px;
 }
 
 .card {

@@ -85,8 +85,8 @@ export default {
 }
 
 .image-box {
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   border-radius: 70%;
   overflow: hidden;
   object-fit: cover;
