@@ -4,10 +4,10 @@
       <b-row>
         <b-col cols="12">
           <carousel :perPage="6">
-            <slide class="p-1" v-for="(item, index) in mainRecommendList" :key="index">
+            <slide class="p-1" v-for="(item, index) in actorPerformanceList.performanceInfoList" :key="index">
               <b-card
                 class="mr-0 mb-2"
-                :img-src="mainRecommendList[index].lastSeasonImage"
+                :img-src="item.seasonImage"
                 img-alt="Image"
                 img-top
                 tag="article"
@@ -16,24 +16,18 @@
               >
                 <!-- card content -->
                 <div class="name">
-                  <strong>{{ mainRecommendList[index].performanceName }}</strong>
+                  <strong>{{ item.performanceName }}</strong>
                 </div>
                 <div class="tags">
                   <b-badge class="mr-1" pill variant="light"
                     ><b-icon icon="star-fill" scale="0.8"></b-icon>
-                    {{ (mainRecommendList[index].starPointAverage / 2).toFixed(2) }}</b-badge
+                    {{ (item.starPointAverage / 2).toFixed(2) }}</b-badge
                   >&nbsp;
-                  <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 0" pill variant="danger"
-                    >공연완료</b-badge
-                  >
-                  <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 1" pill variant="primary"
-                    >공연중</b-badge
-                  >
-                  <b-badge v-if="mainRecommendList[index].lastSeasonProceedFlag == 2" pill variant="warning"
-                    >예정</b-badge
-                  >
+                  <b-badge v-if="item.seasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
+                  <b-badge v-if="item.seasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
+                  <b-badge v-if="item.seasonProceedFlag == 2" pill variant="warning">예정</b-badge>
                 </div>
-                {{ mainRecommendList[index].lastSeasonStartDate }} ~ {{ mainRecommendList[index].lastSeasonEndDate }}
+                {{ item.seasonStartDate }} ~ {{ item.seasonEndDate }}
               </b-card>
             </slide>
           </carousel>
@@ -49,7 +43,7 @@ import { Carousel, Slide } from "vue-carousel";
 export default {
   name: "Actor",
   props: {
-    mainRecommendList: Array,
+    actorPerformanceList: Array,
   },
   components: {
     Carousel,
@@ -69,7 +63,7 @@ export default {
     detailShow(index) {
       this.$router.push({
         name: "ShowDetail",
-        params: { showId: this.mainRecommendList[index].performanceId },
+        params: { showId: this.item.performanceId },
       });
     },
     onSlideStart(slide) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="main_title">내 리뷰</h5>
+    <h4 class="main_title">내 리뷰</h4>
     <b-card-group deck class="mb-0">
       <b-card
         id="itemList"
@@ -12,14 +12,16 @@
         img-top
         tag="article"
         style="max-width: 20rem"
+        @click="setReviewModal(true, item.reviewId)"
       >
-        <a @click="setReviewModal(true)">
-          <review-modal></review-modal>
-          <!-- card content -->
-          {{ item.performanceName }}&nbsp;{{ item.viewDate }}
-          <br />
-        </a>
+        <!-- card content -->
+        <div>
+          <h5 class="review-name">{{ item.performanceName }}</h5>
+          <div class="review-date">{{ item.viewDate }}</div>
+        </div>
+        <br />
       </b-card>
+      <review-modal :detail-review="detailReview" :user-id="userId"></review-modal>
     </b-card-group>
     <!-- pagination area -->
     <div>
@@ -29,13 +31,17 @@
         :per-page="perPage"
         aria-controls="itemList"
         align="center"
+        first-number
+        last-number
       ></b-pagination>
     </div>
     <br />
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
+import { getDetailReview } from "@/api/review.js";
+
 import ReviewModal from "../review/ReviewModal.vue";
 
 const reviewStore = "reviewStore";
@@ -52,12 +58,16 @@ export default {
       pageCount: 0,
       reviewsPerPage: 5,
       perPage: 5,
+      detailReview: {},
     };
   },
   props: {
     reviewList: Array,
+    userId: Number,
   },
   computed: {
+    ...mapState(reviewStore, ["modals"]),
+
     rows: function () {
       return this.reviewList.length;
     },
@@ -65,17 +75,22 @@ export default {
 
   methods: {
     ...mapActions(reviewStore, ["setReviewModalState"]),
-    setReviewModal(status) {
-      console.log(status);
-      this.setReviewModalState(status);
+
+    setReviewModal(status, reviewId) {
+      this.reviewId = reviewId;
+      this.setReviewModalState({ status, reviewId });
+
+      getDetailReview(
+        this.modals.myReview.reviewId,
+        (response) => {
+          this.detailReview = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
 
-    detailReview(index) {
-      this.$router.push({
-        name: "ShowDetail",
-        params: { showId: this.musicalList[index].performanceId },
-      });
-    },
     createPages() {
       return this.reviewList.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
     },
@@ -83,23 +98,11 @@ export default {
 };
 </script>
 <style scoped>
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-}
-
 .index {
   margin-left: 10px;
   width: 10px;
   height: 10px;
   background: #9badf6;
-}
-
-.active {
-  width: 13px;
-  height: 13px;
 }
 
 .card {
@@ -116,12 +119,11 @@ export default {
   padding-right: 0px;
 }
 
-.arrow {
-  margin-top: 10%;
-  color: #9badf6;
+.review-name {
+  float: left;
 }
 
-.arrow_right {
-  margin-left: 1%;
+.review-date {
+  float: right;
 }
 </style>
