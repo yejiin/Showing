@@ -5,7 +5,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.showing.backend.api.response.PerformanceByActorRes;
 import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.db.entity.performance.*;
 import com.showing.backend.db.entity.recommend.QRecommend;
@@ -61,9 +60,9 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
     }
 
     @Override
-    public List<PerformanceByActorRes> getPerformanceListRandomFavoriteActorId(Long actorId) {
+    public List<PerformanceRes> getPerformanceListRandomFavoriteActorId(Long actorId) {
         return jpaQueryFactory
-                .select(Projections.constructor(PerformanceByActorRes.class,
+                .select(Projections.constructor(PerformanceRes.class,
                         qPerformance.id.as("performanceId"),
                         qPerformance.performanceName.as("performanceName"),
                         qPerformance.performanceType.as("performanceType"),

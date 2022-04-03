@@ -18,16 +18,18 @@
         </h6>
       </div>
       <hr />
-      <star-rating
-        class="star"
-        id="starRating"
-        :increment="0.5"
-        :star-size="45"
-        :show-rating="false"
-        v-model="ratingCount"
-        :read-only="false"
-        clearable
-      ></star-rating>
+      <div @click="showToast">
+        <star-rating
+          class="star"
+          id="starRating"
+          :increment="0.5"
+          :star-size="45"
+          :show-rating="false"
+          v-model="ratingCount"
+          :read-only="starAccess"
+          clearable
+        ></star-rating>
+      </div>
     </div>
   </div>
 </template>
@@ -51,15 +53,24 @@ export default {
   created() {
     this.ratingCount = this.rating;
     this.storeValue = this.rating;
+    this.starAccess = !this.isLogin;
   },
   data() {
     return {
       ratingCount: 0,
       storeValue: 0,
+      starAccess: true,
     };
   },
   methods: {
     ...mapActions(ratingStore, ["setMyStarIdState", "setMyRatingState"]),
+    showToast() {
+      if (!this.isLogin) {
+        this.$toast("로그인 후 평가 가능합니다.", {
+          type: "error",
+        });
+      }
+    },
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
@@ -72,55 +83,57 @@ export default {
   },
   watch: {
     ratingCount: function () {
-      if (this.storeValue == 0) {
-        // add
-        var req = {
-          performanceId: this.heading.performanceId,
-          rating: this.ratingCount * 2,
-          userId: this.userInfo.userId,
-        };
-        addRating(
-          req,
-          (response) => {
-            this.setMyStarIdState(response.data.data);
-            this.setMyRatingState(this.ratingCount);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      } else {
-        if (this.ratingCount == 0) {
-          // delete
-          deleteRating(
-            this.starId,
-            (response) => {
-              this.setMyStarIdState(0);
-              this.setMyRatingState(0);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        } else {
-          // modify
+      if (this.isLogin) {
+        if (this.storeValue == 0) {
+          // add
           var req = {
-            starId: this.starId,
+            performanceId: this.heading.performanceId,
             rating: this.ratingCount * 2,
             userId: this.userInfo.userId,
           };
-          modifyRating(
+          addRating(
             req,
             (response) => {
+              this.setMyStarIdState(response.data.data);
               this.setMyRatingState(this.ratingCount);
             },
             (error) => {
               console.log(error);
             }
           );
+        } else {
+          if (this.ratingCount == 0) {
+            // delete
+            deleteRating(
+              this.starId,
+              (response) => {
+                this.setMyStarIdState(0);
+                this.setMyRatingState(0);
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+          } else {
+            // modify
+            var req = {
+              starId: this.starId,
+              rating: this.ratingCount * 2,
+              userId: this.userInfo.userId,
+            };
+            modifyRating(
+              req,
+              (response) => {
+                this.setMyRatingState(this.ratingCount);
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+          }
         }
+        this.storeValue = this.ratingCount;
       }
-      this.storeValue = this.ratingCount;
     },
   },
 };

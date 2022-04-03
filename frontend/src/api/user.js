@@ -1,14 +1,13 @@
 import { apiInstance, apiInstance2 } from "./index.js";
 
 const api = apiInstance();
-const api2 = apiInstance2();
 
 async function getUserInfo(userId, sucess, fail) {
-  await api2.get(`/users/${userId}`).then(sucess).catch(fail);
+  await apiInstance2().get(`/users/${userId}`).then(sucess).catch(fail);
 }
 
 async function modifyUser(user, success, fail) {
-  await api2.put(`/users`, JSON.stringify(user)).then(success).catch(fail);
+  await apiInstance2().put(`/users`, JSON.stringify(user)).then(success).catch(fail);
 }
 
 async function getNaverToken(code, state, success, fail) {
