@@ -30,6 +30,11 @@ const userStore = {
     SET_IS_LOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
     },
+    LOGOUT : (state) => {
+      state.userInfo.userId = 0;
+      state.userInfo.userImage = "";
+      state.userInfo.nickName = "";
+    }
   },
 
   actions: {
@@ -111,6 +116,12 @@ const userStore = {
         }
       );
     },
+
+    logout({ commit }){
+      sessionStorage.removeItem("access-token");
+      commit("SET_IS_LOGIN", false)
+      commit("LOGOUT")
+    }
   },
 };
 
