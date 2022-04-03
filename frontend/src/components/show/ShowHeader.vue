@@ -12,7 +12,7 @@
       <div class="col main_title float-left align-middle mb-2 mt-1">{{ heading.performanceName }}</div>
       <div class="col mx-1 my-3">
         <h6>
-          평균 <b-icon icon="star-fill" scale="0.8"></b-icon>{{ heading.starPointAverage / 2 }} ({{
+          평균 <b-icon icon="star-fill" scale="0.8"></b-icon>{{ (heading.starPointAverage / 2).toFixed(2) }} ({{
             heading.ratingCount
           }}명)
         </h6>
