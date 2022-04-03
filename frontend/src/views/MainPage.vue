@@ -45,7 +45,6 @@ export default {
       playList: [],
       mainRecommendList: [],
       actorRecommnedList: [],
-      actorName: "",
     };
   },
   async created() {
@@ -65,7 +64,6 @@ export default {
       (response) => {
         this.mainRecommendList = response.data.data.recommendListByUser;
         this.actorRecommnedList = response.data.data.recommendListByActor;
-        this.actorName = response.data.data.recommendListByActor[0].actorName;
       },
       (error) => {
         console.log(error);
