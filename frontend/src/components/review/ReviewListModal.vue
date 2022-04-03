@@ -25,20 +25,19 @@
           <div v-for="review in reviews" :key="review.reviewId">
             <div id="reviewHeader" class="review mb-4" @click="showDetailModal(review.reviewId)">
               <div class="inreview">
-                <div class="title float-left mt-1" @click="detailUser(review.userId)">
+                <div class="title mt-1" @click="detailUser(review.userId)">
                   <img :src="review.userImage" alt="profile image" class="profile inline" />
                   <span class="username inline bold">{{ review.userName }}</span>
                   <span class="username inline">{{ review.viewDate }}</span>
-                  <hr style="margin-top: 10px; width: 100% margin-bottom: 0px" />
+                  <hr style="margin-top: 10px; width: 100%; margin-bottom: 10px" />
                 </div>
-
                 <div class="mb-3">
                   <b-badge pill variant="primary" v-for="(index, key) in review.castingActorNameList" :key="key">{{
                     index
                   }}</b-badge>
                 </div>
                 <div class="">
-                  <p class="content">{{ review.content }}</p>
+                  <pre class="content">{{ review.content }}</pre>
                 </div>
               </div>
             </div>
@@ -58,7 +57,8 @@
         >
           &times;
         </button>
-        <div class="modalHeader title2">
+        <div></div>
+        <div class="modalHeader title2" @click="detailUser(review.userId)">
           <img :src="review.userImage" alt="profile image" class="profile2" />
           <h6 class="inline2 title2">{{ review.userName }}</h6>
         </div>
@@ -86,8 +86,8 @@
             <img class="showimage2" :src="review.seasonImage" alt="show image" />
           </div>
         </div>
-        <div class="content2">
-          <p style="margin: 8%">{{ review.content }}</p>
+        <div class="content">
+          <pre>{{ review.content }}</pre>
         </div>
       </div>
     </modal>
@@ -207,6 +207,12 @@ select#season {
   object-fit: cover;
   border-radius: 70%;
 }
+.modalHeader {
+  cursor: pointer;
+}
+#reviewHeader {
+  cursor: pointer;
+}
 .showimage {
   width: 95%;
   float: right;
@@ -236,13 +242,14 @@ select#season {
 }
 .content {
   clear: both;
-  height: 70%;
+  min-height: 150px;
+  max-height: 150px;
   background-color: #f8f8f8;
   border-radius: 5%;
+  padding: 5%;
   margin-bottom: 3%;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .username {
   font-size: 15px;
