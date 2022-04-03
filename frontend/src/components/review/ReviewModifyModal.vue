@@ -67,7 +67,7 @@
       </div>
       <template slot="footer">
         <base-button type="white" @click="addReview">Save</base-button>
-        <base-button type="link" class="ml-auto" @click="setWriteModalStates(false)">Cancle </base-button>
+        <base-button type="link" class="ml-auto" @click="setModifyReviewModalState(false)">Cancle </base-button>
       </template>
     </modal>
   </div>
