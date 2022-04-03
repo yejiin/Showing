@@ -2,6 +2,7 @@ package com.showing.backend.api.service;
 
 import com.showing.backend.api.response.*;
 import com.showing.backend.db.entity.performance.Actor;
+import com.showing.backend.db.repository.performance.PerformanceRepository;
 import com.showing.backend.db.repository.recommend.RecommendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 public class RecommendServiceImpl implements RecommendService {
 
     private final RecommendRepository recommendRepository;
+    private final PerformanceRepository performanceRepository;
     private final PerformanceService performanceService;
     private final ActorServiceImpl actorService;
 
@@ -26,6 +28,11 @@ public class RecommendServiceImpl implements RecommendService {
      */
     @Override
     public List<PerformanceRes> getRecommendPerformanceList(int type, List<Long> performanceIdList) {
+
+        // 추천데이터가 없을 때 공연 중인 공연을 15개 조회한다.
+        if (performanceIdList.isEmpty())
+            return performanceRepository.findByProceedFlagIs1(15);
+
         // performanceId 공연에 대해 공연완료, 공연중, 공연예정 상태인 추천 공연을 15개 조회한다.
         return recommendRepository.getTopCountRandomRecommendListByPerformanceId(type, 15, performanceIdList);
     }
