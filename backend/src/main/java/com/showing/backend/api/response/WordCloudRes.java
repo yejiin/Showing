@@ -11,9 +11,9 @@ import lombok.*;
 public class WordCloudRes {
 
     @ApiModelProperty(name = "단어", example = "배우")
-    String word;
+    String name;
 
     @ApiModelProperty(name = "가중치", example = "10")
-    int weight;
+    int value;
 
 }
