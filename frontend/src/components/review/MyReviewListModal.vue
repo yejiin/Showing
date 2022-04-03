@@ -215,6 +215,9 @@ export default {
       
     );
   },
+  mounted() {
+    this.setModifyReviewModalState(false);
+  }
 
 };
 </script>
