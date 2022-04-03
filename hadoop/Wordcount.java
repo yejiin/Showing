@@ -90,6 +90,11 @@ public class Wordcount {
                 sum += value.get();
             }
 
+            // 가중치가 1 이하인 단어들은 저장하지 않는다.
+            if (sum <= 1) {
+                return;
+            }
+
             // key에서 performanceId와 단어를 추출한다.
             String[] keyValues = key.toString().split("\t");
             int performance_id = Integer.parseInt(keyValues[0]);
