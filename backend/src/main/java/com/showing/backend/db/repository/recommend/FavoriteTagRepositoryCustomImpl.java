@@ -24,7 +24,7 @@ public class FavoriteTagRepositoryCustomImpl implements FavoriteTagRepositoryCus
      */
     public List<FavTagRes> getFavTagResListByUser(User user) {
 
-        return jpaQueryFactory.select(Projections.constructor(FavTagRes.class,qTag.tagName,qFavoriteTag.weight))
+        return jpaQueryFactory.select(Projections.constructor(FavTagRes.class,qTag.tagName,qFavoriteTag.weight.multiply(100).intValue()))
                 .from(qFavoriteTag)
                 .join(qTag)
                 .on(qFavoriteTag.tag.eq(qTag))
