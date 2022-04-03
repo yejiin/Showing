@@ -5,10 +5,10 @@
       <br />
       <show :mainRecommendList="mainRecommendList"></show>
     </div>
-    <div v-if="this.$store.state.userStore.isLogin">
-      <h5 class="main_title">선호 배우 000의 다른 공연</h5>
+    <div v-for="(item, index) in actorRecommnedList" :key="index">
+      <h5 class="main_title">선호 배우 {{ item.actorName }}의 다른 공연</h5>
       <br />
-      <actor></actor>
+      <actor :actorPerformanceList="item"></actor>
     </div>
     <div>
       <h5 class="main_title">뮤지컬 평균 별점 순위</h5>
@@ -63,7 +63,7 @@ export default {
       this.$store.state.userStore.userInfo.userId,
       (response) => {
         this.mainRecommendList = response.data.data.recommendListByUser;
-        //console.log(response.data.data.recommendListByUser);
+        this.actorRecommnedList = response.data.data.recommendListByActor;
       },
       (error) => {
         console.log(error);
