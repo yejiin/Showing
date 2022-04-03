@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container fluid v-if="performanceList > 0">
+    <b-container fluid v-if="performanceList.length > 0">
       <b-row cols="6">
         <div id="deck" v-for="(item, index) in performanceList" :key="index">
           <b-col>
