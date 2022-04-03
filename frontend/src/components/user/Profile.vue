@@ -1,6 +1,25 @@
 <template>
   <div>
-    <b-card class="profile" v-if="this.$store.state.userStore.userInfo.userId == this.profile.userId">
+    <b-card class="profile" v-if="this.$store.state.userStore.userInfo.userId != this.profile.userId">
+      <div>
+        <div class="profile-image">
+          <div class="image-box" style="background: #bdbdbd">
+            <img class="image" :src="profile.userImage" />
+          </div>
+        </div>
+        <div class="profile-introduce">
+          <b-card-text class="profile-el"
+            ><b-icon-person-circle class="mr-3"></b-icon-person-circle> {{ profile.nickName }}</b-card-text
+          >
+          <b-card-text class="profile-el"
+            ><b-icon-envelope class="mr-3"></b-icon-envelope>{{ profile.email }}</b-card-text
+          >
+
+          <b-card-text class="profile-el"><b-icon-tag class="mr-3"></b-icon-tag>{{ profile.introduce }}</b-card-text>
+        </div>
+      </div>
+    </b-card>
+    <b-card class="profile" v-else>
       <div v-if="!edit">
         <div class="profile-image">
           <div class="image-box" style="background: #bdbdbd">
@@ -37,32 +56,14 @@
           <b-card-text class="profile-el">
             <div class="introduce-tag"><b-icon-tag class="mr-3"></b-icon-tag></div>
             <div class="introduce-content">
-              <textarea class="form-control" v-model="profile.introduce" rows="3"></textarea>
+              <textarea class="form-control" v-model="profile.introduce" rows="2"></textarea>
             </div>
           </b-card-text>
         </div>
         <div class="profile-edit" @click="editProfile(false)">save</div>
       </div>
     </b-card>
-    <b-card class="profile" v-else>
-      <div>
-        <div class="profile-image">
-          <div class="image-box" style="background: #bdbdbd">
-            <img class="image" :src="profile.userImage" />
-          </div>
-        </div>
-        <div class="profile-introduce">
-          <b-card-text class="profile-el"
-            ><b-icon-person-circle class="mr-3"></b-icon-person-circle> {{ profile.nickName }}</b-card-text
-          >
-          <b-card-text class="profile-el"
-            ><b-icon-envelope class="mr-3"></b-icon-envelope>{{ profile.email }}</b-card-text
-          >
 
-          <b-card-text class="profile-el"><b-icon-tag class="mr-3"></b-icon-tag>{{ profile.introduce }}</b-card-text>
-        </div>
-      </div>
-    </b-card>
     <br />
     <br />
   </div>
@@ -116,17 +117,17 @@ export default {
 .profile-image {
   float: left;
   height: 100%;
-  width: 20%;
+  width: 30%;
 }
 
 .image-box {
-  width: 200px;
-  height: 200px;
+  width: 70%;
+  height: 70%;
   border-radius: 70%;
   overflow: hidden;
   float: right;
-  margin-right: 20px;
-  margin-top: 8px;
+  /* margin-right: 20px; */
+  /* margin-top: 8px; */
 }
 .image {
   width: 100%;
@@ -136,14 +137,15 @@ export default {
 .profile-introduce {
   float: left;
   height: 100%;
-  width: 70%;
+  width: 60%;
   vertical-align: middle;
-  padding-top: 25px;
+  padding-top: 5px;
   margin-left: 20px;
 }
 .profile-el {
-  margin: 10px;
-  font-size: 25px;
+  margin: 20px;
+  font-size: 21px;
+  font-weight: 400;
 }
 .profile-edit {
   cursor: pointer;
@@ -159,6 +161,6 @@ export default {
 }
 .introduce-content {
   padding-left: 45px;
-  width: 600px;
+  width: 100%;
 }
 </style>

@@ -23,6 +23,7 @@
       </b-card>
       <review-modal :detail-review="detailReview" :user-id="userId"></review-modal>
     </b-card-group>
+
     <!-- pagination area -->
     <div>
       <b-pagination
@@ -59,6 +60,7 @@ export default {
       reviewsPerPage: 5,
       perPage: 5,
       detailReview: {},
+      emptyReview: [],
     };
   },
   props: {
@@ -77,6 +79,8 @@ export default {
     ...mapActions(reviewStore, ["setReviewModalState"]),
 
     setReviewModal(status, reviewId) {
+      if (reviewId == undefined) return;
+
       this.reviewId = reviewId;
       this.setReviewModalState({ status, reviewId });
 
@@ -92,8 +96,26 @@ export default {
     },
 
     createPages() {
-      return this.reviewList.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+      let newList = this.reviewList.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+      this.emptyReview = [];
+
+      if (newList.length < 5) {
+        let cnt = 5 - newList.length;
+
+        const temp = {
+          reveiwId: "",
+        };
+
+        for (let i = 0; i < cnt; i++) {
+          newList.push(temp);
+        }
+      }
+      return newList;
     },
+
+    // createPages() {
+    //   return this.reviewList.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+    // },
   },
 };
 </script>
@@ -121,9 +143,11 @@ export default {
 
 .review-name {
   float: left;
+  font-weight: 500;
 }
 
 .review-date {
   float: right;
+  font-size: 10px;
 }
 </style>
