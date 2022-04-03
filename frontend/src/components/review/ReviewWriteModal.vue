@@ -149,6 +149,7 @@ export default {
         tmp,
         (response) => {
           console.log(response);
+          this.setWriteReviewModalState(false);
           location.reload();
         },
         (fail) => {
