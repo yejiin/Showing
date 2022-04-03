@@ -7,8 +7,10 @@
             <slide class="p-1" v-for="(item, index) in performanceList" :key="index">
               <b-card class="mr-0 mb-2" @click="detailShow(index)" style="cursor: pointer">
                 <!-- card content -->
-                <img :src="performanceList[index].lastSeasonImage" class="mb-3 mr-3 rounded shadow" />
-                <strong>{{ performanceList[index].performanceName }}</strong>
+                <img :src="performanceList[index].lastSeasonImage" class="mb-3 mr-3 rounded" />
+                <p class="showName">
+                  <strong>{{ performanceList[index].performanceName }}</strong>
+                </p>
                 <div class="tags">
                   <b-badge class="mr-1" pill variant="light"
                     ><b-icon icon="star-fill" scale="0.8"></b-icon>
@@ -85,6 +87,10 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 10px;
+}
+
+.showName {
+  font-weight: bold;
 }
 
 .index {
