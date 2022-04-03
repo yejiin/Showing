@@ -123,8 +123,13 @@ export default {
       } else {
         // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
         cur.className = "badge badge-pill casting badge-warning";
+        console.log(cur.className);
         this.review.castingIdList.push(id);
+        console.log("warning으로 변경해");
       }
+      console.log(this.review);
+
+      console.log(this.review);
     },
     // Review 추가하기
     addMyReview,
@@ -139,8 +144,18 @@ export default {
         reviewContent: this.review.reviewContent,
         userId: this.userInfo.userId,
       };
-      this.addMyReview(tmp);
-      location.reload();
+      console.log(tmp);
+      this.addMyReview(
+        tmp,
+        (response) => {
+          console.log(response);
+          location.reload();
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+      // location.reload();
       this.$emit("setwrite", true);
     },
     // 날짜 포맷 정리
