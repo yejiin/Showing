@@ -84,6 +84,7 @@ export default {
     performance: String,
     seasonShow: Object,
     seasonShowName: String,
+    setwrite : Number,
   },
 
   data() {
@@ -94,6 +95,7 @@ export default {
         showTime: "",
         castingIdList: [],
         reviewContent: "",
+        
       },
     };
   },
@@ -150,14 +152,28 @@ export default {
         (response) => {
           console.log(response);
           this.setWriteReviewModalState(false);
-          location.reload();
+          // location.reload();
+          if(this.review.castingIdList.length!==0){
+            this.review.castingIdList.forEach(el=>{
+              let cur = document.getElementById(`write`+el)
+              cur.className = "badge badge-pill casting badge-primary"
+            })
+          }
+          this.review={
+            seasonId: this.seasonShow.seasonId,
+            showDate: "",
+            showTime: "",
+            castingIdList: [],
+            reviewContent: "",
+          }
+          this.$emit("setWrite", this.setwrite+1);
         },
         (fail) => {
           console.log(fail);
         }
       );
       // location.reload();
-      this.$emit("setwrite", true);
+      
     },
     // 날짜 포맷 정리
     dateFommatter(date) {
