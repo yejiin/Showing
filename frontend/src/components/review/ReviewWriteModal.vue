@@ -154,8 +154,13 @@ export default {
           userId : this.userInfo.userId
         }
         console.log(tmp)
-        this.addMyReview(tmp)
-        location.reload();
+        this.addMyReview(tmp, ( response )=>{
+          console.log(response)
+          location.reload();
+        }, fail=>{
+          console.log(fail)
+        })
+        // location.reload();
         this.$emit("setwrite", true)
       },
       // 날짜 포맷 정리
