@@ -9,4 +9,6 @@ public interface PerformanceRepositoryCustom {
 
     List<PerformanceRes> findByTypeAndStarPointAvg(int performanceType);
 
+    List<PerformanceRes> findByProceedFlagIs1(int count);
+
 }
