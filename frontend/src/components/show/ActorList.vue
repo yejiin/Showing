@@ -1,6 +1,7 @@
 <template>
   <div class="mainbox mt-4">
-    <div v-if="actor != null">
+    <div v-if="actor.length > 1">
+      <span class="subTitle mt-2">캐스팅</span>
       <!-- carousel area -->
       <carousel :perPage="4">
         <slide class="p-1 mt-3" v-for="(item, index) in actor" :key="index">
@@ -97,5 +98,11 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.subTitle {
+  font-weight: 600;
+  color: #525f7f;
+  font-size: 23px;
 }
 </style>
