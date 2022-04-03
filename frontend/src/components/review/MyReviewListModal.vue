@@ -7,7 +7,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
-          @click="setMyReviewListModalState(false)"
+          @click="setMyReviewListModalState(false);page=5;"
         >
           &times;
         </button>
@@ -19,24 +19,24 @@
         </div>
         <br />
         <div v-show="reviews.length === 0">내 리뷰가 없습니다</div>
-        <div v-for="review in reviews" :key="review.reviewId">
+        <div v-for="(n,index) in page" :key="index">
           <div id="reviewHeader" class="review">
             <div class="inreview">
               <div class="left">
-                <h5 class="bold mb-1" @click="showDetailModal(review.reviewId)">{{ review.viewDate }}</h5>
+                <h5 class="bold mb-1" @click="showDetailModal(reviews[index].reviewId)">{{ reviews[index].viewDate }}</h5>
               </div>
               <div>
-                <a href="" class="updatedelete" @click="modifyModal(review.reviewId)">
+                <a href="" class="updatedelete" @click="modifyModal(reviews[index].reviewId)">
                   <i class="fa fa-pencil"></i>
                   수정
                 </a>
 
-                <a href="" class="updatedelete" @click="deleteReview(review.reviewId)">
+                <a href="" class="updatedelete" @click="deleteReview(reviews[index].reviewId)">
                   <i class="fa fa-trash"></i>
                   삭제 &nbsp;| &nbsp;
                 </a>
               </div>
-              <div class="title" style="clear: both" @click="showDetailModal(review.reviewId)">
+              <div class="title" style="clear: both" @click="showDetailModal(reviews[index].reviewId)">
                 <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
                 <p class="username inline">{{ userInfo.nickName }}</p>
               </div>
@@ -44,16 +44,18 @@
                 <label for="casing" class="bold rightmargin inline"
                   ><h6 class="bold rightmargin inline">캐스팅</h6></label
                 >
-                <b-badge pill variant="primary" v-for="(index, key) in review.reviewActorNameList" :key="key">{{
+                <b-badge pill variant="primary" v-for="(index, key) in reviews[index].reviewActorNameList" :key="key">{{
                   index
                 }}</b-badge>
               </div>
               <div class="">
-                <p class="content">{{ review.content }}</p>
+                <p class="content">{{ reviews[index].content }}</p>
               </div>
             </div>
           </div>
         </div>
+        <button class="moreReview" v-if="page!==reviews.length" @click="onScroll"><img class="moreReviewImg" src="./assets/pngwing.png" alt="더보기"></button>
+        <!-- <infinite-loading v-if="hasMore" :identifier="infiniteId" @infinite="onScroll"></infinite-loading> -->
       </div>
       <div id="detail" v-show="modal2">
         <button
@@ -139,6 +141,10 @@ export default {
       reviews: [],
       selectedseason: 1,
       selectedreviewid: 0,
+      page : 5,
+      hasMore : false,
+      infinitedId : +new Date(),
+
     };
   },
   computed: {
@@ -152,7 +158,6 @@ export default {
       this.modal1 = false;
       this.modal2 = true;
       getDetailReview(id, (response) => {
-        console.log(response.data);
         this.show = response.data.data;
         this.show.viewTime = response.data.data.viewTime.substring(0,5);
       });
@@ -162,7 +167,6 @@ export default {
         this.performanceId,
         this.userInfo.id,
         (response) => {
-          console.log(response.data);
           this.reviews = response.data.data;
         },
         (fail) => {
@@ -171,15 +175,12 @@ export default {
       );
     },
     deleteReview(id) {
-      console.log("deleteReview");
       deleteMyReview(
         id,
         (response) => {
           alert("게시물이 삭제되었습니다");
-          console.log("success : " + response);
         },
         (fail) => {
-          console.log("fail 온 거임");
           console.log(fail);
         }
       );
@@ -188,24 +189,29 @@ export default {
       this.setMyReviewListModalState(false);
       this.setModifyReviewModalState(true);
       this.setReviewId(id)
+    },
+    onScroll($state){
+      console.log('onScroll')
+      console.log(this.page)
+      this.page = Math.min(this.page+5, this.reviews.length);
+      console.log('after : ' + this.page)
     }
   },
   created() {
-    console.log("pid : " + this.performanceId);
     getMyShowReview(
       this.performanceId,
       this.userInfo.userId,
       (response) => {
-        console.log(response.data);
         this.reviews = response.data.data;
+        this.hasMore = response.data.data.length > 0 ? true : false
       },
       (fail) => {
         console.log(fail);
       }
+      
     );
-    console.log("이거슨 저장된 리뷰");
-    console.log(this.reviews);
   },
+
 };
 </script>
 
@@ -255,7 +261,7 @@ select#season {
   margin-right: 5%;
   border-radius: 5%;
 }
-.udpatedelete {
+.updatedelete {
   float: right;
   color: #626262;
   font-size: 10px;
@@ -382,5 +388,15 @@ div.right2 {
 label,
 h3 {
   font-weight: bold;
+}
+.moreReview {
+  border: 0px;
+  background-color: transparent;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.moreReviewImg {
+  width: 8%;
 }
 </style>

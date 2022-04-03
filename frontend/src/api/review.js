@@ -24,15 +24,25 @@ function modifyMyReview(reviewId, review, success, fail) {
   api2.put(`/reviews/${reviewId}`, JSON.stringify(review)).then(success).catch(fail);
 }
 
-function getAllSeasonReview(seasonId, success, fail){
+// 시즌별 리뷰
+function getAllSeasonReview(seasonId, success, fail) {
   api.get(`/reviews/seasons/${seasonId}`).then(success).catch(fail);
 }
 
-function getMyShowReview(performanceId, userId, success, fail){
+function getMyShowReview(performanceId, userId, success, fail) {
   api2.get(`/reviews/performances/${performanceId}/${userId}`).then(success).catch(fail);
 }
 
-function getDetailReview(reviewId, success, fail){
+function getDetailReview(reviewId, success, fail) {
   api.get(`/reviews/${reviewId}`).then(success).catch(fail);
 }
-export { getAllShowReview, getMyReview, addMyReview, deleteMyReview, modifyMyReview, getAllSeasonReview, getMyShowReview, getDetailReview };
+export {
+  getAllShowReview,
+  getMyReview,
+  addMyReview,
+  deleteMyReview,
+  modifyMyReview,
+  getAllSeasonReview,
+  getMyShowReview,
+  getDetailReview,
+};
