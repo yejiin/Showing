@@ -1,6 +1,9 @@
 package com.showing.backend.db.repository.performance;
 
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.db.entity.QRanking;
@@ -27,11 +30,11 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
     @Override
     public List<Long> findByUserIdAndStarPointGreaterThanEqual(Long userId, int starPoint) {
         return jpaQueryFactory.select(qPerformance.id)
-                              .from(qPerformance)
-                              .join(qStarPoint).on(qStarPoint.performance.id.eq(qPerformance.id))
-                              .where(qStarPoint.user.id.eq(userId))
-                              .where(qStarPoint.rating.goe(starPoint))
-                              .fetch();
+                .from(qPerformance)
+                .join(qStarPoint).on(qStarPoint.performance.id.eq(qPerformance.id))
+                .where(qStarPoint.user.id.eq(userId))
+                .where(qStarPoint.rating.goe(starPoint))
+                .fetch();
     }
 
     /*
@@ -48,6 +51,36 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
                 .on(qPerformance.lastSeasonId.eq(qSeason.id))
                 .where(qPerformance.performanceType.eq(performanceType))
                 .orderBy(qRanking.averageRating.desc()).limit(15)
+                .fetch();
+    }
+
+    /**
+     * 진행 중인 공연 중 랜덤으로 count개 조회한다.
+     *
+     * @return
+     */
+    @Override
+    public List<PerformanceRes> findByProceedFlagIs1(int count) {
+        return jpaQueryFactory.select(Projections.constructor(PerformanceRes.class,
+                        qPerformance.id.as("performanceId"),
+                        qPerformance.performanceName.as("performanceName"),
+                        qPerformance.performanceType.as("performanceType"),
+                        qPerformance.lastSeasonId.as("lastSeasonId"),
+                        qSeason.seasonImage.as("lastSeasonImage"),
+                        qSeason.startDate.as("lastSeasonStartDate"),
+                        qSeason.endDate.as("lastSeasonEndDate"),
+                        qSeason.proceedFlag.as("lastSeasonProceedFlag"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qStarPoint.rating.avg())
+                                        .from(qStarPoint)
+                                        .where(qStarPoint.performance.id.eq(qPerformance.id))
+                                , "starPointAverage"
+                        )
+                )).from(qPerformance)
+                .join(qSeason).on(qSeason.id.eq(qPerformance.lastSeasonId))
+                .where(qSeason.proceedFlag.eq(1))
+                .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                .limit(count)
                 .fetch();
     }
 }
