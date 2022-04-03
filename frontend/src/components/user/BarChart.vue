@@ -79,7 +79,7 @@ export default {
               display: false,
             },
             ticks: {
-              display: false,
+              // display: false,
             },
           },
           y: {

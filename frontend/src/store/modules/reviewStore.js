@@ -7,7 +7,10 @@ const reviewStore = {
       OtherReviews: false,
       reviewDetail: false,
       modifyReview: false,
-      myReview: false,
+      myReview: {
+        status: false,
+        reviewId: 0,
+      },
     },
     reviewInfo: {
       reviewId: 0,
@@ -27,9 +30,12 @@ const reviewStore = {
       console.log("mutations " + status);
       console.log(state.modals.writeReview);
     },
-    SET_REVIEW_STATE: (state, status) => {
-      state.modals.myReview = status;
-      console.log("mutations " + status);
+    SET_REVIEW_STATE: (state, data) => {
+      state.modals.myReview.status = data.status;
+      state.modals.myReview.reviewId = data.reviewId;
+
+      console.log("mutations ", data.status, " ", data.reviewId);
+
       console.log(state.modals.myReview);
     },
     SET_MODIFY_REVIEW_STATE: (state, status) => {
@@ -61,9 +67,9 @@ const reviewStore = {
       console.log("actions도 옴" + id);
       commit("SET_REVIEW_ID", id);
     },
-    setReviewModalState({ commit }, status) {
-      console.log("actions도 옴" + status);
-      commit("SET_REVIEW_STATE", status);
+    setReviewModalState({ commit }, { status, reviewId }) {
+      console.log("actions도 옴", status, " ", reviewId);
+      commit("SET_REVIEW_STATE", { status, reviewId });
     },
   },
 };
