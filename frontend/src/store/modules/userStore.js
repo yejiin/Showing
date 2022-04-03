@@ -30,15 +30,16 @@ const userStore = {
     SET_IS_LOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
     },
-    LOGOUT : (state) => {
+    LOGOUT: (state) => {
       state.userInfo.userId = 0;
       state.userInfo.userImage = "";
       state.userInfo.nickName = "";
-    }
+    },
   },
 
   actions: {
-    async findNaverToken({ dispatch }, code, state) {
+    async findNaverToken({ commit }, code, state) {
+      let token = null;
       await getNaverToken(
         code,
         state,
@@ -46,8 +47,7 @@ const userStore = {
           if (response.data.statusCode == 200) {
             console.log("네이버 Access Token 생성 성공");
             console.log(response);
-
-            dispatch("findNaverUser", response.data.data);
+            token = response.data.data;
           }
         },
         (error) => {
@@ -55,6 +55,7 @@ const userStore = {
           console.log(error);
         }
       );
+      return token;
     },
 
     async findNaverUser({ commit }, naverToken) {
@@ -78,15 +79,15 @@ const userStore = {
       );
     },
 
-    async findKakaoToken({ dispatch }, code) {
+    async findKakaoToken({ commit }, code) {
+      let token = null;
       await getKakaoToken(
         code,
         (response) => {
           if (response.data.statusCode == 200) {
             console.log("카카오 Access Token 생성 성공");
             console.log(response);
-
-            dispatch("findKakaoUser", response.data.data);
+            token = response.data.data;
           }
         },
         (error) => {
@@ -94,6 +95,7 @@ const userStore = {
           console.log(error.response);
         }
       );
+      return token;
     },
 
     async findKakaoUser({ commit }, kakaoToken) {
@@ -117,11 +119,11 @@ const userStore = {
       );
     },
 
-    logout({ commit }){
+    logout({ commit }) {
       sessionStorage.removeItem("access-token");
-      commit("SET_IS_LOGIN", false)
-      commit("LOGOUT")
-    }
+      commit("SET_IS_LOGIN", false);
+      commit("LOGOUT");
+    },
   },
 };
 
