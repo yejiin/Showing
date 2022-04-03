@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-card v-if="wordcount.length != 0">
+      <span v-if="wordcountType == 1" class="main_title">주요 키워드</span>
       <wordcloud
         :rotate="{ from: 0, to: 0, numOfOrientation: 0 }"
         :data="wordcount"
@@ -24,6 +25,7 @@ export default {
   name: "WordCloud",
   props: {
     wordcount: Array,
+    wordcountType: Number,
   },
   components: {
     wordcloud,
@@ -47,5 +49,8 @@ export default {
 .card-title {
   margin-bottom: 0px;
   text-align: center;
+}
+.main_title {
+  font-size: 23px;
 }
 </style>
