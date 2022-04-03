@@ -60,7 +60,7 @@ export default {
     );
     // 추천 공연 리스트 불러오기
     await getMainRecommend(
-      this.$store.state.userStore.userInfo.id,
+      this.$store.state.userStore.userInfo.userId,
       (response) => {
         this.mainRecommendList = response.data.data.recommendListByUser;
         //console.log(response.data.data.recommendListByUser);

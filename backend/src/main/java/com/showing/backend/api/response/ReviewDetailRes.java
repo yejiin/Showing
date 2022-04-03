@@ -20,6 +20,9 @@ public class ReviewDetailRes {
     @ApiModelProperty(name = "리뷰 작성자 이름", example = "홍길동")
     String userName;
 
+    @ApiModelProperty(name = "리뷰 작성자 프로필 사진", example = "http://k.kakaocdn...")
+    String userImage;
+
     @ApiModelProperty(name = "공연 Id", example = "1")
     Long performanceId;
 

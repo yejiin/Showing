@@ -3,7 +3,7 @@
     <div v-if="this.isLogin">
       <br /><br />
       <b-card>
-        <span class="my_review">회원님의 리뷰는 개 입니다</span>
+        <span class="my_review">{{ userInfo.nickName }}님의 리뷰는 개 입니다</span>
         <a target="_blank" class="btn btn-neutral btn-icon review button" @click="setMyReviewListModalStates(true)">
           <span class="nav-link-inner--text">내 리뷰 보기</span>
         </a>
@@ -41,7 +41,7 @@
         ><b-col class="ml-2 my-2" cols="3">일정 </b-col>
         <b-col cols="6">{{ info.startDate }} ~ {{ info.endDate }}</b-col>
       </b-row>
-      <b-row
+      <b-row v-if="info.location != null"
         ><b-col class="ml-2 my-2" cols="3">장소 </b-col>
         <b-col>{{ info.location }}</b-col>
       </b-row>
@@ -49,8 +49,6 @@
         <b-col class="ml-2 my-2" cols="3"> 공연시간 </b-col>
         <b-col>{{ info.runingTime }}</b-col>
       </b-row>
-      <br />
-      <span class="subTitle mt-2">캐스팅</span>
       <actor-list :actor="actor"></actor-list>
     </b-card>
     <br />
@@ -124,7 +122,6 @@ export default {
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
     setMyReviewListModalStates(status) {
       this.setMyReviewListModalState(status);
-      console.log("리뷰 목록 보여줘요" + status);
     },
     setWriteModalStates(status) {
       this.setWriteReviewModalState(status);
