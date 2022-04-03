@@ -94,8 +94,8 @@ export default {
   text-align: center;
 }
 #chart {
-  width: 1000px;
-  height: 380px;
+  width: 80%;
+  height: 80%;
   display: inline-block;
   text-align: center;
   margin-top: 20px;
