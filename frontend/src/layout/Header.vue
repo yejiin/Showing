@@ -73,7 +73,7 @@ export default {
 }
 .profile {
   border-radius: 70%;
-  width: 40%;
+  width: 40px;
   margin-top: 20%;
   /* margin-top: 20px; */
   margin-left: 30px;
