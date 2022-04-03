@@ -3,7 +3,10 @@
     <div v-if="this.isLogin">
       <br /><br />
       <b-card>
-        <span class="my_review">{{ userInfo.nickName }}님의 리뷰는 개 입니다</span>
+        <span class="my_review" v-if="reviewList != null && reviewList.length != 0"
+          >{{ userInfo.nickName }}님의 리뷰는 {{ reviewList.length }}개 입니다</span
+        >
+        <span v-else>{{ userInfo.nickName }}님이 등록한 리뷰가 없습니다.</span>
         <a target="_blank" class="btn btn-neutral btn-icon review button" @click="setMyReviewListModalStates(true)">
           <span class="nav-link-inner--text">내 리뷰 보기</span>
         </a>
@@ -11,8 +14,19 @@
           <span class="nav-link-inner--text">리뷰 작성</span>
         </a>
       </b-card>
-      <review-list :key="setReview" :seasonShowName="seasonShowName" :seasonShow="info" :performanceId="performanceId"></review-list>
-      <review-write @setWrite="setReviewCount" :setwrite="setReview" :seasonShowName="seasonShowName" :seasonShow="info"></review-write>
+      <review-list
+        :key="setReview"
+        :seasonShowName="seasonShowName"
+        :seasonShow="info"
+        :performanceId="performanceId"
+      ></review-list>
+      <review-write
+        @myReviewList="myReviewList"
+        @setWrite="setReviewCount"
+        :setwrite="setReview"
+        :seasonShowName="seasonShowName"
+        :seasonShow="info"
+      ></review-write>
     </div>
     <br /><br />
     <b-card>
@@ -72,6 +86,7 @@ import Story from "@/components/show/Story";
 import ReviewListModalVue from "../review/MyReviewListModal.vue";
 import ReviewWriteModalVue from "../review/ReviewWriteModal.vue";
 import { detailSeasonShow } from "@/api/show.js";
+import { getMyShowReview } from "@/api/review.js";
 
 const userStore = "userStore";
 const reviewStore = "reviewStore";
@@ -108,7 +123,20 @@ export default {
         writemodal: false,
       },
       setReview: 0,
+      reviewList: [],
     };
+  },
+  created() {
+    getMyShowReview(
+      this.performanceId,
+      this.userInfo.userId,
+      (response) => {
+        this.reviewList = response.data.data;
+      },
+      (fail) => {
+        console.log(fail);
+      }
+    );
   },
   methods: {
     // 한 시즌 클릭
@@ -127,6 +155,20 @@ export default {
         }
       );
     },
+
+    myReviewList() {
+      getMyShowReview(
+        this.performanceId,
+        this.userInfo.userId,
+        (response) => {
+          this.reviewList = response.data.data;
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
     setMyReviewListModalStates(status) {
       this.setMyReviewListModalState(status);
@@ -134,7 +176,7 @@ export default {
     setWriteModalStates(status) {
       this.setWriteReviewModalState(status);
     },
-    setReviewCount(value){
+    setReviewCount(value) {
       this.setReview = value;
     },
   },
@@ -142,7 +184,6 @@ export default {
     this.setMyReviewListModalState(false);
     this.setWriteReviewModalState(false);
   },
-
 };
 </script>
 
