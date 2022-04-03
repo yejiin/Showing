@@ -6,7 +6,7 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <search></search>
-      &nbsp;&nbsp;&nbsp;
+
       <login v-if="userInfo.userId == ''" style="margin-right: 15%"></login>
       <div class="dropdown">
         <p v-if="userInfo.userId"><img class="profile" :src="userInfo.userImage" alt="" /></p>
@@ -106,5 +106,9 @@ export default {
   margin-left: 20%;
   margin-top: 10%;
   /* border-top: solid 1px #2C3093; */
+}
+
+#nav-collapse {
+  margin-left: 10%;
 }
 </style>

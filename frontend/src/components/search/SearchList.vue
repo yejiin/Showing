@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container fluid>
+    <b-container fluid v-if="performanceList > 0">
       <b-row cols="6">
         <div id="deck" v-for="(item, index) in performanceList" :key="index">
           <b-col>
@@ -24,6 +24,9 @@
         </div>
       </b-row>
     </b-container>
+    <div v-else>
+      <h5 class="main_title">검색 결과가 없습니다.</h5>
+    </div>
   </div>
 </template>
 
