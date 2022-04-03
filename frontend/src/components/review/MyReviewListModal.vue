@@ -55,7 +55,6 @@
           </div>
         </div>
         <button class="moreReview" v-if="page!==reviews.length" @click="onScroll"><img class="moreReviewImg" src=".\assets\pngwing.png" alt="더보기"></button>
-        <!-- <infinite-loading v-if="hasMore" :identifier="infiniteId" @infinite="onScroll"></infinite-loading> -->
       </div>
       <div id="detail" v-show="modal2">
         <button
@@ -115,7 +114,6 @@ import { mapState, mapActions } from "vuex";
 import ReviewModal from "@/components/review/ReviewModal.vue";
 import ReviewModifyModal from '@/components/review/ReviewModifyModal.vue';
 import { getDetailReview } from "@/api/review.js";
-import InfiniteLoading from 'vue-infinite-loading';
 
 const reviewStore = "reviewStore";
 const userStore = "userStore";
