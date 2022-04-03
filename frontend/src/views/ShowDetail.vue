@@ -11,7 +11,7 @@
       :seasonShowName="seasonShowName"
       :performanceId="heading.performanceId"
     ></show-info>
-    <word-cloud></word-cloud>
+    <word-cloud :wordcount="wordcount"></word-cloud>
     <!-- 리뷰 리스트 -->
     <comment :previewReview="previewReview" :info="info" :seasons="seasons"></comment>
     <!-- 비슷한 공연 -->
@@ -62,6 +62,7 @@ export default {
       similarList: [],
       seasons: [],
       headerKey: 0,
+      wordcount: [],
     };
   },
   methods: {
@@ -87,6 +88,8 @@ export default {
         this.info = response.data.data.seasonRes;
         this.actor = response.data.data.seasonRes.actorList;
         this.description = response.data.data.seasonRes.description;
+
+        this.wordcount = response.data.data.wordcloudList;
 
         this.previewReview = response.data.data.previewReviewList;
         this.similarList = response.data.data.similarPerformanceList;
