@@ -152,6 +152,11 @@ export default {
     // Review 추가하기
     modifyMyReview,
     addReview() {
+      if (!this.review.content) {
+        this.showToast("error", "리뷰 내용을 입력해주세요.");
+        return;
+      }
+
       if (this.changeDate) this.dateFommatter(this.review.viewDate);
       if (this.changeTime) this.timeFommatter(this.review.viewTime);
       var tmp = {
@@ -162,10 +167,17 @@ export default {
         reviewContent: this.review.content,
         userId: this.userInfo.userId,
       };
-      this.modifyMyReview(this.review.reviewId, tmp, response=>{
-        this.setModifyReviewModalState(false);
-        location.reload();
-      });
+      this.modifyMyReview(
+        this.review.reviewId,
+        tmp,
+        (response) => {
+          this.setModifyReviewModalState(false);
+          this.showToast("success", response.data.message);
+        },
+        (fail) => {
+          this.showToast("error", "리뷰 작성 실패");
+        }
+      );
       this.$emit("setwrite", true);
     },
     // 날짜 포맷 정리
@@ -182,6 +194,12 @@ export default {
       time = time + ":00";
       this.review.showTime = time;
     },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
+    },
   },
   created() {
     getDetailReview(
@@ -197,7 +215,7 @@ export default {
   },
   updated() {
     this.$nextTick(() => {
-      if(this.review.reviewCastingIdList){
+      if (this.review.reviewCastingIdList) {
         this.review.reviewCastingIdList.forEach((element) => {
           let cur = document.getElementById(element);
           cur.className = "badge badge-pill casting badge-warning";
