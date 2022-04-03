@@ -7,7 +7,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
-          @click="setMyReviewListModalState(false);page=5;"
+          @click="setMyReviewListModalState(false);page=Math.min(5, reviews.length);"
         >
           &times;
         </button>
@@ -203,7 +203,9 @@ export default {
       this.userInfo.userId,
       (response) => {
         this.reviews = response.data.data;
-        this.hasMore = response.data.data.length > 0 ? true : false
+        this.hasMore = response.data.data.length > 0 ? true : false;
+        this.page = Math.min(this.page, response.data.data.length)
+        console.log(response.data.data);
       },
       (fail) => {
         console.log(fail);
