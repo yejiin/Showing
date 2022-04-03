@@ -2,7 +2,6 @@ package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ReviewReq;
 import com.showing.backend.api.response.*;
-import com.showing.backend.db.entity.review.Review;
 
 import java.util.List;
 
@@ -15,6 +14,8 @@ public interface ReviewService {
     List<ReviewByUserRes> getReviewListByPerformanceIdAndUserId(Long performanceId, Long userId);
 
     List<ReviewBySeasonRes> getReviewListBySeasonId(Long seasonId);
+
+    List<WordCloudRes> getWordCloud(Long performanceId);
 
     ReviewDetailRes getReviewDetail(Long reviewId);
 

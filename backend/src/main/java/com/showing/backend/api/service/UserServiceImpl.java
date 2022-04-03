@@ -146,6 +146,7 @@ public class UserServiceImpl implements UserService {
         List<PreviewReviewByUserRes> reviewByUserResList = reviewService.getPreviewReviewListByUserId(user.getId());
 
         return MyPageRes.builder()
+                .userId(user.getId())
                 .nickName(user.getNickname())
                 .email(user.getEmail())
                 .introduce(user.getIntroduce())
