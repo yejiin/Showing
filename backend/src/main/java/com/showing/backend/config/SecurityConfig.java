@@ -34,22 +34,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-           .antMatchers(
-                    "/h2-console/**",
-                    "/error",
-                    "/swagger-resources/**",
-                    "/swagger-ui/**",
-                    "/api/v1/users/kakao/**",
-                    "/api/v1/users/naver/**",
-                    "/v2/api-docs",
-                    "/api/v1/reviews/performances/**",
-                    "/api/v1/reviews/seasons/**",
-                    "/api/v1/performances/**",
-                    "/api/v1/search/**",
-                    "/api/v1/users/{userId}"
-           )
-           .antMatchers(HttpMethod.GET,"/api/v1/reviews/**");
+                .antMatchers(
+                        "/h2-console/**",
+                        "/error",
+                        "/swagger-resources/**",
+                        "/swagger-ui/**",
+                        "/api/v1/users/kakao/**",
+                        "/api/v1/users/naver/**",
+                        "/v2/api-docs",
+                        "/api/v1/reviews/performances/**",
+                        "/api/v1/reviews/seasons/**",
+                        "/api/v1/performances/**",
+                        "/api/v1/search/**",
+                        "/api/v1/users/{userId}",
+                        "/api/v1/recommend"
+                );
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
