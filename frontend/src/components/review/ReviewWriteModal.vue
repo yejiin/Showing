@@ -193,6 +193,7 @@ export default {
           };
           this.$emit("setWrite", this.setwrite + 1);
           this.$emit("myReviewList");
+          this.$emit("addMyReview");
         },
         (fail) => {
           console.log(fail);
