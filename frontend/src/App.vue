@@ -29,7 +29,7 @@ export default {
 }
 
 .header {
-  padding-top: 200px;
+  padding-top: 160px;
   padding-left: 5%;
   padding-right: 5%;
 }
