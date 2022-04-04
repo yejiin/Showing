@@ -31,8 +31,6 @@ const reviewStore = {
       state.modals.myReview.reviewId = data.reviewId;
 
       console.log("mutations ", data.status, " ", data.reviewId);
-
-      console.log(state.modals.myReview);
     },
     SET_MODIFY_REVIEW_STATE: (state, status) => {
       state.modals.modifyReview = status;
@@ -42,7 +40,6 @@ const reviewStore = {
     },
     SET_DETAIL_STATE: (state, status) => {
       state.modals.reviewDetail = status;
-      console.log(state.modals.reviewDetail);
     },
   },
 
