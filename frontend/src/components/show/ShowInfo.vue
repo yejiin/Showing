@@ -74,7 +74,7 @@
         <b-col class="ml-2 my-2" cols="3"> 공연시간 </b-col>
         <b-col>{{ showInformation.runingTime }}</b-col>
       </b-row>
-      <div class="subTitle mt-3">캐스팅</div>
+      <div v-if="actor.length > 0" class="subTitle mt-3">캐스팅</div>
       <actor-list :actor="showActor"></actor-list>
     </b-card>
     <br />
@@ -112,28 +112,27 @@ export default {
     ...mapGetters({
       isLogin: "userStore/isLogin",
     }),
-    showInformation : function() {
-      if(this.clickOtherSeason===true){
-        return this.OtherShowInfo
-      }else{
-        return this.info
+    showInformation: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherShowInfo;
+      } else {
+        return this.info;
       }
     },
-    showActor : function() {
-      if(this.clickOtherSeason===true){
-        return this.OtherActor
-      }else{
-        return this.actor
+    showActor: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherActor;
+      } else {
+        return this.actor;
       }
     },
-    showDescription : function() {
-      if(this.clickOtherSeason===true){
-        return this.OtherDesciption
-      }else{
-        return this.description
+    showDescription: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherDesciption;
+      } else {
+        return this.description;
       }
-    }
-    
+    },
   },
   components: {
     ActorList,
@@ -152,9 +151,8 @@ export default {
       setReview: 0,
       reviewList: [],
       OtherShowInfo: {},
-      OtherActor:[],
-      OtherDesciption:'',
-  
+      OtherActor: [],
+      OtherDesciption: "",
     };
   },
   created() {
