@@ -3,7 +3,7 @@
     <profile :profile="profile"></profile>
     <user-rating :rating-info="ratingInfo"></user-rating>
     <user-favorite :favorite-actor="favoriteActorList" :tag-wordcount="tagWordcount"></user-favorite>
-    <user-review :review-list="reviewList" :user-id="profile.userId"></user-review>
+    <user-review :review-list="reviewList" :user-id="profile.userId" @getReviews="getReviews"></user-review>
   </div>
 </template>
 <script>
@@ -81,6 +81,19 @@ export default {
         console.log(error);
       }
     );
+  },
+  methods: {
+    getReviews() {
+      getUserInfo(
+        this.$route.params.userId,
+        (response) => {
+          this.reviewList = response.data.data.reviewList;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
 };
 </script>
