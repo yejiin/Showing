@@ -90,6 +90,11 @@ export default {
 </script>
 
 <style scoped>
+.header {
+  margin-left: auto;
+  margin-right: auto;
+  width: 1500px;
+}
 .main_title {
   font-size: 1.5em;
   margin-left: 0.5em;
