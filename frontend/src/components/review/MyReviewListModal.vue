@@ -318,6 +318,7 @@ select#season {
   border-radius: 8px;
   border: #c4c4c4 solid 0.5px;
   margin: 1%;
+  cursor: pointer;
 }
 .bold {
   font-weight: bold;

@@ -6,7 +6,7 @@
       </button>
       <br />
       <br />
-      <div v-if="seasonShow.length!==null">
+      <div v-if="seasonShow.length !== null">
         <div style="width: 100%; position: relative">
           <div class="showInfo left mb-3">
             <div>
@@ -19,13 +19,18 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                 </div>
-                <datepicker v-if="seasonShow.startDate" 
-                            class="form-control" 
-                            input-class="smaller" 
-                            v-model="review.showDate" 
-                            :disabledDates="{ to: new Date(seasonShow.startDate), from: new Date(seasonShow.endDate) > new Date() ? new Date() : new Date(seasonShow.endDate) }" 
-                            :openDate="new Date(year, month, day)"
-                > </datepicker>
+                <datepicker
+                  v-if="seasonShow.startDate"
+                  class="form-control"
+                  input-class="smaller"
+                  v-model="review.showDate"
+                  :disabledDates="{
+                    to: new Date(seasonShow.startDate),
+                    from: new Date(seasonShow.endDate) > new Date() ? new Date() : new Date(seasonShow.endDate),
+                  }"
+                  :openDate="new Date(year, month, day)"
+                >
+                </datepicker>
               </div>
             </div>
             <div class="form-group picker">
@@ -108,15 +113,15 @@ export default {
   computed: {
     ...mapState(reviewStore, ["modals"]),
     ...mapState(userStore, ["userInfo"]),
-    year : function() {
-      return new Date(this.seasonShow.startDate).getFullYear()
+    year: function () {
+      return new Date(this.seasonShow.startDate).getFullYear();
     },
-    month : function(){
-      return new Date(this.seasonShow.startDate).getMonth()
+    month: function () {
+      return new Date(this.seasonShow.startDate).getMonth();
     },
-    day : function() {
-      return new Date(this.seasonShow.startDate).getDate()
-    }
+    day: function () {
+      return new Date(this.seasonShow.startDate).getDate();
+    },
   },
   methods: {
     ...mapActions(reviewStore, ["setWriteReviewModalState"]),
@@ -152,10 +157,10 @@ export default {
       }
       if (!this.review.showTime) {
         this.showToast("error", "관람시간을 선택해주세요.");
-        console.log(this.seasonShow.startDate)
-        console.log(new Date(this.seasonShow.startDate))
-        console.log(new Date(this.review.showDate))
-        console.log(new Date())
+        console.log(this.seasonShow.startDate);
+        console.log(new Date(this.seasonShow.startDate));
+        console.log(new Date(this.review.showDate));
+        console.log(new Date());
         return;
       }
       if (!this.review.reviewContent) {
@@ -222,8 +227,7 @@ export default {
       });
     },
   },
-  updated() {
-  },
+  updated() {},
 };
 </script>
 
@@ -307,6 +311,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 .modalbutton {
   width: 20%;
+}
+.badge {
+  cursor: pointer;
 }
 </style>
 
