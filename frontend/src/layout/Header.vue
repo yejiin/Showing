@@ -22,10 +22,7 @@
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-collapse-header">
           <div class="row">
-            <!-- 검색 -->
-            <div class="col-6 collapse-brand">
-              <search></search>
-            </div>
+            <div class="col-6 collapse-brand"></div>
 
             <!-- 닫기 버튼 -->
             <div class="col-6 collapse-close">
@@ -47,6 +44,10 @@
 
         <!-- 비로그인의 경우 -->
         <ul v-if="userInfo.userId == ''" class="navbar-nav ml-lg-auto">
+          <!-- 검색 -->
+          <li class="nav-item">
+            <search></search>
+          </li>
           <li class="nav-item">
             <a class="nav-link nav-link-icon">
               <login></login>
@@ -56,18 +57,39 @@
 
         <!-- 로그인 했을 경우 -->
         <ul v-else class="navbar-nav ml-lg-auto">
+          <!-- 검색 -->
           <li class="nav-item">
-            <a class="nav-link nav-link-icon" href="#">
-              <img class="profile-img" :src="userInfo.userImage" alt="" />
-              <span class="nav-link-inner--text d-lg-none">마이페이지</span>
-            </a>
+            <search></search>
           </li>
-          <li class="nav-item">
-            <a class="nav-link nav-link-icon" @click="HandleLogout">
+          <!-- 화면 너비 넓을 때 -->
+          <li class="nav-item d-lg-none">
+            <a class="dropdown-item mt-4" @click="goToMyPage">
+              <i class="ni ni-circle-08"></i>
+              <span class="nav-link-inner--text">마이페이지</span>
+            </a>
+            <a class="dropdown-item" @click="HandleLogout">
               <i class="ni ni-button-power"></i>
               <span class="nav-link-inner--text">로그아웃</span>
             </a>
           </li>
+          <!-- 화면 너비 작을 때 -->
+          <div class="dropdown">
+            <a href="#" class="btn btn-default profile-btn" data-toggle="dropdown" id="profileDropDown">
+              <img class="profile-img" :src="userInfo.userImage" />
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="profileDropDown">
+              <li>
+                <a class="dropdown-item" @click="goToMyPage">
+                  <i class="ni ni-circle-08"></i>
+                  <span class="nav-link-inner--text">마이페이지</span>
+                </a>
+                <a class="dropdown-item" @click="HandleLogout">
+                  <i class="ni ni-button-power"></i>
+                  <span class="nav-link-inner--text">로그아웃</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </ul>
       </div>
     </div>
@@ -126,7 +148,7 @@ export default {
   cursor: pointer;
   height: 65px;
 }
-.nav-item {
+li {
   cursor: pointer;
 }
 .ni,
@@ -134,7 +156,18 @@ export default {
   height: 30px;
   width: 30px;
   text-align: center;
-  margin-right: 10px;
   border-radius: 50%;
+}
+.profile-btn,
+.profile-btn:hover,
+.profile-btn:active,
+.profile-btn:focus {
+  border: 0;
+  box-shadow: none;
+}
+@media (max-width: 991.98px) {
+  .profile-btn {
+    display: none;
+  }
 }
 </style>
