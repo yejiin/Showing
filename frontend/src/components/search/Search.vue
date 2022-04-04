@@ -41,5 +41,8 @@ export default {
 .searchInput {
   margin-bottom: 0px !important;
   margin-right: 5%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
 </style>

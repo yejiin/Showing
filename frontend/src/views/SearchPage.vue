@@ -28,7 +28,6 @@ export default {
       this.$route.params.keyword,
       (response) => {
         this.performanceList = response.data.data;
-        console.log(this.performanceList);
       },
       (error) => {
         console.log(error);
