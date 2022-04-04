@@ -55,15 +55,6 @@ export default {
       sliding: null,
     };
   },
-  computed: {
-    ff: function () {
-      console.log(this.performanceList);
-      return this.performanceList;
-    },
-  },
-  created() {
-    console.log(this.performanceList);
-  },
   methods: {
     detailShow(index) {
       this.$router.push({
