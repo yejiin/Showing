@@ -1,7 +1,7 @@
 import { apiInstance, apiInstance2 } from "./index.js";
 
 function getMainRecommend(userId, success, fail) {
-  apiInstance2().get(`/recommend/user/${userId}`).then(success).catch(fail);
+  apiInstance2().get(`/recommend/users/${userId}`).then(success).catch(fail);
 }
 
 function getPerformingRecommend(success, fail) {
