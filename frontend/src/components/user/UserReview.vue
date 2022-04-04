@@ -7,14 +7,12 @@
           id="itemList"
           v-for="item in createPages()"
           :key="item.index"
-          class="review mr-0 mb-2"
-          :img-src="item.performanceImage"
-          img-alt="Image"
-          img-top
+          class="review mr-0 mb-2 card-lift--hover"
           tag="article"
           style="max-width: 20rem"
           @click="setReviewModal(true, item.reviewId)"
         >
+          <img :src="item.performanceImage" class="mb-3 rounded review-image" />
           <!-- card content -->
           <div>
             <h6 class="review-name">{{ item.performanceName }}</h6>
@@ -22,7 +20,7 @@
           </div>
           <br />
         </b-card>
-        <review-modal :detail-review="detailReview" :user-id="userId"></review-modal>
+        <review-modal :detail-review="detailReview" :user-id="userId" @getReviews="getReviews"></review-modal>
       </b-card-group>
 
       <!-- pagination area -->
@@ -83,7 +81,9 @@ export default {
 
   methods: {
     ...mapActions(reviewStore, ["setReviewModalState"]),
-
+    getReviews() {
+      this.$emit("getReviews");
+    },
     setReviewModal(status, reviewId) {
       if (reviewId == undefined) return;
 
@@ -135,6 +135,10 @@ export default {
 
 .card {
   border: 0px;
+}
+
+.review-image {
+  width: 100%;
 }
 
 .card-img-top {
