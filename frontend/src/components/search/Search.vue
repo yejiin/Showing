@@ -5,8 +5,7 @@
       class="searchInput"
       addon-left-icon="ni ni-zoom-split-in"
       placeholder="공연을 검색해보세요"
-      :value="keyword"
-      @input="keyword = $event.target.value"
+      v-model="keyword"
       @keyup.enter="getContentsList"
     >
     </base-input>

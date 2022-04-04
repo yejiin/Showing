@@ -46,7 +46,7 @@
         <ul v-if="userInfo.userId == ''" class="navbar-nav ml-lg-auto">
           <!-- 검색 -->
           <li class="nav-item">
-            <search></search>
+            <search class="mt-3"></search>
           </li>
           <li class="nav-item">
             <a class="nav-link nav-link-icon">
