@@ -10,7 +10,7 @@
     </div>
     <div class="my-5 mx-auto" v-else>
       <!-- carousel area -->
-      <carousel :perPage="5" class="list">
+      <carousel :perPage="4" class="list">
         <slide class="p-1 mt-3" v-for="(item, index) in previewReview" :key="index">
           <div style="width: 170px">
             <b-card

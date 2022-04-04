@@ -19,6 +19,9 @@ public class PreviewReviewByUserRes {
     @ApiModelProperty(name = "공연 이름", example = "절벽")
     String performanceName;
 
+    @ApiModelProperty(name = "공연 종류", example = "1")
+    int performanceType;
+
     @ApiModelProperty(name = "공연 사진", example = "http://ticketimage...")
     String performanceImage;
 
