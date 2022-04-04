@@ -105,8 +105,14 @@ export default {
     HandleLogout() {
       this.logout();
       this.setMyRatingState(0);
-      alert("로그아웃 되었습니다");
+      this.showToast("success", "로그아웃 되었습니다");
       this.goToMain();
+    },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
     },
   },
 };
