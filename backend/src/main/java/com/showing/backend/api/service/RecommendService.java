@@ -14,4 +14,5 @@ public interface RecommendService {
 
     RecommendRes getRecommendList(Long userId);
 
+    List<PerformanceRes> getPerformingList();
 }
