@@ -67,7 +67,7 @@ export default {
   data() {
     return {
       review: [],
-      selectedReview: Object,
+      selectedReview: {},
     };
   },
   mounted() {
