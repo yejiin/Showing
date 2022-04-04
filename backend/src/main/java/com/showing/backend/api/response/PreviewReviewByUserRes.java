@@ -16,6 +16,9 @@ public class PreviewReviewByUserRes {
     @ApiModelProperty(name = "공연 Id", example = "1")
     Long performanceId;
 
+    @ApiModelProperty(name = "시즌 Id", example = "1")
+    Long seasonId;
+
     @ApiModelProperty(name = "공연 이름", example = "절벽")
     String performanceName;
 
