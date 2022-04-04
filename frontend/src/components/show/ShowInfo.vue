@@ -15,6 +15,7 @@
         </a>
       </b-card>
       <review-list
+        @myReviewList="myReviewList"
         :key="setReview"
         :seasonShowName="seasonShowName"
         :seasonShow="info"
