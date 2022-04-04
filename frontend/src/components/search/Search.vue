@@ -1,12 +1,15 @@
 <template>
   <div>
-    <input
+    <base-input
+      alternative
       class="searchInput"
+      addon-left-icon="ni ni-zoom-split-in"
       placeholder="공연을 검색해보세요"
       :value="keyword"
       @input="keyword = $event.target.value"
       @keyup.enter="getContentsList"
-    />
+    >
+    </base-input>
   </div>
 </template>
 
@@ -24,7 +27,7 @@ export default {
   methods: {
     getContentsList() {
       if (this.keyword == "" || this.keyword.length < 2) {
-        alert("검색어는 2글자 이상 입력해주세요");
+        this.showToast("error", "검색어는 2글자 이상 입력해주세요.");
         return;
       }
       this.$router.replace({
@@ -33,19 +36,18 @@ export default {
       });
       this.keyword = "";
     },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
 .searchInput {
-  margin-bottom: 0px !important;
-  margin-right: 5%;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-}
-.searchInput:focus {
-  outline: none;
+  margin: 0px;
 }
 </style>
