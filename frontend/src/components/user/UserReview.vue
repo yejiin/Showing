@@ -7,7 +7,7 @@
           id="itemList"
           v-for="item in createPages()"
           :key="item.index"
-          class="review mr-0 mb-2"
+          class="review mr-0 mb-2 card-lift--hover"
           :img-src="item.performanceImage"
           img-alt="Image"
           img-top
