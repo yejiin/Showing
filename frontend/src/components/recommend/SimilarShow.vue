@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="similarList.length > 0" class="main_title comment_title">비슷한 공연</span>
+    <span class="main_title comment_title">비슷한 공연</span>
     <br />
     <div style="text-align: center" v-if="similarList == 0">
       <b-card-text>비슷한 공연이 없습니다.</b-card-text>
