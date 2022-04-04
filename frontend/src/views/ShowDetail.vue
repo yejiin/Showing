@@ -4,6 +4,7 @@
     <show-header :heading="heading" :key="headerKey"></show-header>
     <!-- 공연 상세 정보 -->
     <show-info
+      v-if="performanceId !== null"
       :info="info"
       :actor="actor"
       :description="description"
