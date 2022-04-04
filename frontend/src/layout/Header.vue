@@ -172,6 +172,11 @@ li {
   height: 45px;
   padding: 0;
 }
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+}
 @media (max-width: 991.98px) {
   .profile-btn {
     display: none;
