@@ -18,6 +18,9 @@
                 <strong>{{ performanceList[index].performanceName }}</strong>
               </div>
               <br />
+              <b-badge v-if="performanceList[index].performanceType == 1" pill variant="info">뮤지컬</b-badge>
+              <b-badge v-if="performanceList[index].performanceType == 2" pill variant="success">연극</b-badge>
+              <br />
               {{ performanceList[index].lastSeasonStartDate }} ~ {{ performanceList[index].lastSeasonEndDate }}
             </b-card>
           </b-col>
