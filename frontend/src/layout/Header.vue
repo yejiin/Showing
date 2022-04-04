@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable="lg" type="white" variant="white" class="fixed-top custnavi" v-cloak>
     <b-navbar-brand class="logo_position">
-      <h3 class="logo" @click="goToMain()">Showing</h3>
+      <img src="@/assets/img/showing-logo.png" class="logo" @click="goToMain()" />
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
