@@ -6,7 +6,7 @@
           <b-col>
             <b-card
               id="my-card"
-              class="mr-0 mb-2"
+              class="mr-0 mb-2 card-lift--hover"
               :img-src="performanceList[index].lastSeasonImage"
               img-alt="Image"
               img-top
