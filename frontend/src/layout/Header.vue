@@ -44,10 +44,10 @@ export default {
     ...mapActions(userStore, ["logout"]),
     ...mapActions(ratingStore, ["setMyRatingState"]),
     goToMain() {
-      this.$router.push({ name: "MainPage" });
+      if(this.$route.path!=='/') this.$router.push({ name: "MainPage" });
     },
     goToMyPage() {
-      this.$router.push({ path: "/users/" + this.userInfo.userId });
+      if(this.$route.path!=='/users/'+this.userInfo.userId) this.$router.push({ path: "/users/" + this.userInfo.userId });
     },
     HandleLogout() {
       this.logout();
