@@ -18,7 +18,7 @@
         </h6>
       </div>
       <hr />
-      <div @click="showToast">
+      <div class="col" @click="showToast">
         <star-rating
           class="star"
           id="starRating"
