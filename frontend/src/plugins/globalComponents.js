@@ -2,6 +2,7 @@ import Badge from "../components/Badge";
 import BaseAlert from "../components/BaseAlert";
 import BaseButton from "../components/BaseButton";
 import BaseCheckbox from "../components/BaseCheckbox";
+import BaseDropdown from "../components/BaseDropdown";
 import BaseInput from "../components/BaseInput";
 import BasePagination from "../components/BasePagination";
 import BaseProgress from "../components/BaseProgress";
@@ -18,6 +19,7 @@ export default {
     Vue.component(BaseButton.name, BaseButton);
     Vue.component(BaseInput.name, BaseInput);
     Vue.component(BaseCheckbox.name, BaseCheckbox);
+    Vue.component(BaseDropdown.name, BaseDropdown);
     Vue.component(BasePagination.name, BasePagination);
     Vue.component(BaseProgress.name, BaseProgress);
     Vue.component(BaseRadio.name, BaseRadio);
@@ -25,5 +27,5 @@ export default {
     Vue.component(BaseSwitch.name, BaseSwitch);
     Vue.component(Card.name, Card);
     Vue.component(Icon.name, Icon);
-  }
+  },
 };
