@@ -28,7 +28,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                 </div>
-                <input type="time" name="" id="" class="form-control" v-model="review.showTime" />
+                <input type="time" class="form-control" v-model="review.showTime" />
               </div>
             </div>
             <label for="location" class="bold">관람장소</label>
