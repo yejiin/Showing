@@ -53,7 +53,7 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .join(qSeason).on(qSeason.id.eq(qPerformance.lastSeasonId))
                 .where(qRecommend.performance.id.in(performanceIdList))
                 .where(qSeason.proceedFlag.between(type, 3))
-                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
+                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2}, {3})", qSeason.proceedFlag, 1, 2, 0).asc())
                 .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(count)
                 .fetch();
@@ -83,7 +83,7 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .join(qCasting).on(qCasting.season.playdbId.eq(qSeason.playdbId))
                 .join(qActor).on(qActor.playdbId.eq(qCasting.actor.playdbId))
                 .where(qActor.id.eq(actorId))
-                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
+                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2}, {3})", qSeason.proceedFlag, 1, 2, 0).asc())
                 .fetch();
     }
 
