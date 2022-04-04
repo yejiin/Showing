@@ -75,7 +75,7 @@
         <b-col>{{ showInformation.runingTime }}</b-col>
       </b-row>
       <div v-if="actor.length > 0" class="subTitle mt-3">캐스팅</div>
-      <actor-list :actor="actor"></actor-list>
+      <actor-list :actor="showActor"></actor-list>
     </b-card>
     <br />
     <br />
