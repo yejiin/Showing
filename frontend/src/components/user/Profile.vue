@@ -45,15 +45,15 @@
           </div>
         </div>
         <div class="profile-introduce">
-          <b-card-text class="profile-el">
+          <b-card-text class="profile-els">
             <div class="introduce-tag"><b-icon-person-circle class="mr-3"></b-icon-person-circle></div>
             <div class="introduce-content"><base-input v-model="profile.nickName"></base-input></div>
           </b-card-text>
-          <b-card-text class="profile-el">
+          <b-card-text class="profile-els">
             <div class="introduce-tag"><b-icon-envelope class="mr-3"></b-icon-envelope></div>
             <div class="introduce-content"><base-input v-model="profile.email" disabled></base-input></div>
           </b-card-text>
-          <b-card-text class="profile-el">
+          <b-card-text class="profile-els">
             <div class="introduce-tag"><b-icon-tag class="mr-3"></b-icon-tag></div>
             <div class="introduce-content">
               <textarea class="form-control" v-model="profile.introduce" rows="2"></textarea>
@@ -107,11 +107,12 @@ export default {
 .card-text {
   margin-bottom: 0px;
   color: black;
+  font-weight: 300;
 }
 
 .profile {
   height: 260px;
-  background: #dce4fd;
+  background: #dce4fc;
 }
 
 .profile-image {
@@ -121,11 +122,12 @@ export default {
 }
 
 .image-box {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   border-radius: 70%;
   overflow: hidden;
   margin-right: 20px;
+  margin-left: 8px;
   margin-top: 8px;
 }
 .image {
@@ -136,14 +138,24 @@ export default {
 .profile-introduce {
   float: left;
   height: 100%;
-  width: calc(100% - 250px);
+  width: calc(100% - 300px);
   vertical-align: middle;
-  padding-top: 18px;
+  padding-top: 5px;
   margin-left: 20px;
 }
 .profile-el {
+  font-family: "Roboto", sans-serif;
+
   margin: 10px;
-  font-size: 25px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-els {
+  margin: 10px;
+  font-size: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
