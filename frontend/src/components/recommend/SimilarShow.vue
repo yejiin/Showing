@@ -1,29 +1,39 @@
 <template>
   <div>
-    <span class="main_title comment_title">비슷한 공연</span>
+    <span v-if="similarList.length > 0" class="main_title comment_title">비슷한 공연</span>
     <br />
-    <!-- carousel area -->
-    <carousel :perPage="4">
-      <slide class="p-1 mt-3" v-for="(item, index) in similarList" :key="index">
-        <b-card class="mr-0 mb-2 rounded" @click="detailShow(similarList[index].performanceId)" style="cursor: pointer">
-          <!-- card content -->
-          <img :src="similarList[index].lastSeasonImage" class="mb-3 mr-3 rounded" />
-          <div class="name">
-            <strong>{{ similarList[index].performanceName }}</strong>
-          </div>
-          <div class="tags">
-            <b-badge class="mr-1" pill variant="light"
-              ><b-icon icon="star-fill" scale="0.8"></b-icon>
-              {{ (similarList[index].starPointAverage / 2).toFixed(2) }}</b-badge
-            >&nbsp;
-            <b-badge v-if="similarList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
-            <b-badge v-if="similarList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
-            <b-badge v-if="similarList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
-          </div>
-          {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
-        </b-card>
-      </slide>
-    </carousel>
+    <div style="text-align: center" v-if="similarList == 0">
+      <b-card-text>비슷한 공연이 없습니다.</b-card-text>
+    </div>
+    <div v-else>
+      <!-- carousel area -->
+      <carousel :perPage="4">
+        <slide class="p-1 mt-3" v-for="(item, index) in similarList" :key="index">
+          <b-card
+            class="mr-0 mb-2 rounded card-lift--hover"
+            @click="detailShow(similarList[index].performanceId)"
+            style="cursor: pointer"
+          >
+            <!-- card content -->
+            <img :src="similarList[index].lastSeasonImage" class="mb-3 mr-3 rounded" />
+            <div class="name">
+              <strong>{{ similarList[index].performanceName }}</strong>
+            </div>
+            <div class="tags">
+              <b-badge class="mr-1" pill variant="light"
+                ><b-icon icon="star-fill" scale="0.8"></b-icon>
+                {{ (similarList[index].starPointAverage / 2).toFixed(2) }}</b-badge
+              >&nbsp;
+              <b-badge v-if="similarList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
+              <b-badge v-if="similarList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
+              <b-badge v-if="similarList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
+            </div>
+            {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
+          </b-card>
+        </slide>
+      </carousel>
+    </div>
+
     <br />
   </div>
 </template>
@@ -101,7 +111,7 @@ export default {
 
 <style scoped>
 .main_title {
-  font-weight: 600;
+  font-weight: bold;
   font-size: 23px;
 }
 
