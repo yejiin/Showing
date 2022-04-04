@@ -201,7 +201,7 @@ export default {
       });
     },
   },
-  created() {
+  mounted() {
     getDetailReview(
       this.reviewInfo.reviewId,
       (response) => {
