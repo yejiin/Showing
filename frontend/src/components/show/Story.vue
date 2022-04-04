@@ -32,6 +32,7 @@ export default {
 
 .script {
   color: black;
+  font-weight: bold;
 }
 
 .card-text {

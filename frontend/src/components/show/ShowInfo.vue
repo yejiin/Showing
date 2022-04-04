@@ -3,16 +3,20 @@
     <div v-if="this.isLogin">
       <br /><br />
       <b-card>
-        <span class="my_review" v-if="reviewList != null && reviewList.length != 0"
-          >{{ userInfo.nickName }}님의 리뷰는 {{ reviewList.length }}개 입니다</span
-        >
-        <span v-else>{{ userInfo.nickName }}님이 등록한 리뷰가 없습니다.</span>
-        <a target="_blank" class="btn btn-neutral btn-icon review button" @click="setMyReviewListModalStates(true)">
-          <span class="nav-link-inner--text">내 리뷰 보기</span>
-        </a>
-        <a target="_blank" class="btn btn-neutral btn-icon button mr-2" @click="setWriteModalStates(true)">
-          <span class="nav-link-inner--text">리뷰 작성</span>
-        </a>
+        <div class="box">
+          <span class="my_review" v-if="reviewList != null && reviewList.length != 0"
+            >{{ userInfo.nickName }}님의 리뷰는 {{ reviewList.length }}개 입니다</span
+          >
+          <span v-else>{{ userInfo.nickName }}님이 등록한 리뷰가 없습니다.</span>
+        </div>
+        <div class="float-right" style="display: inline-block">
+          <a target="_blank" class="btn btn-neutral btn-icon review button" @click="setMyReviewListModalStates(true)">
+            <span class="nav-link-inner--text">내 리뷰 보기</span>
+          </a>
+          <a target="_blank" class="btn btn-neutral btn-icon button mr-2" @click="setWriteModalStates(true)">
+            <span class="nav-link-inner--text">리뷰 작성</span>
+          </a>
+        </div>
       </b-card>
       <review-list
         :key="setReview"
@@ -190,6 +194,7 @@ export default {
 <style scoped>
 .my_review {
   vertical-align: middle;
+  min-height: 100%;
 }
 .card-text {
   margin-bottom: 0px;
@@ -213,6 +218,12 @@ export default {
 .btn-white:hover {
   -webkit-box-shadow: 0 0px 0px, 0 0px 0px;
   box-shadow: 0 0px 0px, 0 0px 0px;
+}
+
+.box {
+  min-height: 100%;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .button {
