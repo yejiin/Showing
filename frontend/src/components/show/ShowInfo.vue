@@ -60,7 +60,8 @@
           </a>
         </div>
       </div>
-      <span class="badge badge-pill badge-success ml-4">{{ showInformation.detailType }}</span
+      <span class="badge badge-pill badge-info ml-4" v-if="showInformation.detailType !== '연극'">뮤지컬</span>
+      &nbsp; <span class="badge badge-pill badge-success">{{ showInformation.detailType }}</span
       >&nbsp;
       <span class="badge badge-pill badge-warning">{{ showInformation.performanceAge }} 관람가</span>
       <br /><br />
