@@ -22,10 +22,12 @@
                   <b-badge v-if="performanceList[index].lastSeasonProceedFlag == 1" pill variant="primary"
                     >공연중</b-badge
                   >
-                  <b-badge v-if="performanceList[index].lastSeasonProceedFlag == 2" pill variant="warning"
-                    >예정</b-badge
-                  >
+                  <b-badge v-if="performanceList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge
+                  >&nbsp;
+                  <b-badge v-if="performanceList[index].performanceType == 1" pill variant="info">뮤지컬</b-badge>
+                  <b-badge v-if="performanceList[index].performanceType == 2" pill variant="success">연극</b-badge>
                 </div>
+
                 {{ performanceList[index].lastSeasonStartDate }} ~ {{ performanceList[index].lastSeasonEndDate }}
               </b-card>
             </slide>
