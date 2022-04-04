@@ -22,22 +22,24 @@
             리뷰가 없습니다
             <br />
           </div>
-          <div v-for="review in reviews" :key="review.reviewId">
-            <div id="reviewHeader" class="review mb-4" @click="showDetailModal(review.reviewId)">
-              <div class="inreview">
-                <div class="title mt-1" @click="detailUser(review.userId)">
-                  <img :src="review.userImage" alt="profile image" class="profile inline" />
-                  <span class="username inline bold">{{ review.userName }}</span>
-                  <span class="username inline">{{ review.viewDate }}</span>
-                  <hr style="margin-top: 10px; width: 100%; margin-bottom: 10px" />
-                </div>
-                <div class="mb-3">
-                  <b-badge pill variant="primary" v-for="(index, key) in review.castingActorNameList" :key="key">{{
-                    index
-                  }}</b-badge>
-                </div>
-                <div class="">
-                  <pre class="content">{{ review.content }}</pre>
+          <div v-if="reviews.length !== 0">
+            <div v-for="review in reviews" :key="review.reviewId">
+              <div id="reviewHeader" class="review mb-4" @click="showDetailModal(review.reviewId)">
+                <div class="inreview">
+                  <div class="title mt-1" @click="detailUser(review.userId)">
+                    <img :src="review.userImage" alt="profile image" class="profile inline" />
+                    <span class="username inline bold">{{ review.userName }}</span>
+                    <span class="username inline">{{ review.viewDate }}</span>
+                    <hr style="margin-top: 10px; width: 100%; margin-bottom: 10px" />
+                  </div>
+                  <div class="mb-3">
+                    <b-badge pill variant="primary" v-for="(index, key) in review.castingActorNameList" :key="key">{{
+                      index
+                    }}</b-badge>
+                  </div>
+                  <div class="">
+                    <pre class="content">{{ review.content }}</pre>
+                  </div>
                 </div>
               </div>
             </div>
