@@ -17,7 +17,13 @@
         >
           <!-- card content -->
           <div>
-            <h6 class="review-name">{{ item.performanceName }}</h6>
+            <p class="review-name">
+              <strong>{{ item.performanceName }}</strong>
+            </p>
+            <div class="tags">
+              <b-badge v-if="item.performanceType == 1" pill variant="info">뮤지컬</b-badge>
+              <b-badge v-if="item.performanceType == 2" pill variant="success">연극</b-badge>
+            </div>
             <div class="review-date">{{ item.viewDate }}</div>
           </div>
           <br />
@@ -158,5 +164,8 @@ export default {
 }
 .review {
   cursor: pointer;
+}
+.tags {
+  margin-bottom: 5px;
 }
 </style>
