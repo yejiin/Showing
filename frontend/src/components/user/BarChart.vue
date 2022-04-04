@@ -72,7 +72,7 @@ export default {
             display: false,
           },
         },
-
+        events: [],
         scales: {
           x: {
             grid: {
