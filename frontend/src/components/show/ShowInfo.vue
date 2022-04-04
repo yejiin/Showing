@@ -20,12 +20,14 @@
       </b-card>
       <review-list
         @myReviewList="myReviewList"
+        @addMyReview="addMyReview"
         :key="setReview"
         :seasonShowName="seasonShowName"
         :seasonShow="showInformation"
         :performanceId="performanceId"
       ></review-list>
       <review-write
+        @addMyReview="addMyReview"
         @myReviewList="myReviewList"
         @setWrite="setReviewCount"
         :setwrite="setReview"
@@ -196,6 +198,10 @@ export default {
           console.log(fail);
         }
       );
+    },
+
+    addMyReview() {
+      this.$emit("addMyReview");
     },
 
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
