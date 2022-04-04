@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="main_title comment_title">비슷한 공연</span>
+    <span v-if="similarList.length > 0" class="main_title comment_title">비슷한 공연</span>
     <br />
     <!-- carousel area -->
     <carousel :perPage="4">
@@ -101,7 +101,7 @@ export default {
 
 <style scoped>
 .main_title {
-  font-weight: 600;
+  font-weight: bold;
   font-size: 23px;
 }
 
