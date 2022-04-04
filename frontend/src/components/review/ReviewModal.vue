@@ -6,11 +6,8 @@
       </button>
 
       <div>
-        <div class="modalHeader title">
-          <!-- <img :src="user.img" alt="profile image" class="profile" /> -->
-          <!-- <h6 class="inline title">{{ user.nickname }}</h6> -->
-        </div>
-        <div v-if="this.$store.state.userStore.userInfo.userId == this.userId" class="mb-3">
+        <div class="modalHeader title"></div>
+        <div v-if="this.$store.state.userStore.userInfo.userId == this.userId" style="cursor: pointer">
           <a class="updatedelete" @click="modifyModal(detailReview.reviewId)">
             <i class="fa fa-pencil"></i>
             수정
@@ -96,22 +93,25 @@ export default {
     },
 
     deleteReview(reviewId) {
-      console.log("deleteReview");
       let status = false;
       this.setReviewModalState({ status, reviewId });
       deleteMyReview(
         reviewId,
         (response) => {
-          alert("게시물이 삭제되었습니다");
-          console.log("success : " + response);
-
-          this.$router.go();
+          this.showToast("success", "리뷰가 삭제되었습니다.");
+          this.$emit("getReviews");
         },
         (fail) => {
-          console.log("fail 온 거임");
+          this.showToast("fail", "오류가 발생하였습니다.");
           console.log(fail);
         }
       );
+    },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
     },
 
     async modifyModal(reviewId) {

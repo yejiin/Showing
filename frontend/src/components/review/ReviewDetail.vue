@@ -19,13 +19,13 @@
           <div class="showInfo2 left mb-3">
             <div>
               <h3>{{ review.performanceName }}</h3>
-              <p style="font-size: 8px">{{ review.startDate }}~{{ review.endDate }}</p>
+              <p style="font-size: 13px">{{ review.startDate }}&nbsp;~&nbsp;{{ review.endDate }}</p>
             </div>
             <label for="date">관람일정</label>
             <p class="inline2 right2" type="input">{{ review.viewDate }}</p>
             <br />
             <label for="time">관람시간</label>
-            <p class="inline2" type="input">{{ review.viewTime }}</p>
+            <p class="inline2" type="input" v-if="review.viewTime">{{ review.viewTime.substring(0,5) }}</p>
             <br />
             <label for="location">관람장소</label>
             <p class="inline2" type="input">{{ review.location }}</p>
@@ -221,5 +221,8 @@ div.right2 {
 }
 .backArrow2:not(:disabled):not(.disabled) {
   cursor: pointer;
+}
+label, h3 {
+  font-weight: bold;
 }
 </style>

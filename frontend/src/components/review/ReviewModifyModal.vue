@@ -17,7 +17,7 @@
           <div class="showInfo left mb-3">
             <div>
               <h3>{{ seasonShowName }}</h3>
-              <p style="font-size: 8px">{{ seasonShow.startDate }}~{{ seasonShow.endDate }}</p>
+              <p style="font-size: 13px">{{ seasonShow.startDate }}&nbsp;~&nbsp;{{ seasonShow.endDate }}</p>
             </div>
             <div class="form-group picker">
               <div class="input-group">
@@ -25,7 +25,13 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                 </div>
-                <datepicker class="form-control" input-class="smaller" v-model="review.viewDate"> </datepicker>
+                <datepicker v-if="review.viewDate" 
+                            class="form-control" 
+                            input-class="smaller" 
+                            v-model="review.viewDate" 
+                            :disabledDates="{ to: new Date(seasonShow.startDate), from: new Date(seasonShow.endDate) > new Date() ? new Date() : new Date(seasonShow.endDate) }" 
+                            :openDate="new Date(review.viewDate)"
+                > </datepicker>
               </div>
             </div>
             <div class="form-group picker">
@@ -109,6 +115,15 @@ export default {
   computed: {
     ...mapState(reviewStore, ["modals", "reviewInfo"]),
     ...mapState(userStore, ["userInfo"]),
+    year : function() {
+      return new Date(this.seasonShow.startDate).getFullYear()
+    },
+    month : function(){
+      return new Date(this.seasonShow.startDate).getMonth()
+    },
+    day : function() {
+      return new Date(this.seasonShow.startDate).getDate()
+    }
   },
   watch: {
     viewDate: function () {
