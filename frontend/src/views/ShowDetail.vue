@@ -5,6 +5,7 @@
     <!-- 공연 상세 정보 -->
     <show-info
       v-if="heading.performanceId !== null"
+      @addMyReview="addMyReview"
       :info="info"
       :actor="actor"
       :description="description"
@@ -71,6 +72,18 @@ export default {
     ...mapActions(ratingStore, ["setMyStarIdState", "setMyRatingState"]),
     ratingReload() {
       this.headerKey += 1;
+    },
+
+    addMyReview() {
+      detailShow(
+        this.$route.params.showId,
+        (response) => {
+          this.previewReview = response.data.data.previewReviewList;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
   async created() {

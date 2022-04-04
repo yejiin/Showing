@@ -118,6 +118,7 @@
     </modal>
     <review-modify-modal
       :key="modireview"
+      @addMyReview="addMyReview"
       @setWrite="setReviewCount"
       :setwrite="setReview"
       :seasonShowName="seasonShowName"
@@ -215,6 +216,7 @@ export default {
           this.showToast("success", response.data.message);
           this.getMyReviewList();
           this.$emit("myReviewList");
+          this.$emit("addMyReview");
         },
         (fail) => {
           console.log(fail);
@@ -240,10 +242,13 @@ export default {
         type: typeName,
       });
     },
-    setReviewCount(value){
+    setReviewCount(value) {
       this.setReview = value;
       this.getMyReviewList();
-    }
+    },
+    addMyReview() {
+      this.$emit("addMyReview");
+    },
   },
   created() {
     this.getMyReviewList();

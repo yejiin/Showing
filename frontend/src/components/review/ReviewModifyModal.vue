@@ -53,7 +53,7 @@
             class="badge badge-pill casting badge-primary"
             v-for="(index, key) in seasonShow.actorList"
             :key="key"
-            :id="`modify`+index.castingId"
+            :id="`modify` + index.castingId"
             @click="selectactors(index.castingId)"
           >
             {{ index.actorName }}
@@ -133,7 +133,7 @@ export default {
     // 배우 캐스팅 구하기
     selectactors(id) {
       // 클릭된 블록
-      let cur = document.getElementById(`modify`+id);
+      let cur = document.getElementById(`modify` + id);
       // 해당 블록이 이미 선택되었으면(warning으로 변해 있으면)
       if (cur.className == "badge badge-pill casting badge-warning") {
         // 다시 primary로 변경하고 선택된 actors에서 뺌
@@ -175,12 +175,12 @@ export default {
           this.setModifyReviewModalState(false);
           this.$emit("setWrite", this.setwrite + 1);
           this.showToast("success", response.data.message);
+          this.$emit("addMyReview");
         },
         (fail) => {
           this.showToast("error", "리뷰 작성 실패");
         }
       );
-      
     },
     // 날짜 포맷 정리
     dateFommatter(date) {
@@ -211,7 +211,7 @@ export default {
         // this.review.viewTime = response.data.data.viewTime.substring(0,5);
         if (response.data.data.reviewCastingIdList) {
           response.data.data.reviewCastingIdList.forEach((element) => {
-            let cur = document.getElementById(`modify`+element);
+            let cur = document.getElementById(`modify` + element);
             cur.className = "badge badge-pill casting badge-warning";
           });
         }
