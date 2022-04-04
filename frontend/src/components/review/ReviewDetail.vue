@@ -25,7 +25,7 @@
             <p class="inline2 right2" type="input">{{ review.viewDate }}</p>
             <br />
             <label for="time">관람시간</label>
-            <p class="inline2" type="input">{{ review.viewTime.substring(0,5) }}</p>
+            <p class="inline2" type="input" v-if="review.viewTime">{{ review.viewTime.substring(0,5) }}</p>
             <br />
             <label for="location">관람장소</label>
             <p class="inline2" type="input">{{ review.location }}</p>
