@@ -90,7 +90,7 @@ export default {
 .header {
   margin-left: auto;
   margin-right: auto;
-  width: 1500px;
+  max-width: 1500px;
 }
 .main_title {
   font-size: 1.5em;
