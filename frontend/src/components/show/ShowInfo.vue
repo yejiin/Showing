@@ -22,7 +22,7 @@
         @myReviewList="myReviewList"
         :key="setReview"
         :seasonShowName="seasonShowName"
-        :seasonShow="info"
+        :seasonShow="showInformation"
         :performanceId="performanceId"
       ></review-list>
       <review-write
@@ -30,7 +30,7 @@
         @setWrite="setReviewCount"
         :setwrite="setReview"
         :seasonShowName="seasonShowName"
-        :seasonShow="info"
+        :seasonShow="showInformation"
       ></review-write>
     </div>
     <br /><br />
@@ -58,28 +58,28 @@
           </a>
         </div>
       </div>
-      <span class="badge badge-pill badge-success ml-4">{{ info.detailType }}</span
+      <span class="badge badge-pill badge-success ml-4">{{ showInformation.detailType }}</span
       >&nbsp;
-      <span class="badge badge-pill badge-warning">{{ info.performanceAge }} 관람가</span>
+      <span class="badge badge-pill badge-warning">{{ showInformation.performanceAge }} 관람가</span>
       <br /><br />
       <b-row
         ><b-col class="ml-2 my-2" cols="3">일정 </b-col>
-        <b-col cols="6">{{ info.startDate }} ~ {{ info.endDate }}</b-col>
+        <b-col cols="6">{{ showInformation.startDate }} ~ {{ showInformation.endDate }}</b-col>
       </b-row>
-      <b-row v-if="info.location != null"
+      <b-row v-if="showInformation.location != null"
         ><b-col class="ml-2 my-2" cols="3">장소 </b-col>
-        <b-col>{{ info.location }}</b-col>
+        <b-col>{{ showInformation.location }}</b-col>
       </b-row>
       <b-row>
         <b-col class="ml-2 my-2" cols="3"> 공연시간 </b-col>
-        <b-col>{{ info.runingTime }}</b-col>
+        <b-col>{{ showInformation.runingTime }}</b-col>
       </b-row>
-      <div class="subTitle mt-3">캐스팅</div>
+      <div v-if="actor.length > 0" class="subTitle mt-3">캐스팅</div>
       <actor-list :actor="actor"></actor-list>
     </b-card>
     <br />
     <br />
-    <story :description="description"></story>
+    <story :description="showDescription"></story>
   </div>
 </template>
 
@@ -112,6 +112,27 @@ export default {
     ...mapGetters({
       isLogin: "userStore/isLogin",
     }),
+    showInformation: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherShowInfo;
+      } else {
+        return this.info;
+      }
+    },
+    showActor: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherActor;
+      } else {
+        return this.actor;
+      }
+    },
+    showDescription: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherDesciption;
+      } else {
+        return this.description;
+      }
+    },
   },
   components: {
     ActorList,
@@ -129,6 +150,9 @@ export default {
       },
       setReview: 0,
       reviewList: [],
+      OtherShowInfo: {},
+      OtherActor: [],
+      OtherDesciption: "",
     };
   },
   created() {
@@ -151,9 +175,9 @@ export default {
       detailSeasonShow(
         this.seasons[index].seasonId,
         (response) => {
-          this.info = response.data.data;
-          this.description = response.data.data.description;
-          this.actor = response.data.data.actorList;
+          this.OtherShowInfo = response.data.data;
+          this.OtherDesciption = response.data.data.description;
+          this.OtherActor = response.data.data.actorList;
         },
         (error) => {
           console.log(error);

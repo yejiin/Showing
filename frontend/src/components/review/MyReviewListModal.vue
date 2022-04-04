@@ -118,6 +118,8 @@
     </modal>
     <review-modify-modal
       :key="modireview"
+      @setWrite="setReviewCount"
+      :setwrite="setReview"
       :seasonShowName="seasonShowName"
       :seasonShow="seasonShow"
     ></review-modify-modal>
@@ -161,6 +163,7 @@ export default {
       hasMore: false,
       infinitedId: +new Date(),
       modireview: 0,
+      setReview: 0,
     };
   },
   computed: {
@@ -237,6 +240,10 @@ export default {
         type: typeName,
       });
     },
+    setReviewCount(value){
+      this.setReview = value;
+      this.getMyReviewList();
+    }
   },
   created() {
     this.getMyReviewList();
