@@ -61,7 +61,7 @@
           <li class="nav-item">
             <search></search>
           </li>
-          <!-- 화면 너비 넓을 때 -->
+          <!-- 화면 너비 작을 때 -->
           <li class="nav-item d-lg-none">
             <a class="dropdown-item mt-4" @click="goToMyPage">
               <i class="ni ni-circle-08"></i>
@@ -72,12 +72,12 @@
               <span class="nav-link-inner--text">로그아웃</span>
             </a>
           </li>
-          <!-- 화면 너비 작을 때 -->
+          <!-- 화면 너비 넓을 때 -->
           <div class="dropdown">
             <a href="#" class="btn btn-default profile-btn" data-toggle="dropdown" id="profileDropDown">
               <img class="profile-img" :src="userInfo.userImage" />
             </a>
-            <ul class="dropdown-menu" aria-labelledby="profileDropDown">
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropDown">
               <li>
                 <a class="dropdown-item" @click="goToMyPage">
                   <i class="ni ni-circle-08"></i>
@@ -119,10 +119,11 @@ export default {
     ...mapActions(userStore, ["logout"]),
     ...mapActions(ratingStore, ["setMyRatingState"]),
     goToMain() {
-      if(this.$route.path!=='/') this.$router.push({ name: "MainPage" });
+      if (this.$route.path !== "/") this.$router.push({ name: "MainPage" });
     },
     goToMyPage() {
-      if(this.$route.path!=='/users/'+this.userInfo.userId) this.$router.push({ path: "/users/" + this.userInfo.userId });
+      if (this.$route.path !== "/users/" + this.userInfo.userId)
+        this.$router.push({ path: "/users/" + this.userInfo.userId });
     },
     HandleLogout() {
       this.logout();
@@ -153,8 +154,8 @@ li {
 }
 .ni,
 .profile-img {
-  height: 30px;
-  width: 30px;
+  height: 50px;
+  width: 50px;
   text-align: center;
   border-radius: 50%;
 }
@@ -162,8 +163,14 @@ li {
 .profile-btn:hover,
 .profile-btn:active,
 .profile-btn:focus {
+  padding: 0;
+  margin-left: 10px;
   border: 0;
   box-shadow: none;
+}
+.dropdown-item {
+  height: 45px;
+  padding: 0;
 }
 @media (max-width: 991.98px) {
   .profile-btn {
