@@ -1,5 +1,5 @@
 <template>
-  <div class="header mt-5">
+  <div class="header">
     <div v-if="this.$store.state.userStore.isLogin">
       <div>
         <h4 class="main_title">'{{ this.$store.state.userStore.userInfo.nickName }}' 님을 위한 추천 공연</h4>
