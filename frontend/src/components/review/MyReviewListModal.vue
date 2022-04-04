@@ -91,7 +91,7 @@
           <div class="showInfo2 left mb-3">
             <div>
               <h3>{{ show.performanceName }}</h3>
-              <p style="font-size: 8px">{{ show.startDate }}~{{ show.endDate }}</p>
+              <p style="font-size: 13px">{{ show.startDate }}&nbsp;~&nbsp;{{ show.endDate }}</p>
             </div>
             <label for="date">관람일정</label>
             <p class="inline2 right2" type="input">{{ show.viewDate }}</p>
