@@ -2,7 +2,7 @@
   <div>
     <span class="main_title float-left">다른 사람의 리뷰</span>
     <review-list-modal :info="info" :seasons="seasons" v-if="previewReview != 0"></review-list-modal>
-    <review-detail-modal :review="selectedReview" :flag="flag"></review-detail-modal>
+    <review-detail-modal :review="selectedReview"></review-detail-modal>
     <br />
     <div class="my-5 mx-auto" style="text-align: center" v-if="previewReview == 0">
       <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
@@ -88,7 +88,6 @@ export default {
 
     detailReview(reviewId) {
       getDetailReview(reviewId, (response) => {
-        console.log(response);
         this.selectedReview = response.data.data;
       });
     },

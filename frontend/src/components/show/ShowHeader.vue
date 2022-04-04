@@ -145,6 +145,7 @@ export default {
   margin-right: 5px;
 }
 .star {
+  cursor: pointer;
   vertical-align: middle;
 }
 .main_title {
