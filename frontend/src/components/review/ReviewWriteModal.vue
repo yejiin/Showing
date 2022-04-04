@@ -11,7 +11,7 @@
           <div class="showInfo left mb-3">
             <div>
               <h3>{{ seasonShowName }}</h3>
-              <p style="font-size: 8px">{{ seasonShow.startDate }}~{{ seasonShow.endDate }}</p>
+              <p style="font-size: 13px">{{ seasonShow.startDate }}&nbsp;~&nbsp;{{ seasonShow.endDate }}</p>
             </div>
             <div class="form-group picker">
               <div class="input-group">
