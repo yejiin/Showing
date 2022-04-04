@@ -57,16 +57,19 @@ export default {
       }
     );
     // 추천 공연 리스트 불러오기
-    await getMainRecommend(
-      this.$store.state.userStore.userInfo.userId,
-      (response) => {
-        this.mainRecommendList = response.data.data.recommendListByUser;
-        this.actorRecommnedList = response.data.data.recommendListByActor;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (this.$store.state.userStore.isLogin) {
+      await getMainRecommend(
+        this.$store.state.userStore.userInfo.userId,
+        (response) => {
+          this.mainRecommendList = response.data.data.recommendListByUser;
+          this.actorRecommnedList = response.data.data.recommendListByActor;
+        },
+        (error) => {
+          console.log("바로 여기임");
+          console.log(error);
+        }
+      );
+    }
   },
 };
 </script>

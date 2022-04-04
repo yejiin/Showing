@@ -43,24 +43,20 @@ export default {
   props: {
     ratingInfo: Object,
   },
-  data() {
-    return {
-      // ratingData: null,
-      chart: {},
-    };
-  },
   computed: {
+    chart: function () {
+      return this.ratingInfo.ratingCntList;
+    },
     chartData: function () {
-      this.chart = {
+      return {
         labels: ["", "1", "", "2", "", "3", "", "4", "", "5"],
         datasets: [
           {
             backgroundColor: "#FCD34D",
-            data: this.ratingInfo.ratingCntList,
+            data: this.chart,
           },
         ],
       };
-      return this.chart;
     },
   },
 };

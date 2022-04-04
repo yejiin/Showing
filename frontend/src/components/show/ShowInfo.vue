@@ -25,6 +25,7 @@
         :performanceId="performanceId"
       ></review-list>
       <review-write
+        @myReviewList="myReviewList"
         @setWrite="setReviewCount"
         :setwrite="setReview"
         :seasonShowName="seasonShowName"
@@ -89,6 +90,7 @@ import Story from "@/components/show/Story";
 import ReviewListModalVue from "../review/MyReviewListModal.vue";
 import ReviewWriteModalVue from "../review/ReviewWriteModal.vue";
 import { detailSeasonShow } from "@/api/show.js";
+import { getMyShowReview } from "@/api/review.js";
 
 const userStore = "userStore";
 const reviewStore = "reviewStore";
@@ -125,7 +127,20 @@ export default {
         writemodal: false,
       },
       setReview: 0,
+      reviewList: [],
     };
+  },
+  created() {
+    getMyShowReview(
+      this.performanceId,
+      this.userInfo.userId,
+      (response) => {
+        this.reviewList = response.data.data;
+      },
+      (fail) => {
+        console.log(fail);
+      }
+    );
   },
   methods: {
     // 한 시즌 클릭
@@ -144,6 +159,20 @@ export default {
         }
       );
     },
+
+    myReviewList() {
+      getMyShowReview(
+        this.performanceId,
+        this.userInfo.userId,
+        (response) => {
+          this.reviewList = response.data.data;
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
     setMyReviewListModalStates(status) {
       this.setMyReviewListModalState(status);

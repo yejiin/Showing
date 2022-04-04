@@ -7,7 +7,10 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
-          @click="setMyReviewListModalState(false);page=Math.min(5, reviews.length);"
+          @click="
+            setMyReviewListModalState(false);
+            page = Math.min(5, reviews.length);
+          "
         >
           &times;
         </button>
@@ -19,42 +22,48 @@
         </div>
         <br />
         <div v-show="reviews.length === 0">내 리뷰가 없습니다</div>
-        <div v-for="(n,index) in page" :key="index">
-          <div id="reviewHeader" class="review">
-            <div class="inreview">
-              <div class="left">
-                <h5 class="bold mb-1" @click="showDetailModal(reviews[index].reviewId)">{{ reviews[index].viewDate }}</h5>
-              </div>
-              <div>
-                <span href="" class="updatedelete" @click="modifyModal(reviews[index].reviewId)">
-                  <i class="fa fa-pencil"></i>
-                  수정
-                </span>
+        <div v-if="reviews.length !== 0">
+          <div v-for="(n, index) in page" :key="index">
+            <div id="reviewHeader" class="review">
+              <div class="inreview">
+                <div class="left">
+                  <h5 class="bold mb-1" @click="showDetailModal(reviews[index].reviewId)">
+                    {{ reviews[index].viewDate }}
+                  </h5>
+                </div>
+                <div>
+                  <span href="" class="updatedelete" @click="modifyModal(reviews[index].reviewId)">
+                    <i class="fa fa-pencil"></i>
+                    수정
+                  </span>
 
-                <a href="" class="updatedelete" @click="deleteReview(reviews[index].reviewId)">
-                  <i class="fa fa-trash"></i>
-                  삭제 &nbsp;| &nbsp;
-                </a>
-              </div>
-              <div class="title" style="clear: both" @click="showDetailModal(reviews[index].reviewId)">
-                <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
-                <p class="username inline">{{ userInfo.nickName }}</p>
-              </div>
-              <div class="mb-2">
-                <label for="casing" class="bold rightmargin inline"
-                  ><h6 class="bold rightmargin inline">캐스팅</h6></label
-                >
-                <b-badge pill variant="primary" v-for="(index, key) in reviews[index].reviewActorNameList" :key="key">{{
-                  index
-                }}</b-badge>
-              </div>
-              <div class="">
-                <p class="content">{{ reviews[index].content }}</p>
+                  <span href="" class="updatedelete" @click="deleteReview(reviews[index].reviewId)">
+                    <i class="fa fa-trash"></i>
+                    삭제 &nbsp;| &nbsp;
+                  </span>
+                </div>
+                <div class="title" style="clear: both" @click="showDetailModal(reviews[index].reviewId)">
+                  <img :src="userInfo.userImage" alt="profile image" class="profile inline" />
+                  <p class="username inline">{{ userInfo.nickName }}</p>
+                </div>
+                <div class="mb-2">
+                  <label for="casing" class="bold rightmargin inline"
+                    ><h6 class="bold rightmargin inline">캐스팅</h6></label
+                  >
+                  <b-badge pill variant="primary" v-for="(index, key) in reviews[index].reviewActorNameList" :key="key">{{
+                    index
+                  }}</b-badge>
+                </div>
+                <div class="">
+                  <p class="content">{{ reviews[index].content }}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <button class="moreReview" v-if="page!==reviews.length" @click="onScroll"><img class="moreReviewImg" src="./assets/pngwing.png" alt="더보기"></button>
+        <button class="moreReview" v-if="page !== reviews.length" @click="onScroll">
+          <img class="moreReviewImg" src="./assets/pngwing.png" alt="더보기" />
+        </button>
         <!-- <infinite-loading v-if="hasMore" :identifier="infiniteId" @infinite="onScroll"></infinite-loading> -->
       </div>
       <div id="detail" v-show="modal2">
@@ -103,17 +112,20 @@
         </div>
       </div>
     </modal>
-    <review-modify-modal :key="modireview" :seasonShowName="seasonShowName" :seasonShow="seasonShow"></review-modify-modal>
+    <review-modify-modal
+      :key="modireview"
+      :seasonShowName="seasonShowName"
+      :seasonShow="seasonShow"
+    ></review-modify-modal>
   </div>
 </template>
 
 <script>
 import Modal from "@/components/Modal.vue";
 import { getMyShowReview, deleteMyReview } from "@/api/review.js";
-import { detailSeasonShow } from "@/api/show.js";
 import { mapState, mapActions } from "vuex";
 import ReviewModal from "@/components/review/ReviewModal.vue";
-import ReviewModifyModal from '@/components/review/ReviewModifyModal.vue';
+import ReviewModifyModal from "@/components/review/ReviewModifyModal.vue";
 import { getDetailReview } from "@/api/review.js";
 
 const reviewStore = "reviewStore";
@@ -141,11 +153,10 @@ export default {
       reviews: [],
       selectedseason: 1,
       selectedreviewid: 0,
-      page : 5,
-      hasMore : false,
-      infinitedId : +new Date(),
-      modireview : 0,
-
+      page: 5,
+      hasMore: false,
+      infinitedId: +new Date(),
+      modireview: 0,
     };
   },
   computed: {
@@ -154,13 +165,28 @@ export default {
   },
   methods: {
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setReviewId", "setModifyReviewModalState"]),
+    getMyReviewList() {
+      getMyShowReview(
+        this.performanceId,
+        this.userInfo.userId,
+        (response) => {
+          this.reviews = response.data.data;
+          this.hasMore = response.data.data.length > 0 ? true : false;
+          this.page = Math.min(this.page, response.data.data.length);
+          console.log(response.data.data);
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
     showDetailModal(id) {
       this.selectedreviewid = id;
       this.modal1 = false;
       this.modal2 = true;
       getDetailReview(id, (response) => {
         this.show = response.data.data;
-        this.show.viewTime = response.data.data.viewTime.substring(0,5);
+        this.show.viewTime = response.data.data.viewTime.substring(0, 5);
       });
     },
     getNewMyShowReview() {
@@ -179,46 +205,40 @@ export default {
       deleteMyReview(
         id,
         (response) => {
-          alert("게시물이 삭제되었습니다");
+          this.showToast("success", response.data.message);
+          this.getMyReviewList();
         },
         (fail) => {
           console.log(fail);
+          this.showToast("error", "리뷰 삭제 실패");
         }
       );
     },
-    modifyModal(id){
-      this.setReviewId(id)
-      this.modireview = id
+    modifyModal(id) {
+      this.setReviewId(id);
+      this.modireview = id;
       this.setMyReviewListModalState(false);
       this.setModifyReviewModalState(true);
     },
-    onScroll($state){
-      console.log('onScroll')
-      console.log(this.page)
-      this.page = Math.min(this.page+5, this.reviews.length);
-      console.log('after : ' + this.page)
-    }
+    onScroll($state) {
+      console.log("onScroll");
+      console.log(this.page);
+      this.page = Math.min(this.page + 5, this.reviews.length);
+      console.log("after : " + this.page);
+    },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
+    },
   },
   created() {
-    getMyShowReview(
-      this.performanceId,
-      this.userInfo.userId,
-      (response) => {
-        this.reviews = response.data.data;
-        this.hasMore = response.data.data.length > 0 ? true : false;
-        this.page = Math.min(this.page, response.data.data.length)
-        console.log(response.data.data);
-      },
-      (fail) => {
-        console.log(fail);
-      }
-      
-    );
+    this.getMyReviewList();
   },
   mounted() {
     this.setModifyReviewModalState(false);
-  }
-
+  },
 };
 </script>
 
@@ -272,6 +292,7 @@ select#season {
   float: right;
   color: #626262;
   font-size: 10px;
+  cursor: pointer;
 }
 .title {
   margin-bottom: 1%;
