@@ -1,13 +1,13 @@
 <template>
   <b-navbar toggleable="lg" type="white" variant="white" class="fixed-top custnavi" v-cloak>
     <b-navbar-brand class="logo_position">
-      <h3 class="logo" @click="goToMain()">Showing</h3>
+      <img src="@/assets/img/showing-logo.png" class="logo" @click="goToMain()" />
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <search></search>
-
-      <login v-if="userInfo.userId == ''" style="margin-right: 15%"></login>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <login v-if="userInfo.userId == ''"></login>
       <div class="dropdown">
         <p v-if="userInfo.userId"><img class="profile" :src="userInfo.userImage" alt="" /></p>
         <div class="dropdown-content">
@@ -76,6 +76,7 @@ export default {
 
 .custnavi {
   border-bottom: solid 0.5px #e5e8eb;
+  margin-right: 30px;
 }
 .profile {
   border-radius: 70%;

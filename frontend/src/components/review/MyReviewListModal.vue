@@ -50,9 +50,13 @@
                   <label for="casing" class="bold rightmargin inline"
                     ><h6 class="bold rightmargin inline">캐스팅</h6></label
                   >
-                  <b-badge pill variant="primary" v-for="(index, key) in reviews[index].reviewActorNameList" :key="key">{{
-                    index
-                  }}</b-badge>
+                  <b-badge
+                    pill
+                    variant="primary"
+                    v-for="(index, key) in reviews[index].reviewActorNameList"
+                    :key="key"
+                    >{{ index }}</b-badge
+                  >
                 </div>
                 <div class="">
                   <p class="content">{{ reviews[index].content }}</p>
@@ -114,6 +118,8 @@
     </modal>
     <review-modify-modal
       :key="modireview"
+      @setWrite="setReviewCount"
+      :setwrite="setReview"
       :seasonShowName="seasonShowName"
       :seasonShow="seasonShow"
     ></review-modify-modal>
@@ -157,6 +163,7 @@ export default {
       hasMore: false,
       infinitedId: +new Date(),
       modireview: 0,
+      setReview: 0,
     };
   },
   computed: {
@@ -207,6 +214,7 @@ export default {
         (response) => {
           this.showToast("success", response.data.message);
           this.getMyReviewList();
+          this.$emit("myReviewList");
         },
         (fail) => {
           console.log(fail);
@@ -232,6 +240,10 @@ export default {
         type: typeName,
       });
     },
+    setReviewCount(value){
+      this.setReview = value;
+      this.getMyReviewList();
+    }
   },
   created() {
     this.getMyReviewList();
