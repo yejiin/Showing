@@ -5,7 +5,11 @@
     <!-- carousel area -->
     <carousel :perPage="4">
       <slide class="p-1 mt-3" v-for="(item, index) in similarList" :key="index">
-        <b-card class="mr-0 mb-2 rounded" @click="detailShow(similarList[index].performanceId)" style="cursor: pointer">
+        <b-card
+          class="mr-0 mb-2 rounded card-lift--hover"
+          @click="detailShow(similarList[index].performanceId)"
+          style="cursor: pointer"
+        >
           <!-- card content -->
           <img :src="similarList[index].lastSeasonImage" class="mb-3 mr-3 rounded" />
           <div class="name">
