@@ -18,7 +18,7 @@
         </h6>
       </div>
       <hr />
-      <div @click="showToast">
+      <div class="col" @click="showToast">
         <star-rating
           class="star"
           id="starRating"
@@ -145,6 +145,7 @@ export default {
   margin-right: 5px;
 }
 .star {
+  cursor: pointer;
   vertical-align: middle;
 }
 .main_title {

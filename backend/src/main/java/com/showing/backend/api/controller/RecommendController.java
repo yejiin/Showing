@@ -41,4 +41,15 @@ public class RecommendController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RECOMMEND, recommendService.getRecommendList(userId)));
     }
 
+    @ApiOperation(value = "공연 중인 공연 목록 조회",
+        notes = "로그인 안했을 때 보여주는 추천 데이터로, 공연 중인 공연 목록를 랜덤으로 15개 조회합니다.")
+    @ApiResponses({@ApiResponse(code = 200, message = GET_RECOMMEND),
+            @ApiResponse(code = 400, message = "Invalid Input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "Not Found 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)})
+    @GetMapping("")
+    public ResponseEntity<BaseResponseBody> getPerformingList() {
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RECOMMEND, recommendService.getPerformingList()));
+    }
+
 }

@@ -3,7 +3,7 @@
     <div v-if="this.$store.state.userStore.isLogin">
       <div>
         <h4 class="main_title">'{{ this.$store.state.userStore.userInfo.nickName }}' 님을 위한 추천 공연</h4>
-        <recommend-list :performance-list="mainRecommendList"></recommend-list>
+        <recommend-list :performance-list="mainUserRecommendList"></recommend-list>
       </div>
     </div>
     <div v-if="this.$store.state.userStore.isLogin">
@@ -13,6 +13,10 @@
       </div>
     </div>
     <div>
+      <div v-if="!this.$store.state.userStore.isLogin">
+        <h4 class="main_title">추천 공연</h4>
+        <recommend-list :performance-list="mainRecommendList"></recommend-list>
+      </div>
       <div>
         <h4 class="main_title">뮤지컬 평균 별점 순위</h4>
         <recommend-list :performance-list="musicalList"></recommend-list>
@@ -29,7 +33,7 @@
 <script>
 import RecommendList from "@/components/recommend/RecommendList";
 
-import { getMainRecommend } from "@/api/recommend.js";
+import { getMainRecommend, getPerformingRecommend } from "@/api/recommend.js";
 import { getRankingShow } from "@/api/show.js";
 
 export default {
@@ -41,8 +45,9 @@ export default {
     return {
       musicalList: [],
       playList: [],
-      mainRecommendList: [],
+      mainUserRecommendList: [],
       actorRecommnedList: [],
+      mainRecommendList: [],
     };
   },
   async created() {
@@ -61,11 +66,21 @@ export default {
       await getMainRecommend(
         this.$store.state.userStore.userInfo.userId,
         (response) => {
-          this.mainRecommendList = response.data.data.recommendListByUser;
+          this.mainUserRecommendList = response.data.data.recommendListByUser;
           this.actorRecommnedList = response.data.data.recommendListByActor;
         },
         (error) => {
           console.log("바로 여기임");
+          console.log(error);
+        }
+      );
+    } else {
+      await getPerformingRecommend(
+        (response) => {
+          console.log(response);
+          this.mainRecommendList = response.data.data;
+        },
+        (error) => {
           console.log(error);
         }
       );
@@ -76,6 +91,9 @@ export default {
 
 <style scoped>
 .header {
+  margin-left: auto;
+  margin-right: auto;
+  width: 1500px;
 }
 .main_title {
   font-size: 1.5em;
