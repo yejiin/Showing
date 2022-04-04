@@ -38,10 +38,9 @@ public class RatingController {
     @PostMapping(value="")
     public ResponseEntity<BaseResponseBody> addRating(@RequestBody AddRatingReq req) {
         // userId 유효성 체크
-        if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
+        if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId()))
             throw new InvalidException(ErrorCode.ACCESS_DENIED);
-        ratingService.addRating(req);
-        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED, ADD_RATING));
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.CREATED, ADD_RATING,ratingService.addRating(req)));
     }
 
     @ApiOperation(value = "별점 수정", notes = "공연 별점을 수정합니다.")
@@ -53,7 +52,7 @@ public class RatingController {
     @PutMapping(value = "")
     public ResponseEntity<BaseResponseBody> modifyRating(@RequestBody ModifyRatingReq req) {
         // userId 유효성 체크
-        if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId().orElse(null)))
+        if(!Objects.equals(req.getUserId(), JwtUtil.getCurrentId()))
             throw new InvalidException(ErrorCode.ACCESS_DENIED);
         ratingService.modifyRating(req);
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, MODIFY_RATING));
@@ -71,4 +70,17 @@ public class RatingController {
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, DELETE_RATING));
     }
 
+    @ApiOperation(value = "별점 조회", notes = "공연 별점을 조회합니다.")
+    @ApiResponses({@ApiResponse(code = 200, message = GET_RATING),
+            @ApiResponse(code = 401, message = UNAUTHORIZED, response = ErrorResponse.class),
+            @ApiResponse(code = 403, message = FORBIDDEN, response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = NOT_FOUND, response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = SERVER_ERROR, response = ErrorResponse.class)})
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<BaseResponseBody> getRating(@PathVariable Long userId, @RequestParam Long performanceId) {
+        // userId 유효성 체크
+        if(!Objects.equals(userId, JwtUtil.getCurrentId()) || userId == null)
+            throw new InvalidException(ErrorCode.ACCESS_DENIED);
+        return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_RATING, ratingService.getRating(userId, performanceId)));
+    }
 }

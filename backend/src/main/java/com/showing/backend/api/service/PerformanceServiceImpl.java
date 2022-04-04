@@ -1,6 +1,6 @@
 package com.showing.backend.api.service;
 
-import com.showing.backend.api.response.*;
+import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
 import com.showing.backend.db.entity.performance.Performance;
@@ -17,10 +17,6 @@ import java.util.List;
 public class PerformanceServiceImpl implements PerformanceService {
 
     private final PerformanceRepository performanceRepository;
-    private final SeasonService seasonService;
-    private final RatingService ratingService;
-    private final ReviewService reviewService;
-    private final RankingService rankingService;
 
     @Override
     public List<Long> getPerformanceIdListByUserAndStarPoint(Long userId, int starPoint) {
@@ -32,14 +28,8 @@ public class PerformanceServiceImpl implements PerformanceService {
      */
     @Transactional
     @Override
-    public PerformanceDetailRes getPerformanceDetail(Long userId, Long performancdId) {
-        Performance performance = performanceRepository.findById(performancdId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
-        float starPointAvg = rankingService.getStarPointAverage(performancdId);
-        int rating = ratingService.getRating(userId, performancdId);
-        SeasonRes seasonRes = seasonService.getSeasonInfo(performance.getLastSeasonId());
-        List<PreviewReviewByPerformanceRes> previewReviewList = reviewService.getPreviewReviewListByPerformanceId(performancdId);
-
-        return PerformanceDetailRes.of(performance,starPointAvg,rating,seasonRes,previewReviewList);
+    public Performance getPerformanceDetail(Long performanceId) {
+        return performanceRepository.findById(performanceId).orElseThrow(() -> new NotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
     }
 
     /*

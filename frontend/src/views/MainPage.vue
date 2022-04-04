@@ -61,8 +61,6 @@ export default {
         console.log(error);
       }
     );
-
-    // if (this.$store.state.userStore)
     // 추천 공연 리스트 불러오기
     if (this.$store.state.userStore.isLogin) {
       await getMainRecommend(
@@ -91,4 +89,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.main_title {
+  font-size: 1.5em;
+  margin-left: 0.5em;
+  margin-bottom: 0;
+}
+</style>

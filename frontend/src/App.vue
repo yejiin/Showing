@@ -3,7 +3,7 @@
     <router-view name="header"></router-view>
     <main>
       <fade-transition origin="center" mode="out-in" :duration="250">
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </fade-transition>
     </main>
     <router-view name="footer"></router-view>
@@ -20,12 +20,16 @@ export default {
 </script>
 
 <style>
+.click_img {
+  cursor: pointer;
+}
+
 .main_title {
   font-weight: bold;
 }
 
 .header {
-  padding-top: 10%;
+  padding-top: 100px;
   padding-left: 5%;
   padding-right: 5%;
 }

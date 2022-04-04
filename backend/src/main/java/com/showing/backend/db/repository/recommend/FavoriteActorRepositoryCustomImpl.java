@@ -21,15 +21,16 @@ public class FavoriteActorRepositoryCustomImpl implements FavoriteActorRepositor
     QFavoriteActor qFavoriteActor = QFavoriteActor.favoriteActor;
 
     /**
-     * performance table 에서 유저의 선호 배우리스트를 weight 내림차순으로 조회ㄴ한다.
+     * performance table 에서 유저의 선호 배우리스트를 weight 내림차순으로 조회한다.
      */
     @Override
-    public Optional<List<FavActorRes>> getFavActorListByUser(User user) {
+    public Optional<List<FavActorRes>> findTopCountFavActorListByUser(int count, User user) {
         List<FavActorRes> res = jpaQueryFactory.select(Projections.constructor(FavActorRes.class,qActor.actorName,qActor.actorImage))
                 .from(qActor).join(qFavoriteActor)
                 .on(qActor.eq(qFavoriteActor.actor))
                 .where(qFavoriteActor.user.eq(user))
                 .orderBy(qFavoriteActor.weight.desc())
+                .limit(count)
                 .fetch();
 
         return Optional.ofNullable(res);

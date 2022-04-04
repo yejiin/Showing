@@ -1,13 +1,10 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.response.SearchRes;
-import com.showing.backend.db.entity.performance.Performance;
 import com.showing.backend.db.repository.performance.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,19 +13,11 @@ public class SearchServiceImpl implements SearchService{
 
     private final PerformanceRepository performanceRepository;
 
+    /*
+     * 공연 최근 시작일 순으로 keyword가 포함된 공연 조회
+     */
     @Override
-    @Transactional
     public List<SearchRes> getPerformanceList(String keyword) {
-        List<Performance> performanceList = performanceRepository.findTop5ByPerformanceNameContaining(keyword);
-        List<SearchRes> searchResList = new ArrayList<>();
-        for (Performance performance : performanceList){
-            SearchRes searchRes = SearchRes.builder()
-                    .performanceId(performance.getId())
-                    .performanceName(performance.getPerformanceName())
-                    .PerformanceType(performance.getPerformanceType())
-                    .build();
-            searchResList.add(searchRes);
-        }
-        return searchResList;
+        return performanceRepository.findByPerformanceNameContaining(keyword);
     }
 }

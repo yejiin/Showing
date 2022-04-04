@@ -5,7 +5,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.showing.backend.api.response.PerformanceByActorRes;
 import com.showing.backend.api.response.PerformanceRes;
 import com.showing.backend.db.entity.performance.*;
 import com.showing.backend.db.entity.recommend.QRecommend;
@@ -54,16 +53,16 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .join(qSeason).on(qSeason.id.eq(qPerformance.lastSeasonId))
                 .where(qRecommend.performance.id.in(performanceIdList))
                 .where(qSeason.proceedFlag.between(type, 3))
-                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
+                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2}, {3})", qSeason.proceedFlag, 1, 2, 0).asc())
                 .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(count)
                 .fetch();
     }
 
     @Override
-    public List<PerformanceByActorRes> getPerformanceListRandomFavoriteActorId(Long actorId) {
+    public List<PerformanceRes> getPerformanceListRandomFavoriteActorId(Long actorId) {
         return jpaQueryFactory
-                .select(Projections.constructor(PerformanceByActorRes.class,
+                .select(Projections.constructor(PerformanceRes.class,
                         qPerformance.id.as("performanceId"),
                         qPerformance.performanceName.as("performanceName"),
                         qPerformance.performanceType.as("performanceType"),
@@ -84,7 +83,7 @@ public class RecommendRepositoryCustomImpl implements RecommendRepositoryCustom 
                 .join(qCasting).on(qCasting.season.playdbId.eq(qSeason.playdbId))
                 .join(qActor).on(qActor.playdbId.eq(qCasting.actor.playdbId))
                 .where(qActor.id.eq(actorId))
-                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2})", 1, 2, 0).asc())
+                .orderBy(Expressions.stringTemplate("FIELD({0}, {1}, {2}, {3})", qSeason.proceedFlag, 1, 2, 0).asc())
                 .fetch();
     }
 

@@ -17,6 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 public class MyPageRes {
 
+    @ApiModelProperty(name = "유저 아이디", example = "1")
+    private Long userId;
+
     @ApiModelProperty(name = "유저 닉네임", example = "김싸피")
     private String nickName;
 
@@ -32,6 +35,9 @@ public class MyPageRes {
     @ApiModelProperty(name = "선호 배우 리스트", example = "['홍길동', '고길동']")
     private List<FavActorRes> favoriteActorList;
 
+    @ApiModelProperty(name = "선호 태그 리스트", example = "['연기력', '판타지']")
+    private List<FavTagRes> favoriteTagList;
+
     @ApiModelProperty(name = "뮤지컬 평가 수", example = "20")
     private Long muscialCnt;
 
@@ -45,7 +51,6 @@ public class MyPageRes {
     private Double ratingAvg;
 
     @ApiModelProperty(name = "평가 리스트", example = "")
-    // TODO response 타입 변경해주기
-    private List<String> reviewList;
+    private List<PreviewReviewByUserRes> reviewList;
 
 }
