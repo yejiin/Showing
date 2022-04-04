@@ -48,6 +48,7 @@ public class ReviewServiceImpl implements ReviewService {
                                                                          .reviewId(review.getId())
                                                                          .performanceId(performance.getId())
                                                                          .performanceName(performance.getPerformanceName())
+                                                                         .performanceType(performance.getPerformanceType())
                                                                          .performanceImage(performance.getPerformanceImage())
                                                                          .viewDate(review.getPerformanceDate().toLocalDate())
                                                                          .build();
