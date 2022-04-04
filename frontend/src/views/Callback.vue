@@ -69,7 +69,6 @@ export default {
 <style scoped>
 .container {
   line-height: 1.5em;
-  margin: 0;
   font-weight: 300;
   display: flex;
   justify-content: center;
