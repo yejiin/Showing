@@ -45,4 +45,7 @@ export default {
   border-left: none;
   border-right: none;
 }
+.searchInput:focus {
+  outline: none;
+}
 </style>
