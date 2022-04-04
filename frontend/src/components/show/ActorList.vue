@@ -9,7 +9,7 @@
             <div>
               <b-img class="image-box" :src="actor[index].actorImage" center />
             </div>
-            <h6 class="actor_name" v-if="actor[index].role != undefined || actor[index].role != null">
+            <h6 class="actor_name mt-2" v-if="actor[index].role != undefined || actor[index].role != null">
               {{ actor[index].role }}
             </h6>
             <h5 class="actor_name">{{ actor[index].actorName }}</h5>
