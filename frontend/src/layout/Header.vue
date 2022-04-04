@@ -46,7 +46,7 @@
         <ul v-if="userInfo.userId == ''" class="navbar-nav ml-lg-auto">
           <!-- 검색 -->
           <li class="nav-item">
-            <search></search>
+            <search class="mt-3"></search>
           </li>
           <li class="nav-item">
             <a class="nav-link nav-link-icon">
@@ -119,10 +119,11 @@ export default {
     ...mapActions(userStore, ["logout"]),
     ...mapActions(ratingStore, ["setMyRatingState"]),
     goToMain() {
-      if(this.$route.path!=='/') this.$router.push({ name: "MainPage" });
+      if (this.$route.path !== "/") this.$router.push({ name: "MainPage" });
     },
     goToMyPage() {
-      if(this.$route.path!=='/users/'+this.userInfo.userId) this.$router.push({ path: "/users/" + this.userInfo.userId });
+      if (this.$route.path !== "/users/" + this.userInfo.userId)
+        this.$router.push({ path: "/users/" + this.userInfo.userId });
     },
     HandleLogout() {
       this.logout();
