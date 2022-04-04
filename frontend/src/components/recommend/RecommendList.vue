@@ -3,9 +3,9 @@
     <b-container fluid>
       <b-row>
         <b-col cols="12">
-          <carousel :perPage="6">
+          <carousel :perPage="5">
             <slide class="p-1" v-for="(item, index) in performanceList" :key="index">
-              <b-card class="mr-0 mb-2" @click="detailShow(index)" style="cursor: pointer">
+              <b-card class="mr-0 mb-2 card-lift--hover" @click="detailShow(index)" style="cursor: pointer">
                 <!-- card content -->
                 <img :src="performanceList[index].lastSeasonImage" class="mb-3 rounded" />
                 <p class="showName">
