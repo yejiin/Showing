@@ -2,16 +2,15 @@
   <div>
     <span v-if="similarList.length > 0" class="main_title comment_title">비슷한 공연</span>
     <br />
-    <div class="my-5 mx-auto" style="text-align: center" v-if="similarList == 0">
+    <div style="text-align: center" v-if="similarList == 0">
       <b-card-text>비슷한 공연이 없습니다.</b-card-text>
-      <br /><br />
     </div>
-    <div class="my-5 mx-auto" v-else>
+    <div v-else>
       <!-- carousel area -->
       <carousel :perPage="4">
         <slide class="p-1 mt-3" v-for="(item, index) in similarList" :key="index">
           <b-card
-            class="mr-0 mb-2 rounded"
+            class="mr-0 mb-2 rounded card-lift--hover"
             @click="detailShow(similarList[index].performanceId)"
             style="cursor: pointer"
           >
