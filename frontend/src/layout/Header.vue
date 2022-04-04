@@ -6,8 +6,8 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <search></search>
-
-      <login v-if="userInfo.userId == ''" style="margin-right: 15%"></login>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <login v-if="userInfo.userId == ''"></login>
       <div class="dropdown">
         <p v-if="userInfo.userId"><img class="profile" :src="userInfo.userImage" alt="" /></p>
         <div class="dropdown-content">
@@ -76,6 +76,7 @@ export default {
 
 .custnavi {
   border-bottom: solid 0.5px #e5e8eb;
+  margin-right: 30px;
 }
 .profile {
   border-radius: 70%;
