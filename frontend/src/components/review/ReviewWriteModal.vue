@@ -19,7 +19,13 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                 </div>
-                <datepicker v-if="seasonShow.startDate" class="form-control" input-class="smaller" v-model="review.showDate" :disabledDates="{ to: new Date(seasonShow.startDate), from: new Date(seasonShow.endDate) }" :openDate="new Date(year, month, day)"> </datepicker>
+                <datepicker v-if="seasonShow.startDate" 
+                            class="form-control" 
+                            input-class="smaller" 
+                            v-model="review.showDate" 
+                            :disabledDates="{ to: new Date(seasonShow.startDate), from: new Date(seasonShow.endDate) > new Date() ? new Date() : new Date(seasonShow.endDate) }" 
+                            :openDate="new Date(year, month, day)"
+                > </datepicker>
               </div>
             </div>
             <div class="form-group picker">
