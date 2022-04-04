@@ -1,42 +1,48 @@
 <template>
   <div>
     <h4 class="main_title mt-5">내 리뷰</h4>
-    <b-card-group deck class="mb-0">
-      <b-card
-        id="itemList"
-        v-for="item in createPages()"
-        :key="item.index"
-        class="review mr-0 mb-2"
-        :img-src="item.performanceImage"
-        img-alt="Image"
-        img-top
-        tag="article"
-        style="max-width: 20rem"
-        @click="setReviewModal(true, item.reviewId)"
-      >
-        <!-- card content -->
-        <div>
-          <h6 class="review-name">{{ item.performanceName }}</h6>
-          <div class="review-date">{{ item.viewDate }}</div>
-        </div>
-        <br />
-      </b-card>
-      <review-modal :detail-review="detailReview" :user-id="userId"></review-modal>
-    </b-card-group>
+    <div v-if="reviewList != 0">
+      <b-card-group deck class="mb-0">
+        <b-card
+          id="itemList"
+          v-for="item in createPages()"
+          :key="item.index"
+          class="review mr-0 mb-2"
+          :img-src="item.performanceImage"
+          img-alt="Image"
+          img-top
+          tag="article"
+          style="max-width: 20rem"
+          @click="setReviewModal(true, item.reviewId)"
+        >
+          <!-- card content -->
+          <div>
+            <h6 class="review-name">{{ item.performanceName }}</h6>
+            <div class="review-date">{{ item.viewDate }}</div>
+          </div>
+          <br />
+        </b-card>
+        <review-modal :detail-review="detailReview" :user-id="userId"></review-modal>
+      </b-card-group>
 
-    <!-- pagination area -->
-    <div>
-      <b-pagination
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="itemList"
-        align="center"
-        first-number
-        last-number
-      ></b-pagination>
+      <!-- pagination area -->
+      <div>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          aria-controls="itemList"
+          align="center"
+          first-number
+          last-number
+        ></b-pagination>
+      </div>
+      <br />
     </div>
-    <br />
+    <div class="my-5 mx-auto" style="text-align: center" v-else>
+      <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
+      <br /><br />
+    </div>
   </div>
 </template>
 <script>
