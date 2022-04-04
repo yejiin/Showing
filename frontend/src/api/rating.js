@@ -1,17 +1,23 @@
-import { apiInstance } from "./index.js";
+import { apiInstance2 } from "./index.js";
 
-const api = apiInstance();
+// 별점 조회
+function getRating(userId, performanceId, success, fail) {
+  apiInstance2().get(`/rating/${userId}?performanceId=${performanceId}`).then(success).catch(fail);
+}
 
+// 별점 추가
 function addRating(rating, success, fail) {
-  api.post(`/rating`, JSON.stringify(rating)).then(success).catch(fail);
+  apiInstance2().post(`/rating`, JSON.stringify(rating)).then(success).catch(fail);
 }
 
+// 별점 삭제
 function deleteRating(starId, success, fail) {
-  api.delete(`/rating/${starId}`).then(success).catch(fail);
+  apiInstance2().delete(`/rating/${starId}`).then(success).catch(fail);
 }
 
+// 별점 수정
 function modifyRating(rating, success, fail) {
-  api.put(`/rating`, JSON.stringify(rating)).then(success).catch(fail);
+  apiInstance2().put(`/rating`, JSON.stringify(rating)).then(success).catch(fail);
 }
 
-export { addRating, deleteRating, modifyRating };
+export { getRating, addRating, deleteRating, modifyRating };

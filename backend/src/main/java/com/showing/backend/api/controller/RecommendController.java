@@ -34,7 +34,7 @@ public class RecommendController {
     @GetMapping("/users/{userId}")
     public ResponseEntity<BaseResponseBody> getRecommendPerformanceList(@PathVariable Long userId) {
         // userId 유효성 검사
-        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId().orElse(null))) {
+        if (userId == null || !Objects.equals(userId, JwtUtil.getCurrentId())) {
             throw new AccessDeniedException(ErrorCode.ACCESS_DENIED.getMessage());
         }
 

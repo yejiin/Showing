@@ -1,9 +1,7 @@
 package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.ModifyUserInfoReq;
-import com.showing.backend.api.response.FavActorRes;
-import com.showing.backend.api.response.MyPageRes;
-import com.showing.backend.api.response.TokenRes;
+import com.showing.backend.api.response.*;
 import com.showing.backend.common.auth.JwtTokenProvider;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
@@ -26,8 +24,10 @@ public class UserServiceImpl implements UserService {
 
     private final JwtTokenProvider tokenProvider;
 
+    private final TagService tagService;
     private final ActorService actorService;
     private final RatingService ratingService;
+    private final ReviewService reviewService;
     private final UserRepository userRepository;
 
     /*
@@ -138,21 +138,26 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         List<FavActorRes> actorResList = actorService.getFavoriteActorList(user);
+        List<FavTagRes> tagResList = tagService.getFavoriteTagList(user);
         Long MusicalCnt = ratingService.getRatingCount(user, 1);
         Long PlayCnt = ratingService.getRatingCount(user,2);
         List<Long> ratingCntList = ratingService.getRatingRatio(user);
         Double ratingAvg = ratingService.getRatingAvg(user);
+        List<PreviewReviewByUserRes> reviewByUserResList = reviewService.getPreviewReviewListByUserId(user.getId());
 
         return MyPageRes.builder()
+                .userId(user.getId())
                 .nickName(user.getNickname())
                 .email(user.getEmail())
                 .introduce(user.getIntroduce())
                 .userImage(user.getUserImage())
+                .favoriteTagList(tagResList)
                 .favoriteActorList(actorResList)
                 .muscialCnt(MusicalCnt)
                 .playCnt(PlayCnt)
                 .ratingCntList(ratingCntList)
                 .ratingAvg(ratingAvg)
+                .reviewList(reviewByUserResList)
                 .build();
     }
 

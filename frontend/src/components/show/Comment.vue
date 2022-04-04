@@ -1,106 +1,102 @@
 <template>
   <div>
-    <h5 class="main_title comment_title">다른 사람의 리뷰</h5>
+    <span class="main_title float-left">다른 사람의 리뷰</span>
+    <review-list-modal :info="info" :seasons="seasons" v-if="previewReview != 0"></review-list-modal>
     <br />
-    <h6 class="more">더보기</h6>
-    <!-- carousel area -->
-    <b-card-group deck class="mb-0 comment_list">
-      <!-- 화살표 아이콘을 통해 슬라이딩 할 경우 -->
-      <i class="ni ni-bold-left arrow"></i>
-      <b-card
-        v-for="(item, index) in currentPageCards"
-        :key="index"
-        class="mr-0 mb-2"
-        tag="article"
-        style="max-width: 20rem"
-      >
-        <i style="font-size: 40px" class="ni ni-circle-08"></i>&nbsp;
-        <b-card-title class="comment_writer">작성자</b-card-title>
-        <hr />
-        <b-card-text>리뷰 내용</b-card-text>
-      </b-card>
-      <i class="ni ni-bold-right arrow arrow_right"></i>
-    </b-card-group>
-    <br />
-    <!-- pagination area -->
-    <!-- 페이징을 사용해서 슬라이딩 할 경우 (아래 js 참고 코드 있음) -->
-    <div class="pagination" v-if="cards.length > cardsPerPage">
-      <div class="index" v-for="i in pageCount" :key="i" @click="next(i)" :class="{ active: currentPage(i) }"></div>
+    <div class="my-5 mx-auto" style="text-align: center" v-if="previewReview == 0">
+      <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
+      <br /><br />
+    </div>
+    <div class="my-5 mx-auto" v-else>
+      <!-- carousel area -->
+      <carousel :perPage="5" class="list">
+        <slide class="p-1 mt-3" v-for="(item, index) in previewReview" :key="index">
+          <div style="width:170px">
+            <b-card rounded class="card" style="margin: 0px">
+              <div @click="detailUser(previewReview[index].userId)" style="cursor: pointer;">
+                <b-container>
+                  <b-row>
+                    <b-col class="cols col-5">
+                      <b-img :src="previewReview[index].userImage" rounded="circle" height="35px" />
+                    </b-col>
+                    <b-col class="cols col-7 mt-1 rt-0">
+                      <span class="comment_writer float-right">{{ previewReview[index].userName }}</span>
+                    </b-col>
+                  </b-row>
+                </b-container>
+              </div>
+              <hr class="hr" />
+              <b-card-text class="card-text">{{ previewReview[index].content.substring(0, 15) }}</b-card-text>
+            </b-card>
+          </div>
+        </slide>
+      </carousel>
     </div>
     <br />
   </div>
 </template>
 
 <script>
+import ReviewListModal from "@/components/review/ReviewListModal.vue";
+import { Carousel, Slide } from "vue-carousel";
+import { mapGetters, mapState, mapActions } from "vuex";
+
+const reviewStore = "reviewStore";
+
 export default {
   name: "Comment",
+  components: {
+    ReviewListModal,
+    Carousel,
+    Slide,
+  },
+  props: {
+    previewReview: Array,
+    info: Object,
+    seasons: Array,
+  },
   data() {
     return {
-      cards: [
-        {
-          //Data in the card as objects
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-      ],
-      paginatedCards: [],
-      pageCount: 0,
-      cardsPerPage: 4,
-      currentPageIndex: 0,
+      review: [],
     };
   },
-
-  computed: {
-    currentPageCards() {
-      this.createPages();
-
-      return this.paginatedCards[this.currentPageIndex];
-    },
-  },
-
   methods: {
-    currentPage(i) {
-      return i - 1 === this.currentPageIndex;
+    ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
+    setMyReviewListModalStates(status) {
+      this.setMyReviewListModalState(status);
     },
 
-    createPages() {
-      let cardsLength = this.cards.length;
-      let fullPagesCount = Math.floor(cardsLength / this.cardsPerPage);
-
-      if (cardsLength > this.cardsPerPage) {
-        this.pageCount = 0;
-        for (let i = 0; i < fullPagesCount * this.cardsPerPage; i += this.cardsPerPage) {
-          this.paginatedCards[this.pageCount] = this.cards.slice(i, i + this.cardsPerPage);
-          this.pageCount++;
-        }
-
-        this.paginatedCards[this.pageCount] = this.cards.slice(cardsLength - this.cardsPerPage, cardsLength);
-        this.pageCount = this.pageCount + 1;
-      } else {
-        this.paginatedCards[0] = this.cards;
-      }
-    },
-
-    next(i) {
-      this.currentPageIndex = i - 1;
+    detailUser(id) {
+      this.$router.push({
+        name: "MyPage",
+        params: { userId: id, key: "aaa" },
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+.main_title {
+  font-weight: 600;
+  font-size: 23px;
+}
+
+.list {
+  width: 100%;
+}
+
+.cols {
+  padding: 0px;
+}
+
+.card {
+  padding: 0px;
+  height: 200px;
+}
+
+.hr {
+  margin-top: 10px;
 }
 
 .index {
@@ -138,13 +134,17 @@ export default {
 }
 
 .comment_writer {
-  display: inline-block;
   margin-top: 0px;
   margin-bottom: 0px;
-  font-size: 120%;
+  font-size: 110%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .card-text {
-  color: black;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>

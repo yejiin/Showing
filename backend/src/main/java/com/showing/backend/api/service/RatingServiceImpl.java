@@ -2,6 +2,7 @@ package com.showing.backend.api.service;
 
 import com.showing.backend.api.request.AddRatingReq;
 import com.showing.backend.api.request.ModifyRatingReq;
+import com.showing.backend.api.response.RatingRes;
 import com.showing.backend.common.exception.InvalidException;
 import com.showing.backend.common.exception.NotFoundException;
 import com.showing.backend.common.exception.handler.ErrorCode;
@@ -38,7 +39,7 @@ public class RatingServiceImpl implements RatingService {
      * 별점 추가
      */
     @Override
-    public void addRating(AddRatingReq req) {
+    public Long addRating(AddRatingReq req) {
         User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         Performance performance = performanceRepository.findById(req.getPerformanceId())
@@ -70,6 +71,8 @@ public class RatingServiceImpl implements RatingService {
                 .rating(rating)
                 .build();
         starPointRepository.save(starPoint);
+
+        return starPoint.getId();
     }
 
     /*
@@ -134,13 +137,21 @@ public class RatingServiceImpl implements RatingService {
      * 별점 조회
      */
     @Override
-    public int getRating(Long userId, Long performanceId) {
+    public RatingRes getRating(Long userId, Long performanceId) {
         StarPoint starPoint = starPointRepository.findByUser_IdAndPerformance_Id(userId, performanceId).orElse(null);
-        int rating = 0;
-        if (starPoint != null) {
-            rating = starPoint.getRating();
+        RatingRes ratingRes;
+        if (starPoint == null) {
+            ratingRes = RatingRes.builder()
+                    .starId((long)0)
+                    .rating(0)
+                    .build();
+        }else{
+            ratingRes = RatingRes.builder()
+                    .starId(starPoint.getId())
+                    .rating(starPoint.getRating())
+                    .build();
         }
-        return rating;
+        return ratingRes;
     }
 
     /*
@@ -170,7 +181,8 @@ public class RatingServiceImpl implements RatingService {
      * 별점 평균
      */
     public Double getRatingAvg(User user) {
-        return starPointRepository.getRatingAvgByUser(user);
+        double ratingAvg = starPointRepository.getRatingAvgByUser(user);
+        return ratingAvg / 2;
     }
 
 }

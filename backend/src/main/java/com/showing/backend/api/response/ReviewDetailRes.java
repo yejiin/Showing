@@ -20,6 +20,9 @@ public class ReviewDetailRes {
     @ApiModelProperty(name = "리뷰 작성자 이름", example = "홍길동")
     String userName;
 
+    @ApiModelProperty(name = "리뷰 작성자 프로필 사진", example = "http://k.kakaocdn...")
+    String userImage;
+
     @ApiModelProperty(name = "공연 Id", example = "1")
     Long performanceId;
 
@@ -28,6 +31,9 @@ public class ReviewDetailRes {
 
     @ApiModelProperty(name = "공연의 시즌 Id", example = "1")
     Long seasonId;
+
+    @ApiModelProperty(name = "공연의 시즌 이미지", example = "1")
+    String seasonImage;
 
     @ApiModelProperty(name = "시즌 시작 일자", example = "2022-01-01")
     LocalDate startDate;
@@ -46,6 +52,9 @@ public class ReviewDetailRes {
 
     @ApiModelProperty(name = "리뷰에 입력된 캐스팅 배우 이름 리스트", example = "['홍길동', '고길동']")
     List<String> reviewActorNameList;
+
+    @ApiModelProperty(name = "리뷰에 입력된 캐스팅 배우 캐스팅 아이디 리스트", example = "[1,2,3]")
+    List<Long> reviewCastingIdList;
 
     @ApiModelProperty(name = "리뷰 내용", example = "리뷰입니다.")
     String content;
