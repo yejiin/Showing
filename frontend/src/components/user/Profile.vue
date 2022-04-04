@@ -117,17 +117,16 @@ export default {
 .profile-image {
   float: left;
   height: 100%;
-  width: 30%;
+  width: 200px;
 }
 
 .image-box {
-  width: 70%;
-  height: 70%;
+  width: 200px;
+  height: 200px;
   border-radius: 70%;
   overflow: hidden;
-  float: right;
-  /* margin-right: 20px; */
-  /* margin-top: 8px; */
+  margin-right: 20px;
+  margin-top: 8px;
 }
 .image {
   width: 100%;
@@ -137,15 +136,17 @@ export default {
 .profile-introduce {
   float: left;
   height: 100%;
-  width: 60%;
+  width: calc(100% - 250px);
   vertical-align: middle;
-  padding-top: 5px;
+  padding-top: 18px;
   margin-left: 20px;
 }
 .profile-el {
-  margin: 20px;
-  font-size: 21px;
-  font-weight: 400;
+  margin: 10px;
+  font-size: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .profile-edit {
   cursor: pointer;
@@ -161,6 +162,6 @@ export default {
 }
 .introduce-content {
   padding-left: 45px;
-  width: 100%;
+  width: 450px;
 }
 </style>
