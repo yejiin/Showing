@@ -7,12 +7,12 @@
             <slide class="p-1" v-for="(item, index) in performanceList" :key="index">
               <b-card class="mr-0 mb-2" @click="detailShow(index)" style="cursor: pointer">
                 <!-- card content -->
-                <img :src="performanceList[index].lastSeasonImage" class="mb-3 mr-3 rounded" />
+                <img :src="performanceList[index].lastSeasonImage" class="mb-3 rounded" />
                 <p class="showName">
                   <strong>{{ performanceList[index].performanceName }}</strong>
                 </p>
                 <div class="tags">
-                  <b-badge class="mr-1" pill variant="light"
+                  <b-badge class="" pill variant="light"
                     ><b-icon icon="star-fill" scale="0.8"></b-icon>
                     {{ (performanceList[index].starPointAverage / 2).toFixed(2) }}</b-badge
                   >&nbsp;
@@ -30,6 +30,7 @@
               </b-card>
             </slide>
           </carousel>
+          <br />
         </b-col>
       </b-row>
     </b-container>
@@ -82,6 +83,8 @@ export default {
 
 .showName {
   font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 0;
 }
 
 .index {
