@@ -20,7 +20,7 @@
           </div>
           <br />
         </b-card>
-        <review-modal :detail-review="detailReview" :user-id="userId"></review-modal>
+        <review-modal :detail-review="detailReview" :user-id="userId" @getReviews="getReviews"></review-modal>
       </b-card-group>
 
       <!-- pagination area -->
@@ -81,7 +81,9 @@ export default {
 
   methods: {
     ...mapActions(reviewStore, ["setReviewModalState"]),
-
+    getReviews() {
+      this.$emit("getReviews");
+    },
     setReviewModal(status, reviewId) {
       if (reviewId == undefined) return;
 
