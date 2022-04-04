@@ -2,6 +2,7 @@
   <div>
     <span class="main_title float-left">다른 사람의 리뷰</span>
     <review-list-modal :info="info" :seasons="seasons" v-if="previewReview != 0"></review-list-modal>
+    <review-detail-modal :review="selectedReview" :flag="flag"></review-detail-modal>
     <br />
     <div class="my-5 mx-auto" style="text-align: center" v-if="previewReview == 0">
       <b-card-text>등록된 리뷰가 없습니다.</b-card-text>
@@ -12,7 +13,12 @@
       <carousel :perPage="5" class="list">
         <slide class="p-1 mt-3" v-for="(item, index) in previewReview" :key="index">
           <div style="width: 170px">
-            <b-card rounded class="card" style="margin: 0px">
+            <b-card
+              rounded
+              class="card card-lift--hover"
+              style="margin: 0px; cursor: pointer"
+              @click="[detailReview(previewReview[index].reviewId), setReviewDetailModalState(true)]"
+            >
               <div @click="detailUser(previewReview[index].userId)" style="cursor: pointer">
                 <b-container>
                   <b-row>
@@ -39,7 +45,9 @@
 <script>
 import ReviewListModal from "@/components/review/ReviewListModal.vue";
 import { Carousel, Slide } from "vue-carousel";
+import { getDetailReview } from "@/api/review.js";
 import { mapGetters, mapState, mapActions } from "vuex";
+import ReviewDetailModal from "@/components/review/ReviewDetail.vue";
 
 const reviewStore = "reviewStore";
 
@@ -49,6 +57,7 @@ export default {
     ReviewListModal,
     Carousel,
     Slide,
+    ReviewDetailModal,
   },
   props: {
     previewReview: Array,
@@ -58,10 +67,14 @@ export default {
   data() {
     return {
       review: [],
+      selectedReview: Object,
     };
   },
+  mounted() {
+    this.setReviewDetailModalState(false);
+  },
   methods: {
-    ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),
+    ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState", "setReviewDetailModalState"]),
     setMyReviewListModalStates(status) {
       this.setMyReviewListModalState(status);
     },
@@ -70,6 +83,13 @@ export default {
       this.$router.push({
         name: "MyPage",
         params: { userId: id, key: "aaa" },
+      });
+    },
+
+    detailReview(reviewId) {
+      getDetailReview(reviewId, (response) => {
+        console.log(response);
+        this.selectedReview = response.data.data;
       });
     },
   },

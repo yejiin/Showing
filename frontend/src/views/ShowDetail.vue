@@ -132,7 +132,8 @@ export default {
 
 <style scoped>
 .header {
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
 }
 </style>

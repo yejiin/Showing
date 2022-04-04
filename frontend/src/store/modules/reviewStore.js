@@ -40,6 +40,10 @@ const reviewStore = {
     SET_REVIEW_ID: (state, id) => {
       state.reviewInfo.reviewId = id;
     },
+    SET_DETAIL_STATE: (state, status) => {
+      state.modals.reviewDetail = status;
+      console.log(state.modals.reviewDetail);
+    },
   },
 
   actions: {
@@ -58,6 +62,9 @@ const reviewStore = {
     setReviewModalState({ commit }, { status, reviewId }) {
       console.log("actions도 옴", status, " ", reviewId);
       commit("SET_REVIEW_STATE", { status, reviewId });
+    },
+    setReviewDetailModalState({ commit }, status) {
+      commit("SET_DETAIL_STATE", status);
     },
   },
 };
