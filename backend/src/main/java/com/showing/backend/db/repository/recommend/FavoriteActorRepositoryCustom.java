@@ -12,7 +12,7 @@ public interface FavoriteActorRepositoryCustom {
     /**
      * favorite_actor와 actor 테이블에서 해당 유저의 favorite actor의 정보를 조회한다.
      */
-    Optional<List<FavActorRes>> getFavActorListByUser(User user);
+    Optional<List<FavActorRes>> findTopCountFavActorListByUser(int count, User user);
 
     /**
      * favorite_actor테이블에서 해당 유저의 가중치 높은 count개 actor id 를 조회한다.
