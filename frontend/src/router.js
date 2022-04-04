@@ -8,6 +8,7 @@ import MainPage from "./views/MainPage.vue";
 import ShowDetail from "./views/ShowDetail.vue";
 import Callback from "./views/Callback.vue";
 import MyPage from "./views/MyPage.vue";
+import SearchPage from "./views/SearchPage.vue";
 
 Vue.use(Router);
 
@@ -44,6 +45,15 @@ export default new Router({
       components: {
         header: Header,
         default: MyPage,
+        footer: AppFooter,
+      },
+    },
+    {
+      path: "/search/:keyword",
+      name: "SearchPage",
+      components: {
+        header: Header,
+        default: SearchPage,
         footer: AppFooter,
       },
     },

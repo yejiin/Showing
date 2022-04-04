@@ -28,7 +28,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                 </div>
-                <input type="time" name="" id="" class="form-control" v-model="review.showTime" />
+                <input type="time" class="form-control" v-model="review.showTime" />
               </div>
             </div>
             <label for="location" class="bold">관람장소</label>
@@ -72,6 +72,7 @@ import Modal from "@/components/Modal.vue";
 import Datepicker from "vuejs-datepicker";
 import { addMyReview } from "@/api/review.js";
 import { mapState, mapActions } from "vuex";
+
 const reviewStore = "reviewStore";
 const userStore = "userStore";
 export default {
@@ -84,7 +85,7 @@ export default {
     performance: String,
     seasonShow: Object,
     seasonShowName: String,
-    setwrite : Number,
+    setwrite: Number,
   },
 
   data() {
@@ -95,7 +96,6 @@ export default {
         showTime: "",
         castingIdList: [],
         reviewContent: "",
-        
       },
     };
   },
@@ -125,20 +125,28 @@ export default {
       } else {
         // 선택 안된 블록이라면 warning으로 변경하고 목록에 저장
         cur.className = "badge badge-pill casting badge-warning";
-        console.log(cur.className);
         this.review.castingIdList.push(id);
-        console.log("warning으로 변경해");
       }
-      console.log(this.review);
-
-      console.log(this.review);
     },
     // Review 추가하기
     addMyReview,
     addReview() {
+      if (!this.review.showDate) {
+        this.showToast("error", "관람일정을 선택해주세요.");
+        return;
+      }
+      if (!this.review.showTime) {
+        this.showToast("error", "관람시간을 선택해주세요.");
+        return;
+      }
+      if (!this.review.reviewContent) {
+        this.showToast("error", "리뷰 내용을 입력해주세요.");
+        return;
+      }
+
       this.dateFommatter(this.review.showDate);
       this.timeFommatter(this.review.showTime);
-      var tmp = {
+      var reviewInfo = {
         seasonId: this.seasonShow.seasonId,
         showDate: this.review.showDate,
         showTime: this.review.showTime,
@@ -146,34 +154,32 @@ export default {
         reviewContent: this.review.reviewContent,
         userId: this.userInfo.userId,
       };
-      console.log(tmp);
       this.addMyReview(
-        tmp,
+        reviewInfo,
         (response) => {
-          console.log(response);
           this.setWriteReviewModalState(false);
-          // location.reload();
-          if(this.review.castingIdList.length!==0){
-            this.review.castingIdList.forEach(el=>{
-              let cur = document.getElementById(`write`+el)
-              cur.className = "badge badge-pill casting badge-primary"
-            })
+          this.showToast("success", response.data.message);
+          if (this.review.castingIdList.length !== 0) {
+            this.review.castingIdList.forEach((el) => {
+              let cur = document.getElementById(`write` + el);
+              cur.className = "badge badge-pill casting badge-primary";
+            });
           }
-          this.review={
+          this.review = {
             seasonId: this.seasonShow.seasonId,
             showDate: "",
             showTime: "",
             castingIdList: [],
             reviewContent: "",
-          }
-          this.$emit("setWrite", this.setwrite+1);
+          };
+          this.$emit("setWrite", this.setwrite + 1);
+          this.$emit("myReviewList");
         },
         (fail) => {
           console.log(fail);
+          this.showToast("error", "리뷰 작성 실패");
         }
       );
-      // location.reload();
-      
     },
     // 날짜 포맷 정리
     dateFommatter(date) {
@@ -188,6 +194,12 @@ export default {
     timeFommatter(time) {
       time = time + ":00";
       this.review.showTime = time;
+    },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
     },
   },
   created() {},
