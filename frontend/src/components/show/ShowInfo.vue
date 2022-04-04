@@ -154,7 +154,6 @@ export default {
       OtherShowInfo: {},
       OtherActor:[],
       OtherDesciption:'',
-  
     };
   },
   created() {
