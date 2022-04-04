@@ -8,13 +8,11 @@
           v-for="item in createPages()"
           :key="item.index"
           class="review mr-0 mb-2 card-lift--hover"
-          :img-src="item.performanceImage"
-          img-alt="Image"
-          img-top
           tag="article"
           style="max-width: 20rem"
           @click="setReviewModal(true, item.reviewId)"
         >
+          <img :src="item.performanceImage" class="mb-3 rounded review-image" />
           <!-- card content -->
           <div>
             <h6 class="review-name">{{ item.performanceName }}</h6>
@@ -135,6 +133,10 @@ export default {
 
 .card {
   border: 0px;
+}
+
+.review-image {
+  width: 100%;
 }
 
 .card-img-top {
