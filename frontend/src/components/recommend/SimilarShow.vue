@@ -27,6 +27,9 @@
               <b-badge v-if="similarList[index].lastSeasonProceedFlag == 0" pill variant="danger">공연완료</b-badge>
               <b-badge v-if="similarList[index].lastSeasonProceedFlag == 1" pill variant="primary">공연중</b-badge>
               <b-badge v-if="similarList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge>
+              &nbsp;
+              <b-badge v-if="similarList[index].performanceType == 1" pill variant="info">뮤지컬</b-badge>
+              <b-badge v-if="similarList[index].performanceType == 2" pill variant="success">연극</b-badge>
             </div>
             {{ similarList[index].lastSeasonStartDate }} ~ {{ similarList[index].lastSeasonEndDate }}
           </b-card>
