@@ -87,6 +87,11 @@ export default {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 0;
+  display: inline-block;
+  width: 235px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .index {
