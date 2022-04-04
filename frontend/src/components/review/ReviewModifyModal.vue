@@ -316,6 +316,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-image: url("./assets/pngwing.png");
   background-size: 12px 12px;
   border-color: transparent;
+  cursor: pointer;
 }
 .modalbutton {
   width: 20%;
@@ -324,6 +325,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   max-height: calc(100vh - 210px);
   overflow-y: auto;
 }
+.casting {
+  cursor: pointer;
+}
+
 </style>
 
 <style>
@@ -332,5 +337,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   width: 100% !important;
   border: 0px !important;
   color: darkgrey;
+  cursor: pointer;
 }
 </style>
