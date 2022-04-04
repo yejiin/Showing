@@ -31,14 +31,15 @@ const reviewStore = {
       state.modals.myReview.reviewId = data.reviewId;
 
       console.log("mutations ", data.status, " ", data.reviewId);
-
-      console.log(state.modals.myReview);
     },
     SET_MODIFY_REVIEW_STATE: (state, status) => {
       state.modals.modifyReview = status;
     },
     SET_REVIEW_ID: (state, id) => {
       state.reviewInfo.reviewId = id;
+    },
+    SET_DETAIL_STATE: (state, status) => {
+      state.modals.reviewDetail = status;
     },
   },
 
@@ -58,6 +59,9 @@ const reviewStore = {
     setReviewModalState({ commit }, { status, reviewId }) {
       console.log("actions도 옴", status, " ", reviewId);
       commit("SET_REVIEW_STATE", { status, reviewId });
+    },
+    setReviewDetailModalState({ commit }, status) {
+      commit("SET_DETAIL_STATE", status);
     },
   },
 };

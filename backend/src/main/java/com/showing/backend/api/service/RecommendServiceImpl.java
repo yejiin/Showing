@@ -25,13 +25,14 @@ public class RecommendServiceImpl implements RecommendService {
      * performanceId 공연과 비슷한 공연 목록을 조회한다.
      * type이 0이라면 공연완료, 공연중, 공연예정 조회
      * type이 1이라면 공연중, 공연예정 조회
+     * performanceIdList가 비어있다면 공연 중인 공연 조회
      */
     @Override
     public List<PerformanceRes> getRecommendPerformanceList(int type, List<Long> performanceIdList) {
 
         // 추천데이터가 없을 때 공연 중인 공연을 15개 조회한다.
         if (performanceIdList.isEmpty())
-            return performanceRepository.findByProceedFlagIs1(15);
+            return getPerformingList();
 
         // performanceId 공연에 대해 공연완료, 공연중, 공연예정 상태인 추천 공연을 15개 조회한다.
         return recommendRepository.getTopCountRandomRecommendListByPerformanceId(type, 15, performanceIdList);
@@ -84,6 +85,14 @@ public class RecommendServiceImpl implements RecommendService {
         recommendRes.setRecommendListByActor(getFavoriteActorPerformanceListByUser(userId));
 
         return recommendRes;
+    }
+
+    /**
+     * 공연 중인 공연 목록 랜덤으로 조회
+     */
+    @Override
+    public List<PerformanceRes> getPerformingList() {
+        return performanceRepository.findByProceedFlagIs1(15);
     }
 
 }
