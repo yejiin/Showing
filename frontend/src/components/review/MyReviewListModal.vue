@@ -181,7 +181,6 @@ export default {
           this.reviews = response.data.data;
           this.hasMore = response.data.data.length > 0 ? true : false;
           this.page = Math.min(this.page, response.data.data.length);
-          console.log(response.data.data);
         },
         (fail) => {
           console.log(fail);
@@ -231,10 +230,7 @@ export default {
       this.setModifyReviewModalState(true);
     },
     onScroll($state) {
-      console.log("onScroll");
-      console.log(this.page);
       this.page = Math.min(this.page + 5, this.reviews.length);
-      console.log("after : " + this.page);
     },
     // confirm 메시지 표시
     showToast(typeName, message) {
@@ -423,6 +419,8 @@ div.right2 {
   height: 70%;
   background-color: #f8f8f8;
   border-radius: 5%;
+  padding: 5%;
+  margin-bottom: 3%;
 }
 .backArrow2 {
   clear: both;

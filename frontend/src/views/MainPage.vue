@@ -72,13 +72,11 @@ export default {
         this.actorRecommnedList = response.data.data.recommendListByActor;
       },
       (error) => {
-        console.log("바로 여기임");
         console.log(error);
       }
     );
     await getPerformingRecommend(
       (response) => {
-        console.log(response);
         this.mainRecommendList = response.data.data;
       },
       (error) => {
