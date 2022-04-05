@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <!-- 헤더 -->
-    <show-header :heading="heading" :key="headerKey"></show-header>
+    <show-header @reNewRating="reNewRating" :heading="heading" :key="headerKey"></show-header>
     <!-- 공연 상세 정보 -->
     <show-info
       v-if="heading.performanceId !== null"
@@ -79,6 +79,19 @@ export default {
         this.$route.params.showId,
         (response) => {
           this.previewReview = response.data.data.previewReviewList;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+
+    reNewRating() {
+      detailShow(
+        this.$route.params.showId,
+        (response) => {
+          this.heading.starPointAverage = response.data.data.starPointAverage;
+          this.heading.ratingCount = response.data.data.ratingCount;
         },
         (error) => {
           console.log(error);
