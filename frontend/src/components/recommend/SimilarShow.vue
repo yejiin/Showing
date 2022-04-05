@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     detailShow(performanceId) {
-      console.log(performanceId);
       this.$router.push({
         name: "ShowDetail",
         params: { showId: performanceId, key: "a" },
