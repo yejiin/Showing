@@ -71,6 +71,9 @@
 
 <script>
 import { modifyUser } from "@/api/user.js";
+import { mapActions } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   name: "Profile",
@@ -84,10 +87,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions(userStore, ["setNickName"]),
+
     editProfile(status) {
       this.edit = status;
 
       if (!status) {
+        this.setNickName(this.profile.nickName);
         modifyUser(
           this.profile,
           (response) => {
