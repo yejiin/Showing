@@ -52,13 +52,10 @@ const userStore = {
         state,
         (response) => {
           if (response.data.statusCode == 200) {
-            console.log("네이버 Access Token 생성 성공");
-            console.log(response);
             token = response.data.data;
           }
         },
         (error) => {
-          console.log("네이버 Access Token 생성 실패");
           console.log(error);
         }
       );
@@ -70,8 +67,6 @@ const userStore = {
         naverToken,
         (response) => {
           if (response.data.statusCode == 201) {
-            console.log("네이버 로그인 성공");
-
             commit("SET_USER_INFO", response.data.data);
             commit("SET_IS_LOGIN", true);
 
@@ -80,7 +75,6 @@ const userStore = {
         },
         (error) => {
           commit("SET_IS_LOGIN", false);
-          console.log("네이버 로그인 실패");
           console.log(error);
         }
       );
@@ -92,15 +86,10 @@ const userStore = {
         code,
         (response) => {
           if (response.data.statusCode == 200) {
-            console.log("카카오 Access Token 생성 성공");
-            console.log(response);
             token = response.data.data;
           }
         },
-        (error) => {
-          console.log("카카오 Access Token 생성 실패");
-          console.log(error.response);
-        }
+        (error) => {}
       );
       return token;
     },
@@ -110,15 +99,12 @@ const userStore = {
         kakaoToken,
         (response) => {
           if (response.data.statusCode == 201) {
-            console.log("카카오 로그인 성공");
-
             commit("SET_USER_INFO", response.data.data);
             commit("SET_IS_LOGIN", true);
             sessionStorage.setItem("access-token", response.data.data.accessToken);
           }
         },
         (error) => {
-          console.log("카카오 로그인 실패");
           console.log(error.response);
 
           commit("SET_IS_LOGIN", false);
