@@ -8,10 +8,12 @@
         </button>
         <br /><br />
         <div style="text-align: center">
-          <h2 class="main_title login_title">SHOWING</h2>
+          <img class="logo" src="@/assets/img/showing-logo.png" alt="logo" />
+        </div>
+
+        <div style="text-align: center">
           <br />
-          <h4 class="main_title">로그인</h4>
-          <br /><br />
+          <br />
           <div id="naver">
             <a
               href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=w0aqGwanb1NwL6aMLQHo&redirect_uri=https://j6a301.p.ssafy.io/callback&state=1"
@@ -19,7 +21,7 @@
               <img class="loginBtn" src="../../../public/img/brand/naver_login.png" />
             </a>
           </div>
-          <br /><br />
+          <br />
           <div id="kakao">
             <a
               href="https://kauth.kakao.com/oauth/authorize?client_id=f5d578b0e180cc11c0c265cd6fe7a65a&redirect_uri=https://j6a301.p.ssafy.io/callback&response_type=code"
@@ -54,7 +56,11 @@ export default {
 
 <style scoped>
 .loginBtn {
-  max-width: 60%;
+  max-width: 57%;
+}
+
+.logo {
+  height: 90px;
 }
 
 .login_title {
