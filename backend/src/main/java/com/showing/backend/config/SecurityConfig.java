@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/search/**",
                         "/api/v1/users/{userId}",
                         "/api/v1/recommend"
-                );
+                ).antMatchers(HttpMethod.GET,"/api/v1/reviews/**");
     }
 
 

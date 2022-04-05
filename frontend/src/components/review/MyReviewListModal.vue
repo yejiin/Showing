@@ -91,7 +91,7 @@
           <div class="showInfo2 left mb-3">
             <div>
               <h3>{{ show.performanceName }}</h3>
-              <p style="font-size: 8px">{{ show.startDate }}~{{ show.endDate }}</p>
+              <p style="font-size: 13px">{{ show.startDate }}&nbsp;~&nbsp;{{ show.endDate }}</p>
             </div>
             <label for="date">관람일정</label>
             <p class="inline2 right2" type="input">{{ show.viewDate }}</p>
@@ -118,6 +118,7 @@
     </modal>
     <review-modify-modal
       :key="modireview"
+      @addMyReview="addMyReview"
       @setWrite="setReviewCount"
       :setwrite="setReview"
       :seasonShowName="seasonShowName"
@@ -215,6 +216,7 @@ export default {
           this.showToast("success", response.data.message);
           this.getMyReviewList();
           this.$emit("myReviewList");
+          this.$emit("addMyReview");
         },
         (fail) => {
           console.log(fail);
@@ -240,10 +242,13 @@ export default {
         type: typeName,
       });
     },
-    setReviewCount(value){
+    setReviewCount(value) {
       this.setReview = value;
       this.getMyReviewList();
-    }
+    },
+    addMyReview() {
+      this.$emit("addMyReview");
+    },
   },
   created() {
     this.getMyReviewList();
@@ -313,6 +318,7 @@ select#season {
   border-radius: 8px;
   border: #c4c4c4 solid 0.5px;
   margin: 1%;
+  cursor: pointer;
 }
 .bold {
   font-weight: bold;

@@ -5,6 +5,7 @@
     <!-- 공연 상세 정보 -->
     <show-info
       v-if="heading.performanceId !== null"
+      @addMyReview="addMyReview"
       :info="info"
       :actor="actor"
       :description="description"
@@ -72,6 +73,18 @@ export default {
     ratingReload() {
       this.headerKey += 1;
     },
+
+    addMyReview() {
+      detailShow(
+        this.$route.params.showId,
+        (response) => {
+          this.previewReview = response.data.data.previewReviewList;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
   async created() {
     this.heading.performanceId = Number(this.$route.params.showId);
@@ -132,7 +145,8 @@ export default {
 
 <style scoped>
 .header {
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
 }
 </style>

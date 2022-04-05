@@ -20,12 +20,14 @@
       </b-card>
       <review-list
         @myReviewList="myReviewList"
+        @addMyReview="addMyReview"
         :key="setReview"
         :seasonShowName="seasonShowName"
         :seasonShow="showInformation"
         :performanceId="performanceId"
       ></review-list>
       <review-write
+        @addMyReview="addMyReview"
         @myReviewList="myReviewList"
         @setWrite="setReviewCount"
         :setwrite="setReview"
@@ -58,7 +60,8 @@
           </a>
         </div>
       </div>
-      <span class="badge badge-pill badge-success ml-4">{{ showInformation.detailType }}</span
+      <span class="badge badge-pill badge-info ml-4" v-if="showInformation.detailType !== '연극'">뮤지컬</span>
+      &nbsp; <span class="badge badge-pill badge-success">{{ showInformation.detailType }}</span
       >&nbsp;
       <span class="badge badge-pill badge-warning">{{ showInformation.performanceAge }} 관람가</span>
       <br /><br />
@@ -74,7 +77,7 @@
         <b-col class="ml-2 my-2" cols="3"> 공연시간 </b-col>
         <b-col>{{ showInformation.runingTime }}</b-col>
       </b-row>
-      <div class="subTitle mt-3">캐스팅</div>
+      <div v-if="actor.length > 0" class="subTitle mt-3">캐스팅</div>
       <actor-list :actor="showActor"></actor-list>
     </b-card>
     <br />
@@ -112,28 +115,27 @@ export default {
     ...mapGetters({
       isLogin: "userStore/isLogin",
     }),
-    showInformation : function() {
-      if(this.clickOtherSeason===true){
-        return this.OtherShowInfo
-      }else{
-        return this.info
+    showInformation: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherShowInfo;
+      } else {
+        return this.info;
       }
     },
-    showActor : function() {
-      if(this.clickOtherSeason===true){
-        return this.OtherActor
-      }else{
-        return this.actor
+    showActor: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherActor;
+      } else {
+        return this.actor;
       }
     },
-    showDescription : function() {
-      if(this.clickOtherSeason===true){
-        return this.OtherDesciption
-      }else{
-        return this.description
+    showDescription: function () {
+      if (this.clickOtherSeason === true) {
+        return this.OtherDesciption;
+      } else {
+        return this.description;
       }
-    }
-    
+    },
   },
   components: {
     ActorList,
@@ -152,9 +154,8 @@ export default {
       setReview: 0,
       reviewList: [],
       OtherShowInfo: {},
-      OtherActor:[],
-      OtherDesciption:'',
-  
+      OtherActor: [],
+      OtherDesciption: "",
     };
   },
   created() {
@@ -198,6 +199,10 @@ export default {
           console.log(fail);
         }
       );
+    },
+
+    addMyReview() {
+      this.$emit("addMyReview");
     },
 
     ...mapActions(reviewStore, ["setMyReviewListModalState", "setWriteReviewModalState"]),

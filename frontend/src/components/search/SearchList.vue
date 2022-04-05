@@ -6,7 +6,7 @@
           <b-col>
             <b-card
               id="my-card"
-              class="mr-0 mb-2"
+              class="mr-0 mb-2 card-lift--hover"
               :img-src="performanceList[index].lastSeasonImage"
               img-alt="Image"
               img-top
@@ -17,7 +17,10 @@
               <div class="name">
                 <strong>{{ performanceList[index].performanceName }}</strong>
               </div>
-              <br />
+              <div class="tags">
+                <b-badge v-if="performanceList[index].performanceType == 1" pill variant="info">뮤지컬</b-badge>
+                <b-badge v-if="performanceList[index].performanceType == 2" pill variant="success">연극</b-badge>
+              </div>
               {{ performanceList[index].lastSeasonStartDate }} ~ {{ performanceList[index].lastSeasonEndDate }}
             </b-card>
           </b-col>

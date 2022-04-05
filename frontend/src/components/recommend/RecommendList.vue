@@ -3,9 +3,9 @@
     <b-container fluid>
       <b-row>
         <b-col cols="12">
-          <carousel :perPage="6">
+          <carousel :perPage="5">
             <slide class="p-1" v-for="(item, index) in performanceList" :key="index">
-              <b-card class="mr-0 mb-2" @click="detailShow(index)" style="cursor: pointer">
+              <b-card class="mr-0 mb-2 card-lift--hover" @click="detailShow(index)" style="cursor: pointer">
                 <!-- card content -->
                 <img :src="performanceList[index].lastSeasonImage" class="mb-3 rounded" />
                 <p class="showName">
@@ -22,10 +22,12 @@
                   <b-badge v-if="performanceList[index].lastSeasonProceedFlag == 1" pill variant="primary"
                     >공연중</b-badge
                   >
-                  <b-badge v-if="performanceList[index].lastSeasonProceedFlag == 2" pill variant="warning"
-                    >예정</b-badge
-                  >
+                  <b-badge v-if="performanceList[index].lastSeasonProceedFlag == 2" pill variant="warning">예정</b-badge
+                  >&nbsp;
+                  <b-badge v-if="performanceList[index].performanceType == 1" pill variant="info">뮤지컬</b-badge>
+                  <b-badge v-if="performanceList[index].performanceType == 2" pill variant="success">연극</b-badge>
                 </div>
+
                 {{ performanceList[index].lastSeasonStartDate }} ~ {{ performanceList[index].lastSeasonEndDate }}
               </b-card>
             </slide>
@@ -85,6 +87,11 @@ export default {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 0;
+  display: inline-block;
+  width: 235px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .index {
