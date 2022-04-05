@@ -133,7 +133,6 @@ export default {
     },
 
     addMyReview(data) {
-      console.log(data);
       this.$emit("addMyReview");
     },
   },
