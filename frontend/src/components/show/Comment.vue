@@ -32,7 +32,7 @@
                 </b-container>
               </div>
               <hr class="hr" />
-              <b-card-text class="card-text">{{ previewReview[index].content.substring(0, 15) }}</b-card-text>
+              <b-card-text class="card-text">{{ previewReview[index].content.substring(0, 15) }}&nbsp;...</b-card-text>
             </b-card>
           </div>
         </slide>
