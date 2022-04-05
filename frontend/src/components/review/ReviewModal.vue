@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="content">
-          <p style="margin: 8%">{{ detailReview.content }}</p>
+          <p style="margin: 8%" class="reflect_enter">{{ detailReview.content }}</p>
         </div>
       </div>
     </modal>
@@ -197,5 +197,8 @@ h3 {
 }
 .updatedelete {
   cursor: pointer;
+}
+.reflect_enter {
+  white-space: pre-line;
 }
 </style>
