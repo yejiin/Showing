@@ -17,7 +17,7 @@
           <div class="showInfo left mb-3">
             <div>
               <h3>{{ seasonShowName }}</h3>
-              <p style="font-size: 8px">{{ seasonShow.startDate }}~{{ seasonShow.endDate }}</p>
+              <p style="font-size: 13px">{{ seasonShow.startDate }}&nbsp;~&nbsp;{{ seasonShow.endDate }}</p>
             </div>
             <div class="form-group picker">
               <div class="input-group">
@@ -25,7 +25,13 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                 </div>
-                <datepicker class="form-control" input-class="smaller" v-model="review.viewDate"> </datepicker>
+                <datepicker v-if="review.viewDate" 
+                            class="form-control" 
+                            input-class="smaller" 
+                            v-model="review.viewDate" 
+                            :disabledDates="{ to: new Date(seasonShow.startDate), from: new Date(seasonShow.endDate) > new Date() ? new Date() : new Date(seasonShow.endDate) }" 
+                            :openDate="new Date(review.viewDate)"
+                > </datepicker>
               </div>
             </div>
             <div class="form-group picker">
@@ -53,7 +59,7 @@
             class="badge badge-pill casting badge-primary"
             v-for="(index, key) in seasonShow.actorList"
             :key="key"
-            :id="`modify`+index.castingId"
+            :id="`modify` + index.castingId"
             @click="selectactors(index.castingId)"
           >
             {{ index.actorName }}
@@ -109,6 +115,15 @@ export default {
   computed: {
     ...mapState(reviewStore, ["modals", "reviewInfo"]),
     ...mapState(userStore, ["userInfo"]),
+    year : function() {
+      return new Date(this.seasonShow.startDate).getFullYear()
+    },
+    month : function(){
+      return new Date(this.seasonShow.startDate).getMonth()
+    },
+    day : function() {
+      return new Date(this.seasonShow.startDate).getDate()
+    }
   },
   watch: {
     viewDate: function () {
@@ -133,7 +148,7 @@ export default {
     // 배우 캐스팅 구하기
     selectactors(id) {
       // 클릭된 블록
-      let cur = document.getElementById(`modify`+id);
+      let cur = document.getElementById(`modify` + id);
       // 해당 블록이 이미 선택되었으면(warning으로 변해 있으면)
       if (cur.className == "badge badge-pill casting badge-warning") {
         // 다시 primary로 변경하고 선택된 actors에서 뺌
@@ -175,12 +190,12 @@ export default {
           this.setModifyReviewModalState(false);
           this.$emit("setWrite", this.setwrite + 1);
           this.showToast("success", response.data.message);
+          this.$emit("addMyReview");
         },
         (fail) => {
           this.showToast("error", "리뷰 작성 실패");
         }
       );
-      
     },
     // 날짜 포맷 정리
     dateFommatter(date) {
@@ -211,7 +226,7 @@ export default {
         // this.review.viewTime = response.data.data.viewTime.substring(0,5);
         if (response.data.data.reviewCastingIdList) {
           response.data.data.reviewCastingIdList.forEach((element) => {
-            let cur = document.getElementById(`modify`+element);
+            let cur = document.getElementById(`modify` + element);
             cur.className = "badge badge-pill casting badge-warning";
           });
         }
@@ -301,6 +316,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-image: url("./assets/pngwing.png");
   background-size: 12px 12px;
   border-color: transparent;
+  cursor: pointer;
 }
 .modalbutton {
   width: 20%;
@@ -309,6 +325,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   max-height: calc(100vh - 210px);
   overflow-y: auto;
 }
+.casting {
+  cursor: pointer;
+}
+
 </style>
 
 <style>
@@ -317,5 +337,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   width: 100% !important;
   border: 0px !important;
   color: darkgrey;
+  cursor: pointer;
 }
 </style>

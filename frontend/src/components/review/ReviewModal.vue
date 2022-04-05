@@ -6,32 +6,29 @@
       </button>
 
       <div>
-        <div class="modalHeader title">
-          <!-- <img :src="user.img" alt="profile image" class="profile" /> -->
-          <!-- <h6 class="inline title">{{ user.nickname }}</h6> -->
-        </div>
-        <div v-if="this.$store.state.userStore.userInfo.userId == this.userId">
+        <div class="modalHeader title"></div>
+        <div v-if="this.$store.state.userStore.userInfo.userId == this.userId" style="cursor: pointer">
           <a class="updatedelete" @click="modifyModal(detailReview.reviewId)">
             <i class="fa fa-pencil"></i>
             수정
           </a>
-
+          &nbsp;| &nbsp;
           <a class="updatedelete" @click="deleteReview(detailReview.reviewId)">
             <i class="fa fa-trash"></i>
-            삭제 &nbsp;| &nbsp;
+            삭제
           </a>
         </div>
         <div style="width: 100%; position: relative">
           <div class="showInfo left mb-3">
             <div>
-              <h3>{{ detailReview.performanceName }}</h3>
-              <p style="font-size: 8px">{{ detailReview.startDate }}~{{ detailReview.endDate }}</p>
+              <h3 class="mt-2 mb-3">{{ detailReview.performanceName }}</h3>
+              <p style="font-size: 13px">{{ detailReview.startDate }}&nbsp;~&nbsp;{{ detailReview.endDate }}</p>
             </div>
             <label for="date">관람일정</label>
             <p class="inline right" type="input">{{ detailReview.viewDate }}</p>
             <br />
             <label for="time">관람시간</label>
-            <p class="inline" type="input">{{ detailReview.viewTime }}</p>
+            <p class="inline" type="input" v-if="detailReview.viewTime">{{ detailReview.viewTime.substring(0, 5) }}</p>
             <br />
             <label for="location">관람장소</label>
             <p class="inline" type="input">{{ detailReview.location }}</p>
@@ -52,7 +49,8 @@
     </modal>
     <review-modify-modal
       :seasonShowName="detailReview.performanceName"
-      :seasonShow="detailReview"
+      :seasonShow="seasonShow"
+      @addMyReview="addMyReview"
     ></review-modify-modal>
   </div>
 </template>
@@ -60,6 +58,8 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { deleteMyReview } from "@/api/review.js";
+import { detailSeasonShow } from "@/api/show.js";
+
 import Modal from "@/components/Modal.vue";
 import ReviewModifyModal from "@/components/review/ReviewModifyModal.vue";
 
@@ -67,10 +67,17 @@ const reviewStore = "reviewStore";
 
 export default {
   name: "ReviewModal",
+
   components: {
     Modal,
     ReviewModifyModal,
   },
+  data() {
+    return {
+      seasonShow: {},
+    };
+  },
+
   props: {
     detailReview: Object,
     userId: Number,
@@ -86,30 +93,48 @@ export default {
     },
 
     deleteReview(reviewId) {
-      console.log("deleteReview");
       let status = false;
       this.setReviewModalState({ status, reviewId });
       deleteMyReview(
         reviewId,
         (response) => {
-          alert("게시물이 삭제되었습니다");
-          console.log("success : " + response);
-
-          this.$router.go();
+          this.showToast("success", "리뷰가 삭제되었습니다.");
+          this.$emit("getReviews");
         },
         (fail) => {
-          console.log("fail 온 거임");
+          this.showToast("fail", "오류가 발생하였습니다.");
           console.log(fail);
         }
       );
     },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
+    },
 
-    modifyModal(reviewId) {
+    async modifyModal(reviewId) {
+      await detailSeasonShow(
+        this.detailReview.seasonId,
+        (response) => {
+          this.seasonShow = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
       let status = false;
       let id = reviewId;
       this.setReviewModalState({ status, reviewId });
       this.setModifyReviewModalState(true);
       this.setReviewId(id);
+    },
+
+    addMyReview(data) {
+      console.log(data);
+      this.$emit("addMyReview");
     },
   },
 };
@@ -169,5 +194,8 @@ div.right {
 label,
 h3 {
   font-weight: bold;
+}
+.updatedelete {
+  cursor: pointer;
 }
 </style>

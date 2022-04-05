@@ -1,5 +1,5 @@
 <template>
-  <div class="header mt-1">
+  <div class="header">
     <div v-if="this.$store.state.userStore.isLogin">
       <div>
         <h4 class="main_title">'{{ this.$store.state.userStore.userInfo.nickName }}' 님을 위한 추천 공연</h4>
@@ -62,34 +62,36 @@ export default {
       }
     );
     // 추천 공연 리스트 불러오기
-    if (this.$store.state.userStore.isLogin) {
-      await getMainRecommend(
-        this.$store.state.userStore.userInfo.userId,
-        (response) => {
-          this.mainUserRecommendList = response.data.data.recommendListByUser;
-          this.actorRecommnedList = response.data.data.recommendListByActor;
-        },
-        (error) => {
-          console.log("바로 여기임");
-          console.log(error);
-        }
-      );
-    } else {
-      await getPerformingRecommend(
-        (response) => {
-          console.log(response);
-          this.mainRecommendList = response.data.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
+    await getMainRecommend(
+      this.$store.state.userStore.userInfo.userId,
+      (response) => {
+        this.mainUserRecommendList = response.data.data.recommendListByUser;
+        this.actorRecommnedList = response.data.data.recommendListByActor;
+      },
+      (error) => {
+        console.log("바로 여기임");
+        console.log(error);
+      }
+    );
+    await getPerformingRecommend(
+      (response) => {
+        console.log(response);
+        this.mainRecommendList = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
 
 <style scoped>
+.header {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1500px;
+}
 .main_title {
   font-size: 1.5em;
   margin-left: 0.5em;
