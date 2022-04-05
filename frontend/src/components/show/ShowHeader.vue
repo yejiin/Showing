@@ -96,6 +96,8 @@ export default {
             (response) => {
               this.setMyStarIdState(response.data.data);
               this.setMyRatingState(this.ratingCount);
+
+              this.$emit("reNewRating");
             },
             (error) => {
               console.log(error);
@@ -109,6 +111,8 @@ export default {
               (response) => {
                 this.setMyStarIdState(0);
                 this.setMyRatingState(0);
+
+                this.$emit("reNewRating");
               },
               (error) => {
                 console.log(error);
@@ -125,6 +129,8 @@ export default {
               req,
               (response) => {
                 this.setMyRatingState(this.ratingCount);
+
+                this.$emit("reNewRating");
               },
               (error) => {
                 console.log(error);
