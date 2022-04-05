@@ -3,7 +3,7 @@
     <b-card>
       <span class="main_title">작품설명</span>
       <read-more
-        class="my-3 script"
+        class="my-3 script reflect_enter"
         more-str="더보기"
         :text="description"
         link="#"
@@ -43,5 +43,9 @@ export default {
 .more {
   color: #3f46d8;
   float: right;
+}
+
+.reflect_enter {
+  white-space: pre-line;
 }
 </style>

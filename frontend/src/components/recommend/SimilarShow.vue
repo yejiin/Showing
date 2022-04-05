@@ -7,7 +7,7 @@
     </div>
     <div v-else>
       <!-- carousel area -->
-      <carousel :perPage="4">
+      <carousel :perPage="3">
         <slide class="p-1 mt-3" v-for="(item, index) in similarList" :key="index">
           <b-card
             class="mr-0 mb-2 rounded card-lift--hover"

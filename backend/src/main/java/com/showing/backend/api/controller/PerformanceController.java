@@ -51,7 +51,7 @@ public class PerformanceController {
         List<WordCloudRes> wordCloudList = reviewService.getWordCloud(performanceId);
         List<Long> performanceIdList = new ArrayList<>();
         performanceIdList.add(performanceId);
-        List<PerformanceRes> similarPerformanceList = recommendService.getRecommendPerformanceList(performance.getPerformanceType(), performanceIdList);
+        List<PerformanceRes> similarPerformanceList = recommendService.getRecommendPerformanceList(0, performanceIdList);
 
         return ResponseEntity.ok(BaseResponseBody.of(HttpStatus.OK, GET_PERFORMANCE, PerformanceDetailRes.of(performance, rankingRes, seasonRes, wordCloudList, previewReviewList, similarPerformanceList)));
     }
