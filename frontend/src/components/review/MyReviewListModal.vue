@@ -112,7 +112,7 @@
           </div>
         </div>
         <div class="content2">
-          <p style="margin: 8%">{{ show.content }}</p>
+          <pre class="reflect_enter">{{ show.content }}</pre>
         </div>
       </div>
     </modal>
@@ -377,6 +377,9 @@ div.right {
   display: block;
   background-color: transparent;
   border: 0;
+}
+.reflect_enter {
+  white-space: pre-line;
 }
 .backArrow:not(:disabled):not(.disabled) {
   cursor: pointer;
