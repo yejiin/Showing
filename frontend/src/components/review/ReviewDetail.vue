@@ -158,8 +158,6 @@ select#season {
 }
 .content {
   clear: both;
-  min-height: 150px;
-  max-height: 150px;
   background-color: #f8f8f8;
   border-radius: 5%;
   padding: 5%;
