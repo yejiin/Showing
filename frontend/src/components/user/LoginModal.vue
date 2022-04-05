@@ -14,7 +14,7 @@
           <br /><br />
           <div id="naver">
             <a
-              href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=w0aqGwanb1NwL6aMLQHo&redirect_uri=http://localhost:8080/callback&state=1"
+              href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=w0aqGwanb1NwL6aMLQHo&redirect_uri=https://j6a301.p.ssafy.io/callback&state=1"
             >
               <img class="loginBtn" src="../../../public/img/brand/naver_login.png" />
             </a>
@@ -22,7 +22,7 @@
           <br /><br />
           <div id="kakao">
             <a
-              href="https://kauth.kakao.com/oauth/authorize?client_id=f5d578b0e180cc11c0c265cd6fe7a65a&redirect_uri=http://localhost:8080/callback&response_type=code"
+              href="https://kauth.kakao.com/oauth/authorize?client_id=f5d578b0e180cc11c0c265cd6fe7a65a&redirect_uri=https://j6a301.p.ssafy.io/callback&response_type=code"
             >
               <img class="loginBtn" src="../../../public/img/brand/kakao_login.png" />
             </a>
