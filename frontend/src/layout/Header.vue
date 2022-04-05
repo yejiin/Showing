@@ -1,24 +1,99 @@
 <template>
-  <b-navbar toggleable="lg" type="white" variant="white" class="fixed-top custnavi" v-cloak>
-    <b-navbar-brand class="logo_position">
-      <img src="@/assets/img/showing-logo.png" class="logo" @click="goToMain()" />
-    </b-navbar-brand>
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav>
-      <search></search>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <login v-if="userInfo.userId == ''"></login>
-      <div class="dropdown">
-        <p v-if="userInfo.userId"><img class="profile" :src="userInfo.userImage" alt="" /></p>
-        <div class="dropdown-content">
-          <p @click="goToMyPage" class="dropdownbox"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;마이페이지</p>
-          <p @click="HandleLogout" class="dropdownbox">
-            <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;로그아웃
-          </p>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-default">
+    <div class="container">
+      <!-- 메인 로고 -->
+      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
+        <img class="logo" src="@/assets/img/showing-logo.png" alt="logo" />
+      </router-link>
+
+      <!-- Navbar 토글 버튼 -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbar"
+        aria-controls="navbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbar">
+        <div class="navbar-collapse-header">
+          <div class="row">
+            <div class="col-6 collapse-brand"></div>
+
+            <!-- 닫기 버튼 -->
+            <div class="col-6 collapse-close">
+              <button
+                type="button"
+                class="navbar-toggler"
+                data-toggle="collapse"
+                data-target="#navbar"
+                aria-controls="navbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
         </div>
+
+        <!-- 비로그인의 경우 -->
+        <ul v-if="userInfo.userId == ''" class="navbar-nav ml-lg-auto">
+          <!-- 검색 -->
+          <li class="nav-item">
+            <search class="mt-3"></search>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon">
+              <login></login>
+            </a>
+          </li>
+        </ul>
+
+        <!-- 로그인 했을 경우 -->
+        <ul v-else class="navbar-nav ml-lg-auto">
+          <!-- 검색 -->
+          <li class="nav-item">
+            <search></search>
+          </li>
+          <!-- 화면 너비 작을 때 -->
+          <li class="nav-item d-lg-none">
+            <a class="dropdown-item mt-4" @click="goToMyPage">
+              <i class="ni ni-circle-08"></i>
+              <span class="nav-link-inner--text">마이페이지</span>
+            </a>
+            <a class="dropdown-item" @click="HandleLogout">
+              <i class="ni ni-button-power"></i>
+              <span class="nav-link-inner--text">로그아웃</span>
+            </a>
+          </li>
+          <!-- 화면 너비 넓을 때 -->
+          <div class="dropdown">
+            <a href="#" class="btn btn-default profile-btn" data-toggle="dropdown" id="profileDropDown">
+              <img class="profile-img" :src="userInfo.userImage" />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropDown">
+              <li>
+                <a class="dropdown-item" @click="goToMyPage">
+                  <i class="ni ni-circle-08"></i>
+                  <span class="nav-link-inner--text">마이페이지</span>
+                </a>
+                <a class="dropdown-item" @click="HandleLogout">
+                  <i class="ni ni-button-power"></i>
+                  <span class="nav-link-inner--text">로그아웃</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </ul>
       </div>
-    </b-collapse>
-  </b-navbar>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -44,72 +119,67 @@ export default {
     ...mapActions(userStore, ["logout"]),
     ...mapActions(ratingStore, ["setMyRatingState"]),
     goToMain() {
-      this.$router.push({ name: "MainPage" });
+      if (this.$route.path !== "/") this.$router.push({ name: "MainPage" });
     },
     goToMyPage() {
-      this.$router.push({ path: "/users/" + this.userInfo.userId });
+      if (this.$route.path !== "/users/" + this.userInfo.userId)
+        this.$router.push({ path: "/users/" + this.userInfo.userId });
     },
     HandleLogout() {
       this.logout();
       this.setMyRatingState(0);
-      alert("로그아웃 되었습니다");
+      this.showToast("success", "로그아웃 되었습니다");
       this.goToMain();
+    },
+    // confirm 메시지 표시
+    showToast(typeName, message) {
+      this.$toast(message, {
+        type: typeName,
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-.navbar.navbar-dark.bg-dark {
-  background-color: white !important;
+.navbar {
+  height: 80px;
 }
-
 .logo {
-  color: #5461e6;
+  cursor: pointer;
+  height: 65px;
+}
+li {
   cursor: pointer;
 }
-
-.logo_position {
-  margin-left: 5% !important;
-  margin-right: 55%;
+.ni,
+.profile-img {
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  border-radius: 50%;
 }
-
-.custnavi {
-  border-bottom: solid 0.5px #e5e8eb;
-  margin-right: 30px;
+.profile-btn,
+.profile-btn:hover,
+.profile-btn:active,
+.profile-btn:focus {
+  padding: 0;
+  margin-left: 10px;
+  border: 0;
+  box-shadow: none;
 }
-.profile {
-  border-radius: 70%;
-  width: 40px;
-  margin-top: 20%;
-  /* margin-top: 20px; */
-  margin-left: 30px;
+.dropdown-item {
+  height: 45px;
+  padding: 0;
 }
-.dropdown {
-  position: relative;
-  display: inline-block;
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
 }
-.dropdown-content {
-  display: none;
-  position: absolute;
-  /* margin-left: 20%; */
-  width: 150px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-  /* min-width: 160px;
-  padding: 8px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
-}
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-.dropdownbox {
-  margin-left: 20%;
-  margin-top: 10%;
-  /* border-top: solid 1px #2C3093; */
-}
-
-#nav-collapse {
-  margin-left: 10%;
+@media (max-width: 991.98px) {
+  .profile-btn {
+    display: none;
+  }
 }
 </style>
