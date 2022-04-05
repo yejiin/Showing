@@ -1,6 +1,11 @@
 <template>
   <div>
-    <base-button size="sm" type="primary" class="float-right" @click="[(modals.modal = true), (modals.modal1 = true)]">
+    <base-button
+      size="sm"
+      type="primary"
+      class="float-right"
+      @click="[(modals.modal = true), (modals.modal1 = true), getReviews()]"
+    >
       더보기
     </base-button>
     <modal :show.sync="modals.modal" modal-classes="modal-dialog">
@@ -244,8 +249,6 @@ select#season {
 }
 .content {
   clear: both;
-  min-height: 150px;
-  max-height: 150px;
   background-color: #f8f8f8;
   border-radius: 5%;
   padding: 5%;
@@ -308,11 +311,11 @@ div.right2 {
 .backArrow2:not(:disabled):not(.disabled) {
   cursor: pointer;
 }
+.reflect_enter {
+  white-space: pre-line;
+}
 label,
 h3 {
   font-weight: bold;
-}
-.reflect_enter {
-  white-space: pre-line;
 }
 </style>
