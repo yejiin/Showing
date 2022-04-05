@@ -24,8 +24,28 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=1, shrink-to-fit=no"
       name="viewport"
     />
-    <meta name="description" content="Start your development with a Design System for Bootstrap 4 and Vue.js." />
-    <meta name="author" content="Creative Tim, Cristi Jora" />
+    <!-- 
+    Cache-Control
+    no-cache : 캐시를 사용하기 전에 재검증을 위한 요청을 강제함.
+    no-store : 클라이언트의 요청, 서버의 응답 등을 일체 저장하지 않음
+    must-revalidate : 캐시를 사용하기 전에 반드시 만료된 것인지 검증을 함.
+    Ex) Cache-Control: no-cache, no-store, must-revalidate
+    -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+
+    <!-- 
+    Expires
+    리소스가 validate 하지 않다고 판단할 시간을 설정함
+    유효하지 않은 날짜 포맷(0)과 같은 경우 리소스가 만료 되었음을 의미함.
+    Ex) Expires: Wed, 21 Oct 2015 07:28:00 GMT
+    -->
+    <meta http-equiv="Expires" content="0" />
+
+    <!-- 
+    HTTP 1.0 버전에서 HTTP 1.1의 Cache-Control 헤더와 같은 역할을 함
+    Ex) Pragma: no-cache
+    -->
+    <meta http-equiv="Pragma" content="no-cache" />
     <link rel="icon" href="<%= BASE_URL %>favicon.png" />
     <!-- Bootstrap CSS -->
     <link
