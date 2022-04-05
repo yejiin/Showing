@@ -25,7 +25,7 @@
             <p class="inline2 right2" type="input">{{ review.viewDate }}</p>
             <br />
             <label for="time">관람시간</label>
-            <p class="inline2" type="input" v-if="review.viewTime">{{ review.viewTime.substring(0,5) }}</p>
+            <p class="inline2" type="input" v-if="review.viewTime">{{ review.viewTime.substring(0, 5) }}</p>
             <br />
             <label for="location">관람장소</label>
             <p class="inline2" type="input">{{ review.location }}</p>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="content">
-          <pre>{{ review.content }}</pre>
+          <pre class="reflect_enter">{{ review.content }}</pre>
         </div>
       </div>
     </modal>
@@ -222,7 +222,11 @@ div.right2 {
 .backArrow2:not(:disabled):not(.disabled) {
   cursor: pointer;
 }
-label, h3 {
+label,
+h3 {
   font-weight: bold;
+}
+.reflect_enter {
+  white-space: pre-line;
 }
 </style>
