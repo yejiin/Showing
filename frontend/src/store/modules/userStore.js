@@ -35,9 +35,16 @@ const userStore = {
       state.userInfo.userImage = "";
       state.userInfo.nickName = "";
     },
+    SET_NICKNAME: (state, nickName) => {
+      state.userInfo.nickName = nickName;
+    },
   },
 
   actions: {
+    setNickName({ commit }, nickName) {
+      commit("SET_NICKNAME", nickName);
+    },
+
     async findNaverToken({ commit }, code, state) {
       let token = null;
       await getNaverToken(
