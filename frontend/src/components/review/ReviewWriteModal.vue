@@ -157,10 +157,6 @@ export default {
       }
       if (!this.review.showTime) {
         this.showToast("error", "관람시간을 선택해주세요.");
-        console.log(this.seasonShow.startDate);
-        console.log(new Date(this.seasonShow.startDate));
-        console.log(new Date(this.review.showDate));
-        console.log(new Date());
         return;
       }
       if (!this.review.reviewContent) {
