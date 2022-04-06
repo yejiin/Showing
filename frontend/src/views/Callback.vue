@@ -46,7 +46,7 @@ export default {
         let token = await this.findNaverToken(code, state);
         await this.findNaverUser(token);
 
-        await this.$router.go(-1);
+        await this.$router.replace("/");
       } catch (error) {
         console.log(error);
       }
@@ -58,7 +58,7 @@ export default {
         let token = await this.findKakaoToken(code);
         await this.findKakaoUser(token);
 
-        await this.$router.go(-1);
+        await this.$router.replace("/");
       } catch (error) {
         console.log(error);
       }
