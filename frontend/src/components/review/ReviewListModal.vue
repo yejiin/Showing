@@ -154,10 +154,14 @@ export default {
       );
     },
     detailUser(id) {
+      this.modals.modal1 = false;
+      this.modals.modal2 = false;
+      // this.$router.push({ path: "/users/" + id });
       this.$router.push({
         name: "MyPage",
-        params: { userId: id },
+        params: { userId: id, key: "aaa" },
       });
+      this.$router.go();
     },
     ...mapActions(reviewStore, ["setReviewId"]),
     showDetailModal(id) {

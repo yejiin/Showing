@@ -38,8 +38,13 @@
               index
             }}</b-badge>
           </div>
-          <div class="right mb-3">
-            <img class="showimage" :src="detailReview.seasonImage" alt="show image" />
+          <div class="right mb-3 show-image">
+            <img
+              class="showimage"
+              :src="detailReview.seasonImage"
+              alt="show image"
+              @click="detailShow(detailReview.performanceId)"
+            />
           </div>
         </div>
         <div class="content">
@@ -48,6 +53,7 @@
       </div>
     </modal>
     <review-modify-modal
+      :key="modireview"
       :seasonShowName="detailReview.performanceName"
       :seasonShow="seasonShow"
       @addMyReview="addMyReview"
@@ -75,6 +81,7 @@ export default {
   data() {
     return {
       seasonShow: {},
+      modireview: 0,
     };
   },
 
@@ -127,13 +134,23 @@ export default {
 
       let status = false;
       let id = reviewId;
+      console.log(id);
       this.setReviewModalState({ status, reviewId });
       this.setModifyReviewModalState(true);
       this.setReviewId(id);
+      this.modireview = id;
     },
 
-    addMyReview(data) {
+    addMyReview() {
       this.$emit("addMyReview");
+    },
+
+    detailShow(id) {
+      this.$router.push({
+        name: "ShowDetail",
+        params: { showId: id },
+      });
+      this.$router.go();
     },
   },
 };
@@ -199,5 +216,8 @@ h3 {
 }
 .reflect_enter {
   white-space: pre-line;
+}
+.show-image {
+  cursor: pointer;
 }
 </style>
