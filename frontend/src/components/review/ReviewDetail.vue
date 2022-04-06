@@ -75,6 +75,7 @@ export default {
         name: "MyPage",
         params: { userId: id },
       });
+      this.$router.go();
     },
     ...mapActions(reviewStore, ["setReviewDetailModalState"]),
   },

@@ -162,6 +162,7 @@ export default {
       getDetailReview(id, (response) => {
         this.review = response.data.data;
       });
+      this.$router.go();
     },
   },
 };
