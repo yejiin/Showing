@@ -84,6 +84,7 @@ export default {
         name: "MyPage",
         params: { userId: id, key: "aaa" },
       });
+      this.$router.go();
     },
 
     detailReview(reviewId) {
