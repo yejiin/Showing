@@ -48,6 +48,7 @@
       </div>
     </modal>
     <review-modify-modal
+      :key="modireview"
       :seasonShowName="detailReview.performanceName"
       :seasonShow="seasonShow"
       @addMyReview="addMyReview"
@@ -75,6 +76,7 @@ export default {
   data() {
     return {
       seasonShow: {},
+      modireview: 0,
     };
   },
 
@@ -127,9 +129,11 @@ export default {
 
       let status = false;
       let id = reviewId;
+      console.log(id);
       this.setReviewModalState({ status, reviewId });
       this.setModifyReviewModalState(true);
       this.setReviewId(id);
+      this.modireview = id;
     },
 
     addMyReview(data) {
