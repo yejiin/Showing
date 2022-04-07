@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="row">
-      <b-img :src="heading.performanceImage" alt="profile image" class="profile shadow" rounded />
+      <b-img :src="heading.performanceImage" class="profile shadow" rounded />
     </div>
     <div class="col show_header">
       <div class="col proceedflag">
