@@ -85,6 +85,12 @@ export default {
     },
   },
 
+  created() {
+    let status = false;
+    let reviewId = 0;
+    this.setReviewModalState({ status, reviewId });
+  },
+
   methods: {
     ...mapActions(reviewStore, ["setReviewModalState"]),
     getReviews() {
