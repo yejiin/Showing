@@ -2,11 +2,11 @@
 
 뮤지컬/연극 소비자의 더 나은 경험과 선택을 위하여 <br>공연의 세부 정보를 통한 뮤지컬/연극 추천 데이터 및 리뷰 분석을 통한 키워드 워드클라우드를 제공합니다.<br>각 공연 당 별점 평가와 리뷰 작성이 가능하며, 다른 사람들의 리뷰 또한 확인 가능합니다.
 
-![슬라이드1](/uploads/72beaee38981b9bd88e9c7ef6e057cc3/슬라이드1.PNG)
+![슬라이드1](https://user-images.githubusercontent.com/63090006/162746231-6d5f2ec1-a1ec-4c1f-9c8e-b94caa623c65.PNG)
 
-![슬라이드2](/uploads/a63b786b3d8a2160dc6b137de0114d54/슬라이드2.PNG)
+![슬라이드2](https://user-images.githubusercontent.com/63090006/162746256-581f4f66-b5e9-4fe9-93b6-60c887fa9085.PNG)
 
-![슬라이드3](/uploads/b5a4e83e1365d052864b903a35bf6372/슬라이드3.PNG)
+![슬라이드3](https://user-images.githubusercontent.com/63090006/162746277-f9cd4052-448a-46cf-82f8-ed93c05bae71.PNG)
 
 <br>
 
@@ -73,11 +73,11 @@ Hadoop : 김혜지, 최혜린
 
 ### 화면 설계
 
-[![Group_24](https://lab.ssafy.com/s06-bigdata-dist-sub2/S06P22A301/uploads/bfc9f2ff63a8158f442c538706df0880/Group_24.png)](https://lab.ssafy.com/s06-bigdata-dist-sub2/S06P22A301/uploads/bfc9f2ff63a8158f442c538706df0880/Group_24.png)
+![Group_24](https://user-images.githubusercontent.com/63090006/162746596-b4feff01-8d99-4750-863a-1f8eae9d7230.png)
 
 ### ERD
 
-[![ourerd_ver2__2_](https://lab.ssafy.com/s06-bigdata-dist-sub2/S06P22A301/uploads/4617c4334bc7ae88689d184c1837ef94/ourerd_ver2__2_.png)](https://lab.ssafy.com/s06-bigdata-dist-sub2/S06P22A301/uploads/4617c4334bc7ae88689d184c1837ef94/ourerd_ver2__2_.png)
+![ourerd_ver2__2_](https://user-images.githubusercontent.com/63090006/162746722-ef3e6007-202d-43e9-8e34-1f46949b722b.png)
 
 ### API
 
